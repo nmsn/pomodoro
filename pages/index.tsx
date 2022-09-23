@@ -23,16 +23,21 @@ const CurButton = ({
   onClick: () => void;
 }) => {
   return (
-    <button className="w-16 px-2 py-1 bg-white" onClick={onClick}>
+    <button
+      className="w-32 px-2 py-1 rounded border-2 border-current"
+      onClick={onClick}
+    >
       {children}
     </button>
   );
 };
 
+type StatusType = "initial" | "processing" | "paused";
+
 const Home: NextPage = () => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
-  const [isPaused, setIsPaused] = useState(false);
+  const [status, setStatus] = useState("initial");
 
   const timeDisplay = useMemo(() => {
     const [h, m, s] = timeFormat(time)?.map((item) =>
@@ -43,7 +48,7 @@ const Home: NextPage = () => {
   }, [time]);
 
   const onStart = () => {
-    setIsPaused(false);
+    setStatus("processing");
     timer.current = window.setInterval(() => {
       setTime((pre) => {
         if (pre === 0) {
@@ -57,14 +62,14 @@ const Home: NextPage = () => {
 
   const onPause = () => {
     if (timer.current) {
-      setIsPaused(true);
+      setStatus("paused");
       window.clearInterval(timer.current);
       timer.current = null;
     }
   };
 
   const onReset = () => {
-    setIsPaused(false);
+    setStatus("initial");
     setTime(baseTime);
 
     if (timer.current) {
@@ -75,15 +80,18 @@ const Home: NextPage = () => {
 
   return (
     <div className="w-screen h-screen bg-red-500 flex justify-center items-center">
-      <div className="w-120 bg-slate-500 flex-col block">
-        <div className="text-9xl">{timeDisplay}</div>
-        <div className="flex justify-center space-x-2">
-          {time === baseTime ? (
+      <div className="w-120 flex-col block">
+        <div className="text-9xl mb-12">{timeDisplay}</div>
+        <div className="flex justify-center space-x-16">
+          {status === "initial" && (
             <CurButton onClick={onStart}>Start</CurButton>
-          ) : (
-            <CurButton onClick={isPaused ? onStart : onPause}>
-              {isPaused ? "Continue" : "Pause"}
-            </CurButton>
+          )}
+          {status === "processing" && (
+            <CurButton onClick={onPause}>Pause</CurButton>
+          )}
+
+          {status === "paused" && (
+            <CurButton onClick={onStart}>Continue</CurButton>
           )}
 
           <CurButton onClick={onReset}>Reset</CurButton>
