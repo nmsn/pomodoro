@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import { useRef, useState, useMemo } from "react";
-// import Head from "next/head";
 
 const minutes = 25;
 const second = 60;
@@ -24,7 +23,7 @@ const CurButton = ({
 }) => {
   return (
     <button
-      className="w-32 px-2 py-1 rounded border-2 border-current"
+      className="w-32 px-2 py-2 rounded-lg font-bold bg-black text-blue-400 hover:text-blue-300 shadow-md"
       onClick={onClick}
     >
       {children}
@@ -37,7 +36,7 @@ type StatusType = "initial" | "processing" | "paused";
 const Home: NextPage = () => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
-  const [status, setStatus] = useState("initial");
+  const [status, setStatus] = useState<StatusType>("initial");
 
   const timeDisplay = useMemo(() => {
     const [h, m, s] = timeFormat(time)?.map((item) =>
@@ -79,22 +78,26 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-red-500 flex justify-center items-center">
+    <div className="w-screen h-screen bg-blue-400 flex justify-center items-center">
       <div className="w-120 flex-col block">
-        <div className="text-9xl mb-12">{timeDisplay}</div>
+        <div className="text-9xl mb-12 font-bold">{timeDisplay}</div>
         <div className="flex justify-center space-x-16">
           {status === "initial" && (
-            <CurButton onClick={onStart}>Start</CurButton>
+            <CurButton onClick={onStart}>START</CurButton>
           )}
           {status === "processing" && (
-            <CurButton onClick={onPause}>Pause</CurButton>
+            <>
+              <CurButton onClick={onPause}>PAUSE</CurButton>
+              <CurButton onClick={onReset}>RESET</CurButton>
+            </>
           )}
 
           {status === "paused" && (
-            <CurButton onClick={onStart}>Continue</CurButton>
+            <>
+              <CurButton onClick={onStart}>CONTINUE</CurButton>
+              <CurButton onClick={onReset}>RESET</CurButton>
+            </>
           )}
-
-          <CurButton onClick={onReset}>Reset</CurButton>
         </div>
       </div>
     </div>
