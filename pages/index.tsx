@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import { useRef, useState, useMemo } from "react";
 
-const minutes = 25;
+const workMins = 25;
 const second = 60;
 
-const baseTime = minutes * second;
+const baseTime = workMins * second;
 
 const timeFormat = (val: number) => {
   const h = Math.floor((val / 3600) % 24);
@@ -51,8 +51,7 @@ const Home: NextPage = () => {
     timer.current = window.setInterval(() => {
       setTime((pre) => {
         if (pre === 0) {
-          timer.current && window.clearInterval(timer.current);
-          setTime(baseTime);
+          onReset();
         }
         return pre - 1;
       });
@@ -68,8 +67,8 @@ const Home: NextPage = () => {
   };
 
   const onReset = () => {
-    setStatus("initial");
     setTime(baseTime);
+    setStatus("initial");
 
     if (timer.current) {
       window.clearInterval(timer.current);
