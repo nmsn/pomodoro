@@ -1,10 +1,13 @@
 import type { NextPage } from "next";
 import { useRef, useState, useMemo } from "react";
+import { LoopIcon, BeakerIcon, ArrowLeft } from "../components/icon";
 
 const workMins = 25;
+const restMins = 5;
 const second = 60;
 
 const baseTime = workMins * second;
+const restTime = restMins * second;
 
 const timeFormat = (val: number) => {
   const h = Math.floor((val / 3600) % 24);
@@ -78,6 +81,9 @@ const Home: NextPage = () => {
 
   return (
     <div className="w-screen h-screen bg-blue-400 flex justify-center items-center">
+      <div className="absolute top-0 w-screen h-12 flex items-center px-4 space-x-4">
+        <ArrowLeft />
+      </div>
       <div className="w-120 flex-col block">
         <div className="text-9xl mb-12 font-bold">{timeDisplay}</div>
         <div className="flex justify-center space-x-16">
@@ -98,6 +104,10 @@ const Home: NextPage = () => {
             </>
           )}
         </div>
+      </div>
+      <div className="absolute bottom-0 w-screen h-12 flex justify-end items-center px-4 space-x-4">
+        <BeakerIcon />
+        <LoopIcon />
       </div>
     </div>
   );
