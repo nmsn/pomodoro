@@ -6,5 +6,5 @@ A web pomodoro timer.
 
 - [ ] Add auto loop.
 - [ ] Add theme color.
-- [ ] Add customized time.
-- [ ] Add todo list
+- [ ] Add custom time.
+- [ ] Add todo list.
