@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRef, useState, useMemo } from "react";
-import { LoopIcon, BeakerIcon, ArrowLeft } from "../components/icon";
+import { SwitchLoopIcon, BeakerIcon, ArrowLeft } from "../components/icon";
 
 const workMins = 25;
 const restMins = 5;
@@ -40,6 +40,7 @@ const Home: NextPage = () => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
   const [status, setStatus] = useState<StatusType>("initial");
+  const [isLoop, setIsLoop] = useState(false);
 
   const timeDisplay = useMemo(() => {
     const [h, m, s] = timeFormat(time)?.map((item) =>
@@ -55,6 +56,8 @@ const Home: NextPage = () => {
       setTime((pre) => {
         if (pre === 0) {
           onReset();
+          
+          // TODO loop 
         }
         return pre - 1;
       });
@@ -107,7 +110,7 @@ const Home: NextPage = () => {
       </div>
       <div className="absolute bottom-0 w-screen h-12 flex justify-end items-center px-4 space-x-4">
         <BeakerIcon />
-        <LoopIcon />
+        <SwitchLoopIcon on={isLoop} onChange={setIsLoop} />
       </div>
     </div>
   );
