@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRef, useState, useMemo } from "react";
-// import { SwitchLoopIcon, BeakerIcon, ArrowLeft } from "../components/icon";
+import { SwitchLoopIcon, BeakerIcon, ArrowLeft } from "../components/icon";
 
 const workMins = 25;
 // const restMins = 5;
@@ -36,11 +36,39 @@ const CurButton = ({
 
 type StatusType = "initial" | "processing" | "paused";
 
+/**
+ * TODO
+ * Click arrow to open a TODO list
+ */
+const Header = () => {
+  return (
+    <div className="absolute top-0 w-screen h-12 flex items-center px-4 space-x-4">
+      <ArrowLeft />
+    </div>
+  );
+};
+
+/**
+ * TODO
+ * Change color theme and loop button
+ */
+const Footer = ({
+  onChangeSwitchLoopIcon,
+}: {
+  onChangeSwitchLoopIcon: (on: boolean) => void;
+}) => {
+  return (
+    <div className="absolute bottom-0 w-screen h-12 flex justify-end items-center px-4 space-x-4">
+      <BeakerIcon />
+      <SwitchLoopIcon onChange={onChangeSwitchLoopIcon} />
+    </div>
+  );
+};
+
 const Home: NextPage = () => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
   const [status, setStatus] = useState<StatusType>("initial");
-  const [isLoop, setIsLoop] = useState(false);
 
   const timeDisplay = useMemo(() => {
     const [h, m, s] = timeFormat(time)?.map((item) =>
@@ -84,9 +112,7 @@ const Home: NextPage = () => {
 
   return (
     <div className="w-screen h-screen bg-blue-400 flex justify-center items-center">
-      {/* <div className="absolute top-0 w-screen h-12 flex items-center px-4 space-x-4">
-        <ArrowLeft />
-      </div> */}
+      {/* <Header /> */}
       <div className="w-120 flex-col block">
         <div className="text-9xl mb-12 font-bold select-none">
           {timeDisplay}
@@ -110,10 +136,7 @@ const Home: NextPage = () => {
           )}
         </div>
       </div>
-      {/* <div className="absolute bottom-0 w-screen h-12 flex justify-end items-center px-4 space-x-4">
-        <BeakerIcon />
-        <SwitchLoopIcon on={isLoop} onChange={setIsLoop} />
-      </div> */}
+      {/* <Footer /> */}
     </div>
   );
 };
