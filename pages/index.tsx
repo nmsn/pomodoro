@@ -1,6 +1,12 @@
 import type { NextPage } from "next";
 import { useRef, useState, useMemo, useEffect } from "react";
-import { SwitchLoopIcon, BeakerIcon, ArrowRight } from "../components/icon";
+import {
+  SwitchLoopIcon,
+  BeakerIcon,
+  ArrowRight,
+  Check,
+  XMark,
+} from "../components/icon";
 import classnames from "classnames";
 
 const workMins = 25;
@@ -60,7 +66,7 @@ const Header = ({
   };
 
   return (
-    <div className="absolute top-0 w-screen h-12 flex items-center px-4 space-x-4">
+    <div className="absolute top-0 w-full h-12 flex items-center px-4 space-x-4">
       <ArrowRight open={curOpen} onClick={() => onCurChange(!curOpen)} />
     </div>
   );
@@ -83,20 +89,61 @@ const Footer = ({
   );
 };
 
+type TODOItemProps = {
+  value: string;
+  checked: boolean;
+  time: string;
+  date: string;
+};
+
+const TODOItem = ({ value, checked, time }: TODOItemProps) => {
+  return (
+    <div className="flex">
+      <div>{time}</div>
+      <div>{value}</div>
+      <div>{checked ? <Check /> : <XMark />}</div>
+    </div>
+  );
+};
+
+const testData = [
+  { date: "2022-11-17", time: "123", value: "123", checked: true },
+  { date: "2022-11-17", time: "123", value: "123", checked: true },
+  { date: "2022-11-17", time: "123", value: "123", checked: true },
+  { date: "2022-11-17", time: "123", value: "123", checked: true },
+];
+
+const TODOList = () => {
+  const [list, setList] = useState<TODOItemProps[]>([]);
+  return (
+    <div className="w-120 flex flex-col">
+      {testData.map((item, index) => (
+        <TODOItem {...item} key={+index} />
+      ))}
+    </div>
+  );
+};
+
 const TODO = ({ open }: { open: boolean }) => {
   return (
     <div
       className={classnames(
         open ? "w-1/2" : "w-0",
-        "w-1/2 h-full flex justify-center items-center duration-300"
+        "w-1/2 h-full flex justify-center items-center duration-300 bg-red-400"
       )}
     >
-      123
+      <TODOList />
     </div>
   );
 };
 
-const Clock = ({ open }: { open: boolean }) => {
+const Clock = ({
+  open,
+  onOpen,
+}: {
+  open: boolean;
+  onOpen: (open: boolean) => void;
+}) => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
   const [status, setStatus] = useState<StatusType>("initial");
@@ -145,9 +192,10 @@ const Clock = ({ open }: { open: boolean }) => {
     <div
       className={classnames(
         open ? "w-1/2" : "w-full",
-        "h-full flex justify-center items-center duration-300"
+        "h-full flex justify-center items-center duration-300 bg-blue-400 relative"
       )}
     >
+      <Header open={open} onChange={onOpen} />
       <div className="w-120 flex-col block">
         <div className="text-9xl mb-12 font-bold select-none">
           {timeDisplay}
@@ -178,9 +226,8 @@ const Home: NextPage = () => {
   const [open, setOpen] = useState(false);
   return (
     <div className="w-screen h-screen bg-blue-400 flex">
-      <Header open={open} onChange={setOpen} />
       <TODO open={open} />
-      <Clock open={open} />
+      <Clock open={open} onOpen={setOpen} />
       {/* <Footer /> */}
     </div>
   );
