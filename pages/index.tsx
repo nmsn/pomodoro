@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
-import { useRef, useState, useMemo } from "react";
-import { SwitchLoopIcon, BeakerIcon, ArrowLeft } from "../components/icon";
+import { useRef, useState, useMemo, useEffect } from "react";
+import { SwitchLoopIcon, BeakerIcon, ArrowRight } from "../components/icon";
+import classnames from "classnames";
 
 const workMins = 25;
 // const restMins = 5;
@@ -40,10 +41,27 @@ type StatusType = "initial" | "processing" | "paused";
  * TODO
  * Click arrow to open a TODO list
  */
-const Header = () => {
+const Header = ({
+  open,
+  onChange,
+}: {
+  open: boolean;
+  onChange: (open: boolean) => void;
+}) => {
+  const [curOpen, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(open);
+  }, [open]);
+
+  const onCurChange = (open: boolean) => {
+    setOpen(open);
+    onChange?.(open);
+  };
+
   return (
     <div className="absolute top-0 w-screen h-12 flex items-center px-4 space-x-4">
-      <ArrowLeft />
+      <ArrowRight open={curOpen} onClick={() => onCurChange(!curOpen)} />
     </div>
   );
 };
@@ -65,7 +83,20 @@ const Footer = ({
   );
 };
 
-const Home: NextPage = () => {
+const TODO = ({ open }: { open: boolean }) => {
+  return (
+    <div
+      className={classnames(
+        open ? "w-1/2" : "w-0",
+        "w-1/2 h-full flex justify-center items-center duration-300"
+      )}
+    >
+      123
+    </div>
+  );
+};
+
+const Clock = ({ open }: { open: boolean }) => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
   const [status, setStatus] = useState<StatusType>("initial");
@@ -111,8 +142,12 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-blue-400 flex justify-center items-center">
-      {/* <Header /> */}
+    <div
+      className={classnames(
+        open ? "w-1/2" : "w-full",
+        "h-full flex justify-center items-center duration-300"
+      )}
+    >
       <div className="w-120 flex-col block">
         <div className="text-9xl mb-12 font-bold select-none">
           {timeDisplay}
@@ -127,7 +162,6 @@ const Home: NextPage = () => {
               <CurButton onClick={onReset}>RESET</CurButton>
             </>
           )}
-
           {status === "paused" && (
             <>
               <CurButton onClick={onStart}>CONTINUE</CurButton>
@@ -136,6 +170,17 @@ const Home: NextPage = () => {
           )}
         </div>
       </div>
+    </div>
+  );
+};
+
+const Home: NextPage = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="w-screen h-screen bg-blue-400 flex">
+      <Header open={open} onChange={setOpen} />
+      <TODO open={open} />
+      <Clock open={open} />
       {/* <Footer /> */}
     </div>
   );
