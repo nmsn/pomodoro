@@ -1,4 +1,5 @@
 import { useState } from "react";
+import classnames from "classnames";
 
 export const BeakerIcon = () => {
   return (
@@ -115,7 +116,13 @@ export const ArrowLeft = () => {
   );
 };
 
-export const ArrowRight = () => {
+export const ArrowRight = ({
+  open,
+  onClick,
+}: {
+  open?: boolean;
+  onClick?: () => void;
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +130,11 @@ export const ArrowRight = () => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="w-6 h-6 cursor-pointer"
+      className={classnames(
+        "w-6 h-6 cursor-pointer transition-transform duration-300",
+        open ? "rotate-180" : undefined
+      )}
+      onClick={onClick}
     >
       <path
         strokeLinecap="round"

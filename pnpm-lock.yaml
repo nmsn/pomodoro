@@ -8,6 +8,7 @@ specifiers:
   '@types/react-color': ^3.0.6
   '@types/react-dom': 18.0.6
   autoprefixer: ^10.4.12
+  classnames: ^2.3.2
   eslint: 8.23.1
   eslint-config-next: 12.3.1
   next: 12.3.1
@@ -21,6 +22,7 @@ specifiers:
 dependencies:
   '@headlessui/react': 1.7.2_biqbaboplfbrettd7655fr4n2y
   '@heroicons/react': 2.0.11_react@18.2.0
+  classnames: 2.3.2
   next: 12.3.1_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-color: 2.19.3_react@18.2.0
@@ -605,6 +607,10 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /classnames/2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
 
   /color-convert/2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
