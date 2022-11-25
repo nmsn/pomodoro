@@ -6,7 +6,7 @@ import {
   ArrowRight,
   Check,
   XMark,
-} from "../components/icon";
+} from "../components/Icon";
 import classnames from "classnames";
 
 const workMins = 25;
@@ -33,7 +33,7 @@ const CurButton = ({
 }) => {
   return (
     <button
-      className="w-32 px-2 py-2 rounded-lg font-bold bg-black text-blue-400 shadow-md select-none"
+      className="w-32 p-2 rounded-lg font-bold bg-black text-blue-400 shadow-md select-none"
       onClick={onClick}
     >
       {children}
@@ -89,42 +89,54 @@ const Footer = ({
   );
 };
 
-type TODOItemProps = {
+type TodoItemProps = {
+  index: number;
   value: string;
   checked: boolean;
   time: string;
   date: string;
 };
 
-const TODOItem = ({ value, checked, time }: TODOItemProps) => {
+const TodoItem = ({ value, checked, time, index }: TodoItemProps) => {
   return (
-    <div className="flex">
-      <div>{time}</div>
-      <div>{value}</div>
-      <div>{checked ? <Check /> : <XMark />}</div>
+    <div className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold">
+      <div className="font-bold pr-4">{index}</div>
+      <div className="font-bold truncate">{value}</div>
+      <div className="pl-4">{checked ? <Check /> : <XMark />}</div>
     </div>
   );
 };
 
 const testData = [
-  { date: "2022-11-17", time: "123", value: "123", checked: true },
-  { date: "2022-11-17", time: "123", value: "123", checked: true },
-  { date: "2022-11-17", time: "123", value: "123", checked: true },
-  { date: "2022-11-17", time: "123", value: "123", checked: true },
+  { date: "2022-11-17", time: "123", value: "测试文本", checked: true },
+  {
+    date: "2022-11-17",
+    time: "123",
+    value: "测试文本测试文本测试文本测试文本测试文本测试文本测试文本",
+    checked: true,
+  },
+  { date: "2022-11-17", time: "123", value: "测试文本测试文本", checked: true },
+  {
+    date: "2022-11-17",
+    time: "123",
+    value:
+      "测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本",
+    checked: false,
+  },
 ];
 
-const TODOList = () => {
-  const [list, setList] = useState<TODOItemProps[]>([]);
+const TodoList = () => {
+  const [list, setList] = useState<TodoItemProps[]>([]);
   return (
-    <div className="w-120 flex flex-col">
+    <div className="w-10/12 flex flex-col space-y-4">
       {testData.map((item, index) => (
-        <TODOItem {...item} key={+index} />
+        <TodoItem {...item} key={+index} index={index + 1} />
       ))}
     </div>
   );
 };
 
-const TODO = ({ open }: { open: boolean }) => {
+const Todo = ({ open }: { open: boolean }) => {
   return (
     <div
       className={classnames(
@@ -132,7 +144,7 @@ const TODO = ({ open }: { open: boolean }) => {
         "w-1/2 h-full flex justify-center items-center duration-300 bg-red-400"
       )}
     >
-      <TODOList />
+      <TodoList />
     </div>
   );
 };
@@ -226,7 +238,7 @@ const Home: NextPage = () => {
   const [open, setOpen] = useState(false);
   return (
     <div className="w-screen h-screen bg-blue-400 flex">
-      <TODO open={open} />
+      <Todo open={open} />
       <Clock open={open} onOpen={setOpen} />
       {/* <Footer /> */}
     </div>
