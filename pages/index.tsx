@@ -27,13 +27,18 @@ const timeFormat = (val: number) => {
 const CurButton = ({
   children,
   onClick,
+  className,
 }: {
   children: string;
-  onClick: () => void;
+  onClick?: () => void;
+  className?: string;
 }) => {
   return (
     <button
-      className="w-32 p-2 rounded-lg font-bold bg-black text-blue-400 shadow-md select-none"
+      className={classnames(
+        "w-32 p-2 rounded-lg font-bold bg-black text-blue-400 shadow-md select-none",
+        className
+      )}
       onClick={onClick}
     >
       {children}
@@ -136,14 +141,29 @@ const TodoList = () => {
   );
 };
 
+const AddLine = () => {
+  const [value, onInput] = useState("");
+  return (
+    <div className="flex space-x-4 w-10/12">
+      <input
+        className="rounded-lg shadow-md flex-1 px-4 py-2 font-bold focus:outline-red-400"
+        value={value}
+        onChange={(e) => onInput(e.target.value)}
+      />
+      <CurButton className="text-red-400">Add</CurButton>
+    </div>
+  );
+};
+
 const Todo = ({ open }: { open: boolean }) => {
   return (
     <div
       className={classnames(
         open ? "w-1/2" : "w-0",
-        "w-1/2 h-full flex justify-center items-center duration-300 bg-red-400"
+        "w-1/2 h-full flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4"
       )}
     >
+      <AddLine />
       <TodoList />
     </div>
   );
