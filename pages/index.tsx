@@ -7,6 +7,7 @@ import {
   Check,
   XMark,
 } from "../components/Icon";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
 import classnames from "classnames";
 
 const workMins = 25;
@@ -23,6 +24,11 @@ const timeFormat = (val: number) => {
 
   return [h, m, s];
 };
+
+const todoListState = atom({
+  key: "todoListState",
+  default: [] as TodoItemProps[],
+});
 
 const CurButton = ({
   children,
@@ -103,54 +109,68 @@ type TodoItemProps = {
 };
 
 const TodoItem = ({ value, checked, time, index }: TodoItemProps) => {
+  const [_, setTodoList] = useRecoilState<TodoItemProps[]>(todoListState);
+
+  const onDelete = (key: number) => {
+    setTodoList((pre) =>
+      pre
+        .filter((item, index) => index !== key)
+        .map((item, index) => ({ ...item, index }))
+    );
+  };
+
   return (
     <div className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold">
-      <div className="font-bold pr-4">{index}</div>
+      <div className="font-bold pr-4">{index + 1}.</div>
       <div className="font-bold truncate">{value}</div>
-      <div className="pl-4">{checked ? <Check /> : <XMark />}</div>
+      <div className="pl-4">
+        {checked ? <Check /> : <XMark onClick={() => onDelete(index)} />}
+      </div>
     </div>
   );
 };
 
-const testData = [
-  { date: "2022-11-17", time: "123", value: "测试文本", checked: true },
-  {
-    date: "2022-11-17",
-    time: "123",
-    value: "测试文本测试文本测试文本测试文本测试文本测试文本测试文本",
-    checked: true,
-  },
-  { date: "2022-11-17", time: "123", value: "测试文本测试文本", checked: true },
-  {
-    date: "2022-11-17",
-    time: "123",
-    value:
-      "测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本",
-    checked: false,
-  },
-];
-
 const TodoList = () => {
-  const [list, setList] = useState<TodoItemProps[]>([]);
+  const todoList = useRecoilValue<TodoItemProps[]>(todoListState);
   return (
     <div className="w-10/12 flex flex-col space-y-4">
-      {testData.map((item, index) => (
-        <TodoItem {...item} key={+index} index={index + 1} />
+      {todoList.map((item, index) => (
+        <TodoItem {...item} key={+index} />
       ))}
     </div>
   );
 };
 
 const AddLine = () => {
-  const [value, onInput] = useState("");
+  const [value, onChange] = useState("");
+
+  const [todoList, setTodoList] =
+    useRecoilState<TodoItemProps[]>(todoListState);
+
+  const onAdd = () => {
+    if (!value) {
+      return;
+    }
+    const item = {
+      checked: false,
+      value,
+      time: "123",
+      date: "2022-11-17",
+      index: todoList.length,
+    };
+    setTodoList((pre) => [...pre, item]);
+    onChange("");
+  };
   return (
     <div className="flex space-x-4 w-10/12">
       <input
         className="rounded-lg shadow-md flex-1 px-4 py-2 font-bold focus:outline-red-400"
         value={value}
-        onChange={(e) => onInput(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
       />
-      <CurButton className="text-red-400">Add</CurButton>
+      <CurButton className="text-red-400" onClick={onAdd}>
+        Add
+      </CurButton>
     </div>
   );
 };

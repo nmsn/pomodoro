@@ -164,7 +164,7 @@ export const Check = () => {
   );
 };
 
-export const XMark = () => {
+export const XMark = ({ onClick }: { onClick?: () => void }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -173,6 +173,7 @@ export const XMark = () => {
       strokeWidth={1.5}
       stroke="currentColor"
       className="w-6 h-6"
+      onClick={onClick}
     >
       <path
         strokeLinecap="round"
@@ -182,3 +183,9 @@ export const XMark = () => {
     </svg>
   );
 };
+
+
+/** TODO
+ * 添加公共方法 
+ * 提取公共部分代码
+*/
