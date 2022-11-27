@@ -1,15 +1,14 @@
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import Todo from "../components/Todo";
-import Clock from "../components/Clock";
+import Clock, { openState } from "../components/Clock";
 
 const Home: NextPage = () => {
-  const [open, setOpen] = useState(false);
+  const open = useRecoilValue(openState);
   return (
     <div className="w-screen h-screen bg-blue-400 flex">
       <Todo open={open} />
-      <Clock open={open} onOpen={setOpen} />
-      {/* <Footer /> */}
+      <Clock />
     </div>
   );
 };

@@ -2,6 +2,12 @@ import { useRef, useState, useMemo } from "react";
 import Header from "./Header";
 import Button from "./Button";
 import classnames from "classnames";
+import { atom, useRecoilState } from "recoil";
+
+export const openState = atom({
+  key: "openState",
+  default: false,
+});
 
 const workMins = 25;
 // const restMins = 5;
@@ -20,16 +26,12 @@ const timeFormat = (val: number) => {
 
 type StatusType = "initial" | "processing" | "paused";
 
-const Clock = ({
-  open,
-  onOpen,
-}: {
-  open: boolean;
-  onOpen: (open: boolean) => void;
-}) => {
+const Clock = () => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
   const [status, setStatus] = useState<StatusType>("initial");
+
+  const [open, setOpen] = useRecoilState(openState);
 
   const timeDisplay = useMemo(() => {
     const [h, m, s] = timeFormat(time)?.map((item) =>
@@ -78,7 +80,7 @@ const Clock = ({
         "h-full flex justify-center items-center duration-300 bg-blue-400 relative"
       )}
     >
-      <Header open={open} onChange={onOpen} />
+      <Header open={open} onChange={setOpen} />
       <div className="w-120 flex-col block">
         <div className="text-9xl mb-12 font-bold select-none">
           {timeDisplay}
