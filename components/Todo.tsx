@@ -3,22 +3,73 @@ import { Check, XMark } from "./Icon";
 import Button from "./Button";
 import classnames from "classnames";
 import { useState } from "react";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+
+export const ItemTypes = {
+  CARD: "card",
+};
 
 type TodoItemProps = {
   index: number;
   value: string;
   checked: boolean;
-  time: string;
-  date: string;
+  date: number; // use Date.now() as unique key
+  find: (index: number) => DragItemType;
+  move: (curIndex: number, toIndex: number) => void;
 };
+
+type TodoItemDataType = Omit<TodoItemProps, "find" | "move" | "index">;
 
 const todoListState = atom({
   key: "todoListState",
-  default: [] as TodoItemProps[],
+  default: [] as TodoItemDataType[],
 });
 
-const TodoItem = ({ value, checked, time, index }: TodoItemProps) => {
-  const [_, setTodoList] = useRecoilState<TodoItemProps[]>(todoListState);
+type DragItemType = { item: TodoItemDataType } & { index: number };
+
+const TodoItem = ({
+  value,
+  checked,
+  date,
+  index,
+  find,
+  move,
+}: TodoItemProps) => {
+  const [_, setTodoList] = useRecoilState<TodoItemDataType[]>(todoListState);
+
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: ItemTypes.CARD,
+      item: { date, index },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+      end: (item, monitor) => {
+        const { date: curDate, index: curIndex } = item;
+        const didDrop = monitor.didDrop();
+
+        // 感觉是恢复原状了
+        if (!didDrop) {
+          move(curDate, curIndex);
+        }
+      },
+    }),
+    []
+  );
+
+  const [, drop] = useDrop(
+    () => ({
+      accept: ItemTypes.CARD,
+      hover({ date: toDate }: TodoItemDataType) {
+        if (toDate !== date) {
+          const { index: curIndex } = find(date);
+          move(toDate, curIndex);
+        }
+      },
+    }),
+    [find, move]
+  );
 
   const onDelete = (key: number) => {
     setTodoList((pre) =>
@@ -28,8 +79,14 @@ const TodoItem = ({ value, checked, time, index }: TodoItemProps) => {
     );
   };
 
+  const opacity = isDragging ? 0 : 1;
+
   return (
-    <div className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold">
+    <div
+      className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold"
+      style={{ opacity }}
+      ref={(node) => drag(drop(node))}
+    >
       <div className="font-bold pr-4">{index + 1}.</div>
       <div className="font-bold truncate">{value}</div>
       <div className="pl-4">
@@ -40,11 +97,41 @@ const TodoItem = ({ value, checked, time, index }: TodoItemProps) => {
 };
 
 const TodoList = () => {
-  const todoList = useRecoilValue<TodoItemProps[]>(todoListState);
+  const [todoList, setTodoList] =
+    useRecoilState<TodoItemDataType[]>(todoListState);
+
+  const find = (date: number) => {
+    const curItem = todoList.find(
+      (item) => date === item.date
+    ) as TodoItemDataType;
+
+    return {
+      item: curItem,
+      index: todoList.indexOf(curItem!),
+    };
+  };
+
+  const move = (date: number, toIndex: number) => {
+    const { item: curItem, index: curIndex } = find(date);
+
+    const newList = [...todoList];
+    newList.splice(curIndex, 1);
+    newList.splice(toIndex, 0, curItem!);
+    setTodoList(newList);
+  };
+
+  const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
+
   return (
-    <div className="w-10/12 flex flex-col space-y-4">
+    <div className="w-10/12 flex flex-col space-y-4" ref={drop}>
       {todoList.map((item, index) => (
-        <TodoItem {...item} key={+index} />
+        <TodoItem
+          {...item}
+          key={+index}
+          index={index}
+          find={find}
+          move={move}
+        />
       ))}
     </div>
   );
@@ -53,8 +140,7 @@ const TodoList = () => {
 const AddLine = () => {
   const [value, onChange] = useState("");
 
-  const [todoList, setTodoList] =
-    useRecoilState<TodoItemProps[]>(todoListState);
+  const [, setTodoList] = useRecoilState<TodoItemDataType[]>(todoListState);
 
   const onAdd = () => {
     if (!value) {
@@ -63,9 +149,7 @@ const AddLine = () => {
     const item = {
       checked: false,
       value,
-      time: "123",
-      date: "2022-11-17",
-      index: todoList.length,
+      date: Date.now(),
     };
     setTodoList((pre) => [...pre, item]);
     onChange("");
@@ -93,7 +177,9 @@ const Todo = ({ open }: { open: boolean }) => {
       )}
     >
       <AddLine />
-      <TodoList />
+      <DndProvider backend={HTML5Backend}>
+        <TodoList />
+      </DndProvider>
     </div>
   );
 };
