@@ -10,16 +10,17 @@ export const ItemTypes = {
   CARD: "card",
 };
 
-type TodoItemProps = {
-  index: number;
+type TodoItemDataType = {
   value: string;
   checked: boolean;
-  date: number; // use Date.now() as unique key
-  find: (index: number) => DragItemType;
-  move: (curIndex: number, toIndex: number) => void;
+  date: string; // use Date.now() as unique key
 };
 
-type TodoItemDataType = Omit<TodoItemProps, "find" | "move" | "index">;
+type TodoItemProps = TodoItemDataType & {
+  index: number;
+  find: (date: TodoItemDataType["date"]) => DragItemType;
+  move: (date: TodoItemDataType["date"], toIndex: number) => void;
+};
 
 const todoListState = atom({
   key: "todoListState",
@@ -100,7 +101,7 @@ const TodoList = () => {
   const [todoList, setTodoList] =
     useRecoilState<TodoItemDataType[]>(todoListState);
 
-  const find = (date: number) => {
+  const find = (date: TodoItemDataType["date"]) => {
     const curItem = todoList.find(
       (item) => date === item.date
     ) as TodoItemDataType;
@@ -111,7 +112,7 @@ const TodoList = () => {
     };
   };
 
-  const move = (date: number, toIndex: number) => {
+  const move = (date: TodoItemDataType["date"], toIndex: number) => {
     const { item: curItem, index: curIndex } = find(date);
 
     const newList = [...todoList];
@@ -149,7 +150,7 @@ const AddLine = () => {
     const item = {
       checked: false,
       value,
-      date: Date.now(),
+      date: Date.now().toString(),
     };
     setTodoList((pre) => [...pre, item]);
     onChange("");
