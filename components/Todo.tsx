@@ -1,10 +1,12 @@
-import { atom, useRecoilState, useRecoilValue } from "recoil";
+import { useCallback } from "react";
+import { atom, useRecoilState } from "recoil";
 import { Check, XMark } from "./Icon";
 import Button from "./Button";
 import classnames from "classnames";
 import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
+import update from "immutability-helper";
 
 export const ItemTypes = {
   CARD: "card",
@@ -13,13 +15,14 @@ export const ItemTypes = {
 type TodoItemDataType = {
   value: string;
   checked: boolean;
-  date: string; // use Date.now() as unique key
+  date: number;
+  id: string; // use value + Date.now() as unique key
 };
 
 type TodoItemProps = TodoItemDataType & {
-  index: number;
-  find: (date: TodoItemDataType["date"]) => DragItemType;
-  move: (date: TodoItemDataType["date"], toIndex: number) => void;
+  sortMark: number;
+  find: (id: TodoItemDataType["id"]) => DragItemType;
+  move: (id: TodoItemDataType["id"], toIndex: number) => void;
 };
 
 const todoListState = atom({
@@ -30,54 +33,51 @@ const todoListState = atom({
 type DragItemType = { item: TodoItemDataType } & { index: number };
 
 const TodoItem = ({
+  id,
   value,
   checked,
-  date,
-  index,
+  sortMark,
   find,
   move,
 }: TodoItemProps) => {
   const [_, setTodoList] = useRecoilState<TodoItemDataType[]>(todoListState);
 
+  const originalIndex = find(id).index;
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: ItemTypes.CARD,
-      item: { date, index },
+      item: { id, originalIndex },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
       end: (item, monitor) => {
-        const { date: curDate, index: curIndex } = item;
+        const { id: droppedId, originalIndex } = item;
         const didDrop = monitor.didDrop();
 
-        // 感觉是恢复原状了
+        // 恢复原位
         if (!didDrop) {
-          move(curDate, curIndex);
+          move(droppedId, originalIndex);
         }
       },
     }),
-    []
+    [id, originalIndex, move]
   );
 
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.CARD,
-      hover({ date: toDate }: TodoItemDataType) {
-        if (toDate !== date) {
-          const { index: curIndex } = find(date);
-          move(toDate, curIndex);
+      hover({ id: draggedId }: TodoItemDataType) {
+        if (draggedId !== id) {
+          const { index: overIndex } = find(id);
+          move(draggedId, overIndex);
         }
       },
     }),
     [find, move]
   );
 
-  const onDelete = (key: number) => {
-    setTodoList((pre) =>
-      pre
-        .filter((item, index) => index !== key)
-        .map((item, index) => ({ ...item, index }))
-    );
+  const onDelete = (id: string) => {
+    setTodoList((pre) => pre.filter((item, index) => item.id !== id));
   };
 
   const opacity = isDragging ? 0 : 1;
@@ -88,10 +88,10 @@ const TodoItem = ({
       style={{ opacity }}
       ref={(node) => drag(drop(node))}
     >
-      <div className="font-bold pr-4">{index + 1}.</div>
+      <div className="font-bold pr-4">{sortMark + 1}.</div>
       <div className="font-bold truncate">{value}</div>
       <div className="pl-4">
-        {checked ? <Check /> : <XMark onClick={() => onDelete(index)} />}
+        {checked ? <Check /> : <XMark onClick={() => onDelete(id)} />}
       </div>
     </div>
   );
@@ -101,25 +101,33 @@ const TodoList = () => {
   const [todoList, setTodoList] =
     useRecoilState<TodoItemDataType[]>(todoListState);
 
-  const find = (date: TodoItemDataType["date"]) => {
-    const curItem = todoList.find(
-      (item) => date === item.date
-    ) as TodoItemDataType;
+  const find = useCallback(
+    (id: TodoItemDataType["id"]) => {
+      const curItem = todoList.find((c) => `${c.id}` === id)!;
 
-    return {
-      item: curItem,
-      index: todoList.indexOf(curItem!),
-    };
-  };
+      return {
+        item: curItem,
+        index: todoList.indexOf(curItem!),
+      };
+    },
+    [todoList]
+  );
 
-  const move = (date: TodoItemDataType["date"], toIndex: number) => {
-    const { item: curItem, index: curIndex } = find(date);
+  const move = useCallback(
+    (id: TodoItemDataType["id"], toIndex: number) => {
+      const { item: curItem, index } = find(id);
 
-    const newList = [...todoList];
-    newList.splice(curIndex, 1);
-    newList.splice(toIndex, 0, curItem!);
-    setTodoList(newList);
-  };
+      setTodoList(
+        update(todoList, {
+          $splice: [
+            [index, 1],
+            [toIndex, 0, curItem],
+          ],
+        })
+      );
+    },
+    [find, setTodoList, todoList]
+  );
 
   const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
 
@@ -128,8 +136,8 @@ const TodoList = () => {
       {todoList.map((item, index) => (
         <TodoItem
           {...item}
-          key={+index}
-          index={index}
+          key={item.id}
+          sortMark={index}
           find={find}
           move={move}
         />
@@ -147,14 +155,18 @@ const AddLine = () => {
     if (!value) {
       return;
     }
+
+    const date = Date.now();
     const item = {
       checked: false,
       value,
-      date: Date.now().toString(),
+      date,
+      id: value + "+" + date,
     };
     setTodoList((pre) => [...pre, item]);
     onChange("");
   };
+
   return (
     <div className="flex space-x-4 w-10/12">
       <input
