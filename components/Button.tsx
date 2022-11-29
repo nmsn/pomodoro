@@ -3,7 +3,7 @@ import classnames from "classnames";
 const Button = ({
   children,
   onClick,
-  className,
+  className = 'text-blue-400',
 }: {
   children: string;
   onClick?: () => void;
@@ -12,7 +12,7 @@ const Button = ({
   return (
     <button
       className={classnames(
-        "w-32 p-2 rounded-lg font-bold bg-black text-blue-400 shadow-md select-none",
+        "btn",
         className
       )}
       onClick={onClick}

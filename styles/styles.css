@@ -1,0 +1,9 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.btn {
+  @apply w-32 p-2 rounded-lg font-bold bg-black shadow-md select-none;
+}
