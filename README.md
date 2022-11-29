@@ -1,10 +1,15 @@
 # pomodoro
 
-A web pomodoro timer.
+A web pomodoro clock.
 
 ## TODO
 
+- [ ] Persistent data
 - [ ] Add auto loop.
 - [ ] Add theme color.
 - [ ] Add customized time.
-- [ ] Add todo list.
+
+## EXIST
+
+- [x] A base pomodoro clock.
+- [x] A todo list.
