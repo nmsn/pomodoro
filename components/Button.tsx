@@ -3,7 +3,7 @@ import classnames from "classnames";
 const Button = ({
   children,
   onClick,
-  className = 'text-blue-400',
+  className = "text-blue-400",
 }: {
   children: string;
   onClick?: () => void;
