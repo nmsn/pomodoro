@@ -6,10 +6,9 @@ import classnames from "classnames";
 import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
-import update from "immutability-helper";
 
 export const ItemTypes = {
-  CARD: "card",
+  TODO_ITEM: "todoItem",
 };
 
 type TodoItemDataType = {
@@ -45,7 +44,7 @@ const TodoItem = ({
   const originalIndex = find(id).index;
   const [{ isDragging }, drag] = useDrag(
     () => ({
-      type: ItemTypes.CARD,
+      type: ItemTypes.TODO_ITEM,
       item: { id, originalIndex },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
@@ -65,7 +64,7 @@ const TodoItem = ({
 
   const [, drop] = useDrop(
     () => ({
-      accept: ItemTypes.CARD,
+      accept: ItemTypes.TODO_ITEM,
       hover({ id: draggedId }: TodoItemDataType) {
         if (draggedId !== id) {
           const { index: overIndex } = find(id);
@@ -117,19 +116,16 @@ const TodoList = () => {
     (id: TodoItemDataType["id"], toIndex: number) => {
       const { item: curItem, index } = find(id);
 
-      setTodoList(
-        update(todoList, {
-          $splice: [
-            [index, 1],
-            [toIndex, 0, curItem],
-          ],
-        })
-      );
+      const newTodoList = [...todoList];
+      newTodoList.splice(index, 1);
+      newTodoList.splice(toIndex, 0, curItem);
+
+      setTodoList(newTodoList);
     },
     [find, setTodoList, todoList]
   );
 
-  const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
+  const [, drop] = useDrop(() => ({ accept: ItemTypes.TODO_ITEM }));
 
   return (
     <div className="w-10/12 flex flex-col space-y-4" ref={drop}>
