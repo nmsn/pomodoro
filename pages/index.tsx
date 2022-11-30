@@ -14,5 +14,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-export type A = Awaited<{ then: (onfulfilled: (value: number) => number) => any }>;
