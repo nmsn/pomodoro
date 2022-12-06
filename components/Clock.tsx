@@ -17,11 +17,10 @@ const baseTime = workMins * second;
 // const restTime = restMins * second;
 
 const timeFormat = (val: number) => {
-  const h = Math.floor((val / 3600) % 24);
   const m = Math.floor((val / 60) % 60);
   const s = Math.floor(val % 60);
 
-  return [h, m, s];
+  return [m, s];
 };
 
 type StatusType = "initial" | "processing" | "paused";
@@ -34,11 +33,11 @@ const Clock = () => {
   const [open, setOpen] = useRecoilState(openState);
 
   const timeDisplay = useMemo(() => {
-    const [h, m, s] = timeFormat(time)?.map((item) =>
+    const [m, s] = timeFormat(time)?.map((item) =>
       item.toString().padStart(2, "0")
     );
 
-    return `${h}:${m}:${s}`;
+    return `${m}:${s}`;
   }, [time]);
 
   const onStart = () => {
