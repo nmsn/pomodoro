@@ -1,11 +1,15 @@
-import { useCallback } from "react";
-import { atom, useRecoilState } from "recoil";
+import { useCallback, useEffect } from "react";
+import { atom, useRecoilState, useSetRecoilState, AtomEffect } from "recoil";
 import { Check, XMark } from "./Icon";
 import Button from "./Button";
 import classnames from "classnames";
 import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { recoilPersist } from "recoil-persist";
+import { useSsrComplectedState, persistAtomEffect } from "../utils/hooks";
+
+const { persistAtom } = recoilPersist();
 
 export const ItemTypes = {
   TODO_ITEM: "todoItem",
@@ -27,6 +31,7 @@ type TodoItemProps = TodoItemDataType & {
 const todoListState = atom({
   key: "todoListState",
   default: [] as TodoItemDataType[],
+  effects_UNSTABLE: [persistAtomEffect(persistAtom)],
 });
 
 type DragItemType = { item: TodoItemDataType } & { index: number };

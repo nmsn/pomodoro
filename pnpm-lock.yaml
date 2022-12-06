@@ -19,6 +19,7 @@ specifiers:
   react-dnd-html5-backend: ^16.0.1
   react-dom: 18.2.0
   recoil: ^0.7.6
+  recoil-persist: ^4.2.0
   tailwindcss: ^3.1.8
   typescript: 4.8.3
 
@@ -33,6 +34,7 @@ dependencies:
   react-dnd-html5-backend: 16.0.1
   react-dom: 18.2.0_react@18.2.0
   recoil: 0.7.6_biqbaboplfbrettd7655fr4n2y
+  recoil-persist: 4.2.0_recoil@0.7.6
 
 devDependencies:
   '@types/node': 18.7.18
@@ -1991,6 +1993,14 @@ packages:
     dependencies:
       picomatch: 2.3.1
     dev: true
+
+  /recoil-persist/4.2.0_recoil@0.7.6:
+    resolution: {integrity: sha512-MHVfML9GxJP3RpkKR4F5rp7DtvzIvjWhowtMao/b7h2k4afMio/4sMAdUtltIrDaeVegH0Iga8Sx5XQ3oD7CzA==}
+    peerDependencies:
+      recoil: ^0.7.2
+    dependencies:
+      recoil: 0.7.6_biqbaboplfbrettd7655fr4n2y
+    dev: false
 
   /recoil/0.7.6_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-hsBEw7jFdpBCY/tu2GweiyaqHKxVj6EqF2/SfrglbKvJHhpN57SANWvPW+gE90i3Awi+A5gssOd3u+vWlT+g7g==}
