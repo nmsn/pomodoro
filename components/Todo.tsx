@@ -1,5 +1,9 @@
-import { useCallback } from "react";
-import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import { useCallback, useEffect } from "react";
+import {
+  atom,
+  useRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import { Check, XMark } from "./Icon";
 import Button from "./Button";
 import classnames from "classnames";
@@ -7,7 +11,11 @@ import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { recoilPersist } from "recoil-persist";
-import { persistAtomEffect } from "../utils/hooks";
+import {
+  persistAtomEffect,
+  useIsSsrCompletedMoment,
+} from "../utils/hooks";
+import { openState } from "./Clock";
 
 const { persistAtom } = recoilPersist();
 
@@ -104,6 +112,16 @@ const TodoItem = ({
 const TodoList = () => {
   const [todoList, setTodoList] =
     useRecoilState<TodoItemDataType[]>(todoListState);
+
+  const setOpenState = useSetRecoilState(openState);
+
+  const isSsrCompleted = useIsSsrCompletedMoment();
+
+  useEffect(() => {
+    if (isSsrCompleted) {
+      setOpenState(true);
+    }
+  }, [isSsrCompleted, setOpenState]);
 
   const find = useCallback(
     (id: TodoItemDataType["id"]) => {
