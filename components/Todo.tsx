@@ -1,5 +1,5 @@
-import { useCallback, useEffect } from "react";
-import { atom, useRecoilState, useSetRecoilState, AtomEffect } from "recoil";
+import { useCallback } from "react";
+import { atom, useRecoilState, useSetRecoilState } from "recoil";
 import { Check, XMark } from "./Icon";
 import Button from "./Button";
 import classnames from "classnames";
@@ -7,7 +7,7 @@ import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { recoilPersist } from "recoil-persist";
-import { useSsrComplectedState, persistAtomEffect } from "../utils/hooks";
+import { persistAtomEffect } from "../utils/hooks";
 
 const { persistAtom } = recoilPersist();
 
@@ -44,7 +44,7 @@ const TodoItem = ({
   find,
   move,
 }: TodoItemProps) => {
-  const [_, setTodoList] = useRecoilState<TodoItemDataType[]>(todoListState);
+  const setTodoList = useSetRecoilState<TodoItemDataType[]>(todoListState);
 
   const originalIndex = find(id).index;
   const [{ isDragging }, drag] = useDrag(
@@ -150,7 +150,7 @@ const TodoList = () => {
 const AddLine = () => {
   const [value, onChange] = useState("");
 
-  const [, setTodoList] = useRecoilState<TodoItemDataType[]>(todoListState);
+  const setTodoList = useSetRecoilState<TodoItemDataType[]>(todoListState);
 
   const onAdd = () => {
     if (!value) {

@@ -15,6 +15,7 @@ export const useSsrComplectedState = () => {
 };
 
 export const persistAtomEffect =
-  (persistAtom: AtomEffect<any>) => (param: Parameters<AtomEffect<any>>[0]) => {
+  <T>(persistAtom: AtomEffect<T>) =>
+  (param: Parameters<AtomEffect<T>>[0]) => {
     param.getPromise(ssrCompletedState).then(() => persistAtom(param));
   };
