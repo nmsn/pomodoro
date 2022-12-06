@@ -96,7 +96,7 @@ const TodoItem = ({
 
   return (
     <div
-      className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold"
+      className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold transform"
       style={{ opacity }}
       ref={(node) => drag(drop(node))}
     >
