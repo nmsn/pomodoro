@@ -2,14 +2,27 @@
 
 A web pomodoro clock.
 
+## Feature
+
+- todo list
+- pomodoro clock
+
+## Tech
+
+- react
+- nextjs
+- tailwind
+- recoil
+- recoil-persist
+
 ## TODO
 
-- [ ] Add persist.
 - [ ] Add auto loop.
 - [ ] Add theme color.
 - [ ] Add customized time.
 
 ## EXIST
 
-- [x] base pomodoro timer.
+- [x] A base pomodoro clock.
 - [x] Add todo list.
+- [x] Add persist.
