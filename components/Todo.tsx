@@ -233,7 +233,7 @@ const AddLine = () => {
         onChange={(e) => onChange(e.target.value)}
       />
       <Button className="text-red-400" onClick={onAdd}>
-        Add
+        ADD
       </Button>
     </div>
   );
