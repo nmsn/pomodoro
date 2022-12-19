@@ -37,7 +37,7 @@ export const BeakerFullIcon = () => {
   );
 };
 
-const LoopIcon = ({ onClick }: { onClick?: () => void }) => {
+export const LoopIcon = ({ onClick }: { onClick?: () => void }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +145,7 @@ export const ArrowRight = ({
   );
 };
 
-export const Check = () => {
+export const Check = ({ onClick }: { onClick?: () => void }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -154,6 +154,7 @@ export const Check = () => {
       strokeWidth={1.5}
       stroke="currentColor"
       className="w-6 h-6 cursor-pointer"
+      onClick={onClick}
     >
       <path
         strokeLinecap="round"

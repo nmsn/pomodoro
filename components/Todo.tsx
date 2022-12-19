@@ -1,20 +1,14 @@
 import { useCallback, useEffect } from "react";
-import {
-  atom,
-  useRecoilState,
-  useSetRecoilState,
-} from "recoil";
-import { Check, XMark } from "./Icon";
+import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import { Check, XMark, LoopIcon } from "./Icon";
 import Button from "./Button";
 import classnames from "classnames";
 import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
+import dayjs from "dayjs";
 import { recoilPersist } from "recoil-persist";
-import {
-  persistAtomEffect,
-  useIsSsrCompletedMoment,
-} from "../utils/hooks";
+import { persistAtomEffect, useIsSsrCompletedMoment } from "../utils/hooks";
 import { openState } from "./Clock";
 
 const { persistAtom } = recoilPersist();
@@ -44,9 +38,15 @@ const todoListState = atom({
 
 type DragItemType = { item: TodoItemDataType } & { index: number };
 
+/**
+ * TODO
+ *  checked onclick -> finish, expired
+ */
+
 const TodoItem = ({
   id,
   value,
+  date,
   checked,
   sortMark,
   find,
@@ -92,6 +92,20 @@ const TodoItem = ({
     setTodoList((pre) => pre.filter((item, index) => item.id !== id));
   };
 
+  const onChangeStats = (id: string) => {
+    // TODO if all checked, show firework
+    setTodoList((pre) => {
+      const result = [...pre];
+      const index = result.findIndex((item) => item.id === id);
+
+      result[index] = {
+        ...result[index],
+        checked: !result[index].checked,
+      };
+      return result;
+    });
+  };
+
   const opacity = isDragging ? 0 : 1;
 
   return (
@@ -100,10 +114,25 @@ const TodoItem = ({
       style={{ opacity }}
       ref={(node) => drag(drop(node))}
     >
-      <div className="font-bold pr-4">{sortMark + 1}.</div>
-      <div className="font-bold truncate">{value}</div>
-      <div className="pl-4">
-        {checked ? <Check /> : <XMark onClick={() => onDelete(id)} />}
+      <div className="flex justify-start flex-auto truncate">
+        <div className="font-bold pr-2">{sortMark + 1}.</div>
+        <div
+          className={classnames(
+            "font-bold  truncate",
+            checked ? "line-through" : undefined
+          )}
+        >
+          {value}
+        </div>
+      </div>
+      {/* TODO change animation */}
+      <div className="pl-4 flex justify-end flex-none">
+        {checked ? (
+          <LoopIcon onClick={() => onChangeStats(id)} />
+        ) : (
+          <Check onClick={() => onChangeStats(id)} />
+        )}
+        <XMark onClick={() => onDelete(id)} />
       </div>
     </div>
   );
@@ -118,10 +147,20 @@ const TodoList = () => {
   const isSsrCompleted = useIsSsrCompletedMoment();
 
   useEffect(() => {
-    if (isSsrCompleted) {
+    if (isSsrCompleted && todoList.length) {
+      const now = Date.now();
+      setTodoList((pre) => {
+        return pre.filter((item) => {
+          const isExpired =
+            dayjs(item.date).isSame(now, "day") ||
+            dayjs(item.date).isBefore(now, "day");
+          return !isExpired || !item.checked;
+        });
+      });
+
       setOpenState(true);
     }
-  }, [isSsrCompleted, setOpenState]);
+  }, [isSsrCompleted]);
 
   const find = useCallback(
     (id: TodoItemDataType["id"]) => {
