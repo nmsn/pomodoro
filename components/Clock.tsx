@@ -32,12 +32,10 @@ const Clock = () => {
 
   const [open, setOpen] = useRecoilState(openState);
 
-  const timeDisplay = useMemo(() => {
-    const [m, s] = timeFormat(time)?.map((item) =>
-      item.toString().padStart(2, "0")
-    );
+  const [timeType, setTimeType] = useState<"normal" | "double">("normal");
 
-    return `${m}:${s}`;
+  const timeDisplay = useMemo(() => {
+    return timeFormat(time)?.map((item) => item.toString().padStart(2, "0"));
   }, [time]);
 
   const onStart = () => {
@@ -62,14 +60,20 @@ const Clock = () => {
     }
   };
 
-  const onReset = () => {
-    setTime(baseTime);
+  const onReset = (type: "normal" | "double" = "normal") => {
+    setTime(type === "double" ? baseTime * 2 : baseTime);
     setStatus("initial");
 
     if (timer.current) {
       window.clearInterval(timer.current);
       timer.current = null;
     }
+  };
+
+  const onChangeTimeType = (type: "normal" | "double") => {
+    setTimeType(type);
+    // TODO is timing, prompt user whether reset
+    onReset(type);
   };
 
   return (
@@ -81,8 +85,24 @@ const Clock = () => {
     >
       <Header open={open} onChange={setOpen} />
       <div className="w-120 flex-col block">
+        <div className="flex justify-end gap-2">
+          <Button
+            size="small"
+            type={timeType === "normal" ? "inverse" : "positive"}
+            onClick={() => onChangeTimeType("normal")}
+          >
+            NORMAL
+          </Button>
+          <Button
+            size="small"
+            type={timeType === "double" ? "inverse" : "positive"}
+            onClick={() => onChangeTimeType("double")}
+          >
+            DOUBLE
+          </Button>
+        </div>
         <div className="text-9xl mb-12 font-bold select-none">
-          {timeDisplay}
+          {`${timeDisplay[0]}:${timeDisplay[1]}`}
         </div>
         <div className="flex justify-center space-x-16">
           {status === "initial" && <Button onClick={onStart}>START</Button>}
