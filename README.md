@@ -17,12 +17,12 @@ A web pomodoro clock.
 
 ## TODO
 
-- [ ] Add auto loop.
 - [ ] Add theme color.
-- [ ] Add customized time.
+
 
 ## EXIST
 
 - [x] A base pomodoro clock.
 - [x] Add todo list.
 - [x] Add persist.
+- [x] Add customized time(normal-25min/double-50min).
