@@ -4,5 +4,23 @@
 
 
 .btn {
-  @apply w-32 p-2 rounded-lg font-bold bg-black shadow-md select-none;
+  @apply rounded-lg font-bold shadow-md select-none;
+}
+
+.btn-normal {
+ @apply w-32 p-2;
+}
+
+.btn-small {
+  @apply w-24 text-sm p-1;
+}
+
+
+.btn-positive {
+  @apply border-solid border-2 border-black bg-transparent text-black;
+}
+
+
+.btn-inverse {
+ @apply bg-black;
 }
