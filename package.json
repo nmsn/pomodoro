@@ -2,6 +2,23 @@
   "name": "pomodoro",
   "version": "0.1.0",
   "private": true,
+  "author": "nmsn",
+  "description": "A web pomodoro clock.",
+  "keywords": [
+    "pomodoro clock",
+    "todo list",
+    "react",
+    "tailwindcss",
+    "typescript",
+    "nextjs",
+    "recoil"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmsn/promodoro.git"
+  },
+  "homepage": "https://github.com/nmsn/promodoro#readme",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

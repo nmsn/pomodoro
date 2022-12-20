@@ -9,9 +9,11 @@ A web pomodoro clock.
 
 ## Tech
 
-- react
-- nextjs
-- tailwind
+![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=TypeScript&logoColor=white&style=flat)
+![React](https://img.shields.io/badge/-React-61DAFB?logo=React&logoColor=white&style=flat)
+![Next.js](https://img.shields.io/badge/-Next.js-000000?logo=Next.js&logoColor=white&style=flat)
+![TailwindCSS](https://img.shields.io/badge/-TailwindCSS-06B6D4?logo=TailwindCSS&logoColor=white&style=flat)
+
 - recoil
 - recoil-persist
 
@@ -20,7 +22,7 @@ A web pomodoro clock.
 - [ ] Add theme color.
 
 
-## EXIST
+## Finished
 
 - [x] A base pomodoro clock.
 - [x] Add todo list.
