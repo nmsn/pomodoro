@@ -25,6 +25,7 @@ export const persistAtomEffect =
   <T>(persistAtom: AtomEffect<T>, callback?: (data?: any) => void) =>
   (param: Parameters<AtomEffect<T>>[0]) => {
     param.getPromise(ssrCompletedState).then(() => {
+      console.log(123);
       persistAtom(param);
       callback?.(param);
     });

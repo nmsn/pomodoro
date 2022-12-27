@@ -20,7 +20,7 @@ A web pomodoro clock.
 ## TODO
 
 - [ ] Add theme color.
-- [ ] Full screen.
+- [ ] Fix recoil persist update data error.
 
 
 ## Finished
@@ -29,3 +29,4 @@ A web pomodoro clock.
 - [x] Add todo list.
 - [x] Add persist.
 - [x] Add customized time(normal-25min/double-50min).
+- [x] Full screen.
