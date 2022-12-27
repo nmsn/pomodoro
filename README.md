@@ -20,6 +20,7 @@ A web pomodoro clock.
 ## TODO
 
 - [ ] Add theme color.
+- [ ] Full screen.
 
 
 ## Finished
