@@ -1,6 +1,7 @@
 import { useState } from "react";
 import classnames from "classnames";
 
+/** https://heroicons.com/ */
 export const BeakerIcon = () => {
   return (
     <svg
@@ -237,4 +238,3 @@ export const FullScreen = () => {
   );
 };
 
-/** https://heroicons.com/ */
