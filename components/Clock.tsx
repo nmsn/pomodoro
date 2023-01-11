@@ -2,12 +2,8 @@ import { useRef, useState, useMemo } from "react";
 import Header from "./Header";
 import Button from "./Button";
 import classnames from "classnames";
-import { atom, useRecoilState } from "recoil";
-
-export const openState = atom({
-  key: "openState",
-  default: false,
-});
+import { useDispatch, useSelector } from "react-redux";
+import { openTodoList } from "../store/features/todoListSlice";
 
 const workMins = 25;
 // const restMins = 5;
@@ -30,7 +26,12 @@ const Clock = () => {
   const [time, setTime] = useState(baseTime);
   const [status, setStatus] = useState<StatusType>("initial");
 
-  const [open, setOpen] = useRecoilState(openState);
+  const dispatch = useDispatch();
+  const { visible } = useSelector((state) => state.todoList);
+
+  const onOpen = (visible: boolean) => {
+    dispatch(openTodoList(visible));
+  };
 
   const [timeType, setTimeType] = useState<"normal" | "double">("normal");
 
@@ -79,11 +80,11 @@ const Clock = () => {
   return (
     <div
       className={classnames(
-        open ? "w-1/2" : "w-full",
+        visible ? "w-1/2" : "w-full",
         "h-full flex justify-center items-center duration-300 bg-blue-400 relative"
       )}
     >
-      <Header open={open} onChange={setOpen} />
+      <Header open={visible} onChange={onOpen} />
       <div className="w-120 flex-col block">
         <div className="flex justify-end gap-2">
           <Button

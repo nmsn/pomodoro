@@ -1,22 +1,20 @@
 import type { NextPage } from "next";
-import { useEffect } from "react";
-import { useRecoilValue } from "recoil";
 import Todo from "../components/Todo";
 import Footer from "../components/Footer";
-import Clock, { openState } from "../components/Clock";
-import { useSsrComplectedState } from "../utils/hooks";
+import Clock from "../components/Clock";
+
+import { Provider } from "react-redux";
+import store from "../store";
 
 const Home: NextPage = () => {
-  const setSsrCompleted = useSsrComplectedState();
-  useEffect(setSsrCompleted, [setSsrCompleted]);
-
-  const open = useRecoilValue(openState);
   return (
-    <div className="w-screen h-screen bg-blue-400 flex">
-      <Todo open={open} />
-      <Clock />
-      <Footer />
-    </div>
+    <Provider store={store}>
+      <div className="w-screen h-screen bg-blue-400 flex">
+        <Todo />
+        <Clock />
+        <Footer />
+      </div>
+    </Provider>
   );
 };
 

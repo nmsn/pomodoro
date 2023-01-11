@@ -1,17 +1,12 @@
-import { useCallback, useEffect } from "react";
-import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import { useCallback } from "react";
 import { Check, XMark, LoopIcon } from "./Icon";
 import Button from "./Button";
 import classnames from "classnames";
 import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
-import dayjs from "dayjs";
-import { recoilPersist } from "recoil-persist";
-import { persistAtomEffect, useIsSsrCompletedMoment } from "../utils/hooks";
-import { openState } from "./Clock";
-
-const { persistAtom } = recoilPersist();
+import { useDispatch, useSelector } from "react-redux";
+import { setTodoList } from "../store/features/todoListSlice";
 
 export const ItemTypes = {
   TODO_ITEM: "todoItem",
@@ -30,12 +25,6 @@ type TodoItemProps = TodoItemDataType & {
   move: (id: TodoItemDataType["id"], toIndex: number) => void;
 };
 
-const todoListState = atom({
-  key: "todoListState",
-  default: [] as TodoItemDataType[],
-  effects_UNSTABLE: [persistAtomEffect(persistAtom)],
-});
-
 type DragItemType = { item: TodoItemDataType } & { index: number };
 
 /**
@@ -52,7 +41,8 @@ const TodoItem = ({
   find,
   move,
 }: TodoItemProps) => {
-  const setTodoList = useSetRecoilState<TodoItemDataType[]>(todoListState);
+  const { todoList } = useSelector((state) => state.todoList);
+  const dispatch = useDispatch();
 
   const originalIndex = find(id).index;
   const [{ isDragging }, drag] = useDrag(
@@ -89,21 +79,20 @@ const TodoItem = ({
   );
 
   const onDelete = (id: string) => {
-    setTodoList((pre) => pre.filter((item, index) => item.id !== id));
+    dispatch(setTodoList(todoList.filter((item, index) => item.id !== id)));
   };
 
   const onChangeStats = (id: string) => {
     // TODO if all checked, show firework
-    setTodoList((pre) => {
-      const result = [...pre];
-      const index = result.findIndex((item) => item.id === id);
+    const result = [...todoList];
+    const index = result.findIndex((item) => item.id === id);
 
-      result[index] = {
-        ...result[index],
-        checked: !result[index].checked,
-      };
-      return result;
-    });
+    result[index] = {
+      ...result[index],
+      checked: !result[index].checked,
+    };
+
+    dispatch(setTodoList(result));
   };
 
   const opacity = isDragging ? 0 : 1;
@@ -139,28 +128,8 @@ const TodoItem = ({
 };
 
 const TodoList = () => {
-  const [todoList, setTodoList] =
-    useRecoilState<TodoItemDataType[]>(todoListState);
-
-  const setOpenState = useSetRecoilState(openState);
-
-  const isSsrCompleted = useIsSsrCompletedMoment();
-
-  useEffect(() => {
-    if (isSsrCompleted && todoList.length) {
-      const now = Date.now();
-      setTodoList((pre) => {
-        return pre.filter((item) => {
-          const isExpired =
-            dayjs(item.date).isSame(now, "day") ||
-            dayjs(item.date).isBefore(now, "day");
-          return !isExpired || !item.checked;
-        });
-      });
-
-      setOpenState(true);
-    }
-  }, [isSsrCompleted]);
+  const { todoList } = useSelector((state) => state.todoList);
+  const dispatch = useDispatch();
 
   const find = useCallback(
     (id: TodoItemDataType["id"]) => {
@@ -182,9 +151,9 @@ const TodoList = () => {
       newTodoList.splice(index, 1);
       newTodoList.splice(toIndex, 0, curItem);
 
-      setTodoList(newTodoList);
+      dispatch(setTodoList(newTodoList));
     },
-    [find, setTodoList, todoList]
+    [dispatch, find, todoList]
   );
 
   const [, drop] = useDrop(() => ({ accept: ItemTypes.TODO_ITEM }));
@@ -207,7 +176,8 @@ const TodoList = () => {
 const AddLine = () => {
   const [value, onChange] = useState("");
 
-  const setTodoList = useSetRecoilState<TodoItemDataType[]>(todoListState);
+  const { todoList } = useSelector((state) => state.todoList);
+  const dispatch = useDispatch();
 
   const onAdd = () => {
     if (!value) {
@@ -221,7 +191,8 @@ const AddLine = () => {
       date,
       id: value + "+" + date,
     };
-    setTodoList((pre) => [...pre, item]);
+
+    dispatch(setTodoList([...todoList, item]));
     onChange("");
   };
 
@@ -239,11 +210,13 @@ const AddLine = () => {
   );
 };
 
-const Todo = ({ open }: { open: boolean }) => {
+const Todo = () => {
+  const { visible } = useSelector((state) => state.todoList);
+
   return (
     <div
       className={classnames(
-        open ? "w-1/2" : "w-0",
+        visible ? "w-1/2" : "w-0",
         "w-1/2 h-full flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4"
       )}
     >
