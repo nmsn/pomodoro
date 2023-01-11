@@ -20,6 +20,7 @@ specifiers:
   react-dnd-html5-backend: ^16.0.1
   react-dom: 18.2.0
   react-redux: ^8.0.5
+  redux-persist: ^6.0.0
   tailwindcss: ^3.2.4
   typescript: 4.8.3
 
@@ -35,6 +36,7 @@ dependencies:
   react-dnd-html5-backend: 16.0.1
   react-dom: 18.2.0_react@18.2.0
   react-redux: 8.0.5_yfr4m6wk75wdra335rld4tkrbu
+  redux-persist: 6.0.0_react@18.2.0+redux@4.2.0
 
 devDependencies:
   '@types/node': 18.7.18
@@ -2059,6 +2061,19 @@ packages:
     dependencies:
       picomatch: 2.3.1
     dev: true
+
+  /redux-persist/6.0.0_react@18.2.0+redux@4.2.0:
+    resolution: {integrity: sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==}
+    peerDependencies:
+      react: '>=16'
+      redux: '>4.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      redux: 4.2.0
+    dev: false
 
   /redux-thunk/2.4.2_redux@4.2.0:
     resolution: {integrity: sha512-+P3TjtnP0k/FEjcBL5FZpoovtvrTNT/UXd4/sluaSyrURlSlhLSzEdfsTBW7WsKB6yPvgd7q/iZPICFjW4o57Q==}

@@ -165,7 +165,7 @@ const TodoList = () => {
 
   return (
     <div className="w-10/12 flex flex-col space-y-4" ref={drop}>
-      {todoList.map((item, index) => (
+      {todoList?.map((item, index) => (
         <TodoItem
           {...item}
           key={item.id}
