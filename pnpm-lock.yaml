@@ -12,6 +12,7 @@ specifiers:
   eslint: 8.23.1
   eslint-config-next: 12.3.1
   next: 12.3.1
+  next-redux-wrapper: ^8.1.0
   postcss: ^8.4.20
   react: 18.2.0
   react-color: ^2.19.3
@@ -29,6 +30,7 @@ dependencies:
   classnames: 2.3.2
   dayjs: 1.11.7
   next: 12.3.1_biqbaboplfbrettd7655fr4n2y
+  next-redux-wrapper: 8.1.0_p5xrep4xeid2kaovohiguzcgcy
   react: 18.2.0
   react-color: 2.19.3_react@18.2.0
   react-dnd: 16.0.1_3ch4mhkc2j7sx2stmpns5ntcvq
@@ -1625,6 +1627,18 @@ packages:
   /natural-compare/1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
+
+  /next-redux-wrapper/8.1.0_p5xrep4xeid2kaovohiguzcgcy:
+    resolution: {integrity: sha512-2hIau0hcI6uQszOtrvAFqgc0NkZegKYhBB7ZAKiG3jk7zfuQb4E7OV9jfxViqqojh3SEHdnFfPkN9KErttUKuw==}
+    peerDependencies:
+      next: '>=9'
+      react: '*'
+      react-redux: '*'
+    dependencies:
+      next: 12.3.1_biqbaboplfbrettd7655fr4n2y
+      react: 18.2.0
+      react-redux: 8.0.5_yfr4m6wk75wdra335rld4tkrbu
+    dev: false
 
   /next/12.3.1_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-l7bvmSeIwX5lp07WtIiP9u2ytZMv7jIeB8iacR28PuUEFG5j0HGAPnMqyG5kbZNBG2H7tRsrQ4HCjuMOPnANZw==}

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TodoItemDataType } from "../../components/Todo";
+import { TodoItemDataType } from "@/components/Todo";
 
 export type TodoListStateType = {
   visible: boolean;

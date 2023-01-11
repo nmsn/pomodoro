@@ -6,11 +6,8 @@ import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setTodoList,
-  TodoListStateType,
-} from "../store/features/todoListSlice";
-import { RootSateType } from "../store/index";
+import { setTodoList, TodoListStateType } from "@/store/features/todoListSlice";
+import { RootSateType } from "@/store/index";
 
 export const ItemTypes = {
   TODO_ITEM: "todoItem",
