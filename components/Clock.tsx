@@ -3,7 +3,11 @@ import Header from "./Header";
 import Button from "./Button";
 import classnames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
-import { openTodoList } from "../store/features/todoListSlice";
+import {
+  TodoListStateType,
+  openTodoList,
+} from "../store/features/todoListSlice";
+import type { RootSateType } from "../store";
 
 const workMins = 25;
 // const restMins = 5;
@@ -27,7 +31,9 @@ const Clock = () => {
   const [status, setStatus] = useState<StatusType>("initial");
 
   const dispatch = useDispatch();
-  const { visible } = useSelector((state) => state.todoList);
+  const { visible } = useSelector<RootSateType, TodoListStateType>(
+    (state) => state.todoList
+  );
 
   const onOpen = (visible: boolean) => {
     dispatch(openTodoList(visible));

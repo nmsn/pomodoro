@@ -6,13 +6,17 @@ import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
-import { setTodoList } from "../store/features/todoListSlice";
+import {
+  setTodoList,
+  TodoListStateType,
+} from "../store/features/todoListSlice";
+import { RootSateType } from "../store/index";
 
 export const ItemTypes = {
   TODO_ITEM: "todoItem",
 };
 
-type TodoItemDataType = {
+export type TodoItemDataType = {
   value: string;
   checked: boolean;
   date: number;
@@ -41,7 +45,9 @@ const TodoItem = ({
   find,
   move,
 }: TodoItemProps) => {
-  const { todoList } = useSelector((state) => state.todoList);
+  const { todoList } = useSelector<RootSateType, TodoListStateType>(
+    (state) => state.todoList
+  );
   const dispatch = useDispatch();
 
   const originalIndex = find(id).index;
@@ -128,7 +134,9 @@ const TodoItem = ({
 };
 
 const TodoList = () => {
-  const { todoList } = useSelector((state) => state.todoList);
+  const { todoList } = useSelector<RootSateType, TodoListStateType>(
+    (state) => state.todoList
+  );
   const dispatch = useDispatch();
 
   const find = useCallback(
@@ -176,7 +184,9 @@ const TodoList = () => {
 const AddLine = () => {
   const [value, onChange] = useState("");
 
-  const { todoList } = useSelector((state) => state.todoList);
+  const { todoList } = useSelector<RootSateType, TodoListStateType>(
+    (state) => state.todoList
+  );
   const dispatch = useDispatch();
 
   const onAdd = () => {
@@ -211,7 +221,9 @@ const AddLine = () => {
 };
 
 const Todo = () => {
-  const { visible } = useSelector((state) => state.todoList);
+  const { visible } = useSelector<RootSateType, TodoListStateType>(
+    (state) => state.todoList
+  );
 
   return (
     <div
