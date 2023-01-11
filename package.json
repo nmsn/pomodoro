@@ -36,9 +36,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "18.2.0",
-    "react-redux": "^8.0.5",
-    "recoil": "^0.7.6",
-    "recoil-persist": "^4.2.0"
+    "react-redux": "^8.0.5"
   },
   "devDependencies": {
     "@types/node": "18.7.18",

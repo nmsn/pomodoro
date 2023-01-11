@@ -20,8 +20,6 @@ specifiers:
   react-dnd-html5-backend: ^16.0.1
   react-dom: 18.2.0
   react-redux: ^8.0.5
-  recoil: ^0.7.6
-  recoil-persist: ^4.2.0
   tailwindcss: ^3.2.4
   typescript: 4.8.3
 
@@ -37,8 +35,6 @@ dependencies:
   react-dnd-html5-backend: 16.0.1
   react-dom: 18.2.0_react@18.2.0
   react-redux: 8.0.5_yfr4m6wk75wdra335rld4tkrbu
-  recoil: 0.7.6_biqbaboplfbrettd7655fr4n2y
-  recoil-persist: 4.2.0_recoil@0.7.6
 
 devDependencies:
   '@types/node': 18.7.18
@@ -1296,10 +1292,6 @@ packages:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
     dev: true
 
-  /hamt_plus/1.0.2:
-    resolution: {integrity: sha512-t2JXKaehnMb9paaYA7J0BX8QQAY8lwfQ9Gjf4pg/mk4krt+cmwmU652HOoWonf+7+EQV97ARPMhhVgU1ra2GhA==}
-    dev: false
-
   /has-bigints/1.0.2:
     resolution: {integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==}
     dev: true
@@ -2067,31 +2059,6 @@ packages:
     dependencies:
       picomatch: 2.3.1
     dev: true
-
-  /recoil-persist/4.2.0_recoil@0.7.6:
-    resolution: {integrity: sha512-MHVfML9GxJP3RpkKR4F5rp7DtvzIvjWhowtMao/b7h2k4afMio/4sMAdUtltIrDaeVegH0Iga8Sx5XQ3oD7CzA==}
-    peerDependencies:
-      recoil: ^0.7.2
-    dependencies:
-      recoil: 0.7.6_biqbaboplfbrettd7655fr4n2y
-    dev: false
-
-  /recoil/0.7.6_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-hsBEw7jFdpBCY/tu2GweiyaqHKxVj6EqF2/SfrglbKvJHhpN57SANWvPW+gE90i3Awi+A5gssOd3u+vWlT+g7g==}
-    peerDependencies:
-      react: '>=16.13.1'
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      hamt_plus: 1.0.2
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-    dev: false
 
   /redux-thunk/2.4.2_redux@4.2.0:
     resolution: {integrity: sha512-+P3TjtnP0k/FEjcBL5FZpoovtvrTNT/UXd4/sluaSyrURlSlhLSzEdfsTBW7WsKB6yPvgd7q/iZPICFjW4o57Q==}
