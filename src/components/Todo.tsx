@@ -95,6 +95,9 @@ const TodoItem = ({
     dispatch(setTodoList(result));
   };
 
+  const today = new Date().setHours(0, 0, 0, 0);
+  const isExpired = date < today;
+
   const opacity = isDragging ? 0 : 1;
 
   return (
@@ -116,6 +119,7 @@ const TodoItem = ({
       </div>
       {/* TODO change animation */}
       <div className="pl-4 flex justify-end flex-none">
+        {isExpired && <div className="pr-2">E</div>}
         {checked ? (
           <LoopIcon onClick={() => onChangeStats(id)} />
         ) : (
