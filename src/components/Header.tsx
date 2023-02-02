@@ -1,5 +1,5 @@
 import { ArrowRight } from "./Icon";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const Header = ({
   open,

@@ -5,9 +5,8 @@ import classnames from "classnames";
 import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
-import { setTodoList, TodoListStateType } from "@/store/features/todoListSlice";
-import { RootSateType } from "@/store/index";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { setTodoList } from "@/store/features/todoListSlice";
 
 export const ItemTypes = {
   TODO_ITEM: "todoItem",
@@ -42,10 +41,8 @@ const TodoItem = ({
   find,
   move,
 }: TodoItemProps) => {
-  const { todoList } = useSelector<RootSateType, TodoListStateType>(
-    (state) => state.todoList
-  );
-  const dispatch = useDispatch();
+  const { todoList } = useAppSelector((state) => state.todoList);
+  const dispatch = useAppDispatch();
 
   const originalIndex = find(id).index;
   const [{ isDragging }, drag] = useDrag(
@@ -131,10 +128,8 @@ const TodoItem = ({
 };
 
 const TodoList = () => {
-  const { todoList } = useSelector<RootSateType, TodoListStateType>(
-    (state) => state.todoList
-  );
-  const dispatch = useDispatch();
+  const { todoList } = useAppSelector((state) => state.todoList);
+  const dispatch = useAppDispatch();
 
   const find = useCallback(
     (id: TodoItemDataType["id"]) => {
@@ -181,10 +176,8 @@ const TodoList = () => {
 const AddLine = () => {
   const [value, onChange] = useState("");
 
-  const { todoList } = useSelector<RootSateType, TodoListStateType>(
-    (state) => state.todoList
-  );
-  const dispatch = useDispatch();
+  const { todoList } = useAppSelector((state) => state.todoList);
+  const dispatch = useAppDispatch();
 
   const onAdd = () => {
     if (!value) {
@@ -218,9 +211,7 @@ const AddLine = () => {
 };
 
 const Todo = () => {
-  const { visible } = useSelector<RootSateType, TodoListStateType>(
-    (state) => state.todoList
-  );
+  const { visible } = useAppSelector((state) => state.todoList);
 
   return (
     <div

@@ -237,4 +237,3 @@ export const FullScreen = () => {
     </svg>
   );
 };
-
