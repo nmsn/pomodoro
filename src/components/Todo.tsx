@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useLayoutEffect } from "react";
 import { Check, XMark, LoopIcon } from "./Icon";
 import Button from "./Button";
 import classnames from "classnames";
@@ -26,6 +26,12 @@ type TodoItemProps = TodoItemDataType & {
 };
 
 type DragItemType = { item: TodoItemDataType } & { index: number };
+
+const checkExpired = (date: number) => {
+  const today = new Date().setHours(0, 0, 0, 0);
+
+  return date < today;
+};
 
 /**
  * TODO
@@ -95,8 +101,7 @@ const TodoItem = ({
     dispatch(setTodoList(result));
   };
 
-  const today = new Date().setHours(0, 0, 0, 0);
-  const isExpired = date < today;
+  const isExpired = checkExpired(date);
 
   const opacity = isDragging ? 0 : 1;
 
@@ -161,6 +166,19 @@ const TodoList = () => {
   );
 
   const [, drop] = useDrop(() => ({ accept: ItemTypes.TODO_ITEM }));
+
+  // 初始化时清除过期且完成的 todo
+  useLayoutEffect(() => {
+    const validTodoList = todoList.filter((item) => {
+      const { checked, date } = item;
+      const isExpired = checkExpired(date);
+      return !(isExpired && checked);
+    });
+
+    console.log(validTodoList);
+
+    dispatch(setTodoList(validTodoList));
+  }, []);
 
   return (
     <div className="w-10/12 flex flex-col space-y-4" ref={drop}>
