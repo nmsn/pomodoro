@@ -33,11 +33,6 @@ const checkExpired = (date: number) => {
   return date < today;
 };
 
-/**
- * TODO
- *  checked onclick -> finish, expired
- */
-
 const TodoItem = ({
   id,
   value,
