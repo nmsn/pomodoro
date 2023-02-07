@@ -12,8 +12,7 @@ const Footer = () => {
   }, []);
   return (
     <div className="absolute bottom-0 w-screen h-12 flex justify-end items-center px-4 space-x-4">
-      
-      <BeakerIcon />
+      {/* <BeakerIcon /> */}
       {canFullScreen && <FullScreen />}
     </div>
   );
