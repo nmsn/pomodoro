@@ -2,7 +2,7 @@
 
 A web pomodoro clock.
 
-## Feature
+## Features
 
 - todo list
 - pomodoro clock
@@ -13,14 +13,11 @@ A web pomodoro clock.
 ![React](https://img.shields.io/badge/-React-61DAFB?logo=React&logoColor=white&style=flat)
 ![Next.js](https://img.shields.io/badge/-Next.js-000000?logo=Next.js&logoColor=white&style=flat)
 ![TailwindCSS](https://img.shields.io/badge/-TailwindCSS-06B6D4?logo=TailwindCSS&logoColor=white&style=flat)
+![Redux](https://img.shields.io/badge/-Redux-764ABC?logo=Redux&logoColor=white&style=flat)
 
-- recoil
-- recoil-persist
-
-## TODO
+## Todo
 
 - [ ] Add theme color.
-- [ ] Fix recoil persist update data error.
 
 
 ## Finished
