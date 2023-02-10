@@ -4,10 +4,11 @@ import Button from "./Button";
 import classnames from "classnames";
 import { useAppDispatch, useAppSelector } from "../store";
 import { openTodoList } from "@/store/features/todoListSlice";
+import { fireworks } from "../utils/confetti";
 
-const workMins = 25;
-// const restMins = 5;
-const second = 60;
+const workMins = 1;
+
+const second = 1;
 
 const baseTime = workMins * second;
 // const restTime = restMins * second;
@@ -44,9 +45,9 @@ const Clock = () => {
     timer.current = window.setInterval(() => {
       setTime((pre) => {
         if (pre === 0) {
+          // timer is finish
+          fireworks();
           onReset();
-
-          // TODO loop
         }
         return pre - 1;
       });
