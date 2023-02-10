@@ -6,9 +6,9 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { openTodoList } from "@/store/features/todoListSlice";
 import { fireworks } from "../utils/confetti";
 
-const workMins = 1;
+const workMins = 25;
 
-const second = 1;
+const second = 60;
 
 const baseTime = workMins * second;
 // const restTime = restMins * second;
