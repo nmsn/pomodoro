@@ -7,6 +7,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { setTodoList } from "@/store/features/todoListSlice";
+import { shine } from "../utils/confetti";
 
 export const ItemTypes = {
   TODO_ITEM: "todoItem",
@@ -88,9 +89,15 @@ const TodoItem = ({
     const result = [...todoList];
     const index = result.findIndex((item) => item.id === id);
 
+    const newStatus = !result[index].checked;
+
+    if (newStatus) {
+      shine();
+    }
+
     result[index] = {
       ...result[index],
-      checked: !result[index].checked,
+      checked: newStatus,
     };
 
     dispatch(setTodoList(result));
