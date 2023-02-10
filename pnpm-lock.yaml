@@ -2,11 +2,13 @@ lockfileVersion: 5.4
 
 specifiers:
   '@reduxjs/toolkit': ^1.9.2
+  '@types/canvas-confetti': ^1.6.0
   '@types/node': 18.7.18
   '@types/react': 18.0.21
   '@types/react-color': ^3.0.6
   '@types/react-dom': 18.0.6
   autoprefixer: ^10.4.13
+  canvas-confetti: ^1.6.0
   classnames: ^2.3.2
   dayjs: ^1.11.7
   eslint: 8.23.1
@@ -26,6 +28,7 @@ specifiers:
 
 dependencies:
   '@reduxjs/toolkit': 1.9.2_k4ae6lp43ej6mezo3ztvx6pykq
+  canvas-confetti: 1.6.0
   classnames: 2.3.2
   dayjs: 1.11.7
   next: 12.3.1_biqbaboplfbrettd7655fr4n2y
@@ -39,6 +42,7 @@ dependencies:
   redux-persist: 6.0.0_react@18.2.0+redux@4.2.0
 
 devDependencies:
+  '@types/canvas-confetti': 1.6.0
   '@types/node': 18.7.18
   '@types/react': 18.0.21
   '@types/react-color': 3.0.6
@@ -303,6 +307,10 @@ packages:
     dependencies:
       tslib: 2.4.0
     dev: false
+
+  /@types/canvas-confetti/1.6.0:
+    resolution: {integrity: sha512-Yq6rIccwcco0TLD5SMUrIM7Fk7Fe/C0jmNRxJJCLtAF6gebDkPuUjK5EHedxecm69Pi/aA+It39Ux4OHmFhjRw==}
+    dev: true
 
   /@types/hoist-non-react-statics/3.3.1:
     resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
@@ -616,6 +624,10 @@ packages:
   /caniuse-lite/1.0.30001439:
     resolution: {integrity: sha512-1MgUzEkoMO6gKfXflStpYgZDlFM7M/ck/bgfVCACO5vnAf0fXoNVHdWtqGU+MYca+4bL9Z5bpOVmR33cWW9G2A==}
     dev: true
+
+  /canvas-confetti/1.6.0:
+    resolution: {integrity: sha512-ej+w/m8Jzpv9Z7W7uJZer14Ke8P2ogsjg4ZMGIuq4iqUOqY2Jq8BNW42iGmNfRwREaaEfFIczLuZZiEVSYNHAA==}
+    dev: false
 
   /chalk/4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}

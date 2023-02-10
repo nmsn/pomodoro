@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.2",
+    "canvas-confetti": "^1.6.0",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.7",
     "next": "12.3.1",
@@ -40,6 +41,7 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.6.0",
     "@types/node": "18.7.18",
     "@types/react": "18.0.21",
     "@types/react-color": "^3.0.6",
