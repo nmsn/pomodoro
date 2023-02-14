@@ -177,8 +177,6 @@ const TodoList = () => {
       return !(isExpired && checked);
     });
 
-    console.log(validTodoList);
-
     dispatch(setTodoList(validTodoList));
   }, []);
 
