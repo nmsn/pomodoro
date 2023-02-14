@@ -6,7 +6,7 @@ import { useState } from "react";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { setTodoList } from "@/store/features/todoListSlice";
+import { setTodoList, openTodoList } from "@/store/features/todoListSlice";
 import { shine } from "../utils/confetti";
 
 export const ItemTypes = {
@@ -178,6 +178,7 @@ const TodoList = () => {
     });
 
     dispatch(setTodoList(validTodoList));
+    dispatch(openTodoList(!!todoList.length));
   }, []);
 
   return (
