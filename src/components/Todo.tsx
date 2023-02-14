@@ -239,7 +239,7 @@ const Todo = () => {
     <div
       className={classnames(
         visible ? "w-1/2" : "w-0",
-        "w-1/2 h-full flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4"
+        "h-full flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4"
       )}
     >
       <AddLine />
