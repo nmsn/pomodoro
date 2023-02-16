@@ -5,13 +5,16 @@
   "author": "nmsn",
   "description": "A web pomodoro clock.",
   "keywords": [
-    "pomodoro clock",
+    "pomodoro",
+    "clock",
+    "timer",
     "todo list",
     "react",
     "tailwindcss",
     "typescript",
     "nextjs",
-    "recoil"
+    "redux",
+    "redux-toolkit"
   ],
   "repository": {
     "type": "git",
