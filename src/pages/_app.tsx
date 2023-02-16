@@ -1,9 +1,10 @@
-import type { AppProps } from "next/app";
-import { Provider } from "react-redux";
-import { store, wrapper, persistor } from "@/store";
-import { PersistGate } from "redux-persist/integration/react";
+import type { AppProps } from 'next/app';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import "../styles/styles.css";
+import { persistor, store, wrapper } from '@/store';
+
+import '../styles/styles.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

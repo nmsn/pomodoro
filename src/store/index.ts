@@ -1,22 +1,15 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { createWrapper } from "next-redux-wrapper";
-import todoListSlice from "./features/todoListSlice";
-import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
-import { persistStore } from "redux-persist";
+import { createWrapper } from 'next-redux-wrapper';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { persistStore } from 'redux-persist';
+import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-import {
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+
+import todoListSlice from './features/todoListSlice';
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   version: 1,
   storage,
 };
@@ -27,7 +20,7 @@ const persistedReducers = combineReducers({
 
 export const store = configureStore({
   reducer: persistedReducers,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],

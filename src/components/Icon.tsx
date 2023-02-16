@@ -1,5 +1,5 @@
-import { useState } from "react";
-import classnames from "classnames";
+import { useState } from 'react';
+import classnames from 'classnames';
 
 /** https://heroicons.com/ */
 export const BeakerIcon = () => {
@@ -92,7 +92,7 @@ export const SwitchLoopIcon = ({
     onChange?.(on);
   };
 
-  if (typeof on === "boolean" ? on : curOn) {
+  if (typeof on === 'boolean' ? on : curOn) {
     return <StopIcon onClick={() => onCurChange(false)} />;
   }
   return <LoopIcon onClick={() => onCurChange(true)} />;
@@ -108,22 +108,12 @@ export const ArrowLeft = () => {
       stroke="currentColor"
       className="w-6 h-6 cursor-pointer"
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
     </svg>
   );
 };
 
-export const ArrowRight = ({
-  open,
-  onClick,
-}: {
-  open?: boolean;
-  onClick?: () => void;
-}) => {
+export const ArrowRight = ({ open, onClick }: { open?: boolean; onClick?: () => void }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -132,16 +122,12 @@ export const ArrowRight = ({
       strokeWidth={1.5}
       stroke="currentColor"
       className={classnames(
-        "w-6 h-6 cursor-pointer transition-transform duration-300",
-        open ? "rotate-180" : undefined
+        'w-6 h-6 cursor-pointer transition-transform duration-300',
+        open ? 'rotate-180' : undefined,
       )}
       onClick={onClick}
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
     </svg>
   );
 };
@@ -157,11 +143,7 @@ export const Check = ({ onClick }: { onClick?: () => void }) => {
       className="w-6 h-6 cursor-pointer"
       onClick={onClick}
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M4.5 12.75l6 6 9-13.5"
-      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
     </svg>
   );
 };
@@ -177,11 +159,7 @@ export const XMark = ({ onClick }: { onClick?: () => void }) => {
       className="w-6 h-6 cursor-pointer"
       onClick={onClick}
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M6 18L18 6M6 6l12 12"
-      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
     </svg>
   );
 };

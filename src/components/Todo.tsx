@@ -1,16 +1,18 @@
-import { useCallback, useLayoutEffect } from "react";
-import { Check, XMark, LoopIcon } from "./Icon";
-import Button from "./Button";
-import classnames from "classnames";
-import { useState } from "react";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { setTodoList, openTodoList } from "@/store/features/todoListSlice";
-import { shine } from "../utils/confetti";
+import { useCallback, useLayoutEffect, useState } from 'react';
+import classnames from 'classnames';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+import { useAppDispatch, useAppSelector } from '@/store';
+import { openTodoList, setTodoList } from '@/store/features/todoListSlice';
+
+import { shine } from '../utils/confetti';
+
+import Button from './Button';
+import { Check, LoopIcon, XMark } from './Icon';
 
 export const ItemTypes = {
-  TODO_ITEM: "todoItem",
+  TODO_ITEM: 'todoItem',
 };
 
 export type TodoItemDataType = {
@@ -22,8 +24,8 @@ export type TodoItemDataType = {
 
 type TodoItemProps = TodoItemDataType & {
   sortMark: number;
-  find: (id: TodoItemDataType["id"]) => DragItemType;
-  move: (id: TodoItemDataType["id"], toIndex: number) => void;
+  find: (id: TodoItemDataType['id']) => DragItemType;
+  move: (id: TodoItemDataType['id'], toIndex: number) => void;
 };
 
 type DragItemType = { item: TodoItemDataType } & { index: number };
@@ -34,16 +36,8 @@ const checkExpired = (date: number) => {
   return date < today;
 };
 
-const TodoItem = ({
-  id,
-  value,
-  date,
-  checked,
-  sortMark,
-  find,
-  move,
-}: TodoItemProps) => {
-  const { todoList } = useAppSelector((state) => state.todoList);
+const TodoItem = ({ id, value, date, checked, sortMark, find, move }: TodoItemProps) => {
+  const { todoList } = useAppSelector(state => state.todoList);
   const dispatch = useAppDispatch();
 
   const originalIndex = find(id).index;
@@ -51,7 +45,7 @@ const TodoItem = ({
     () => ({
       type: ItemTypes.TODO_ITEM,
       item: { id, originalIndex },
-      collect: (monitor) => ({
+      collect: monitor => ({
         isDragging: monitor.isDragging(),
       }),
       end: (item, monitor) => {
@@ -64,7 +58,7 @@ const TodoItem = ({
         }
       },
     }),
-    [id, originalIndex, move]
+    [id, originalIndex, move],
   );
 
   const [, drop] = useDrop(
@@ -77,17 +71,17 @@ const TodoItem = ({
         }
       },
     }),
-    [find, move]
+    [find, move],
   );
 
   const onDelete = (id: string) => {
-    dispatch(setTodoList(todoList.filter((item, index) => item.id !== id)));
+    dispatch(setTodoList(todoList.filter(item => item.id !== id)));
   };
 
   const onChangeStats = (id: string) => {
     // TODO if all checked, show firework
     const result = [...todoList];
-    const index = result.findIndex((item) => item.id === id);
+    const index = result.findIndex(item => item.id === id);
 
     const newStatus = !result[index].checked;
 
@@ -111,16 +105,11 @@ const TodoItem = ({
     <div
       className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold transform"
       style={{ opacity }}
-      ref={(node) => drag(drop(node))}
+      ref={node => drag(drop(node))}
     >
       <div className="flex justify-start flex-auto truncate">
         <div className="font-bold pr-2">{sortMark + 1}.</div>
-        <div
-          className={classnames(
-            "font-bold  truncate",
-            checked ? "line-through" : undefined
-          )}
-        >
+        <div className={classnames('font-bold  truncate', checked ? 'line-through' : undefined)}>
           {value}
         </div>
       </div>
@@ -139,23 +128,23 @@ const TodoItem = ({
 };
 
 const TodoList = () => {
-  const { todoList } = useAppSelector((state) => state.todoList);
+  const { todoList } = useAppSelector(state => state.todoList);
   const dispatch = useAppDispatch();
 
   const find = useCallback(
-    (id: TodoItemDataType["id"]) => {
-      const curItem = todoList.find((c) => `${c.id}` === id)!;
+    (id: TodoItemDataType['id']) => {
+      const curItem = todoList.find(c => `${c.id}` === id)!;
 
       return {
         item: curItem,
         index: todoList.indexOf(curItem!),
       };
     },
-    [todoList]
+    [todoList],
   );
 
   const move = useCallback(
-    (id: TodoItemDataType["id"], toIndex: number) => {
+    (id: TodoItemDataType['id'], toIndex: number) => {
       const { item: curItem, index } = find(id);
 
       const newTodoList = [...todoList];
@@ -164,14 +153,14 @@ const TodoList = () => {
 
       dispatch(setTodoList(newTodoList));
     },
-    [dispatch, find, todoList]
+    [dispatch, find, todoList],
   );
 
   const [, drop] = useDrop(() => ({ accept: ItemTypes.TODO_ITEM }));
 
   // 初始化时清除过期且完成的 todo
   useLayoutEffect(() => {
-    const validTodoList = todoList.filter((item) => {
+    const validTodoList = todoList.filter(item => {
       const { checked, date } = item;
       const isExpired = checkExpired(date);
       return !(isExpired && checked);
@@ -184,22 +173,16 @@ const TodoList = () => {
   return (
     <div className="w-10/12 flex flex-col space-y-4" ref={drop}>
       {todoList?.map((item, index) => (
-        <TodoItem
-          {...item}
-          key={item.id}
-          sortMark={index}
-          find={find}
-          move={move}
-        />
+        <TodoItem {...item} key={item.id} sortMark={index} find={find} move={move} />
       ))}
     </div>
   );
 };
 
 const AddLine = () => {
-  const [value, onChange] = useState("");
+  const [value, onChange] = useState('');
 
-  const { todoList } = useAppSelector((state) => state.todoList);
+  const { todoList } = useAppSelector(state => state.todoList);
   const dispatch = useAppDispatch();
 
   const onAdd = () => {
@@ -212,11 +195,11 @@ const AddLine = () => {
       checked: false,
       value,
       date,
-      id: value + "+" + date,
+      id: value + '+' + date,
     };
 
     dispatch(setTodoList([...todoList, item]));
-    onChange("");
+    onChange('');
   };
 
   return (
@@ -224,7 +207,7 @@ const AddLine = () => {
       <input
         className="rounded-lg shadow-md flex-1 px-4 py-2 font-bold focus:outline-red-400"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={e => onChange(e.target.value)}
       />
       <Button className="text-red-400" onClick={onAdd}>
         ADD
@@ -234,13 +217,13 @@ const AddLine = () => {
 };
 
 const Todo = () => {
-  const { visible } = useAppSelector((state) => state.todoList);
+  const { visible } = useAppSelector(state => state.todoList);
 
   return (
     <div
       className={classnames(
-        visible ? "w-1/2" : "w-0",
-        "h-full flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4"
+        visible ? 'w-1/2' : 'w-0',
+        'h-full flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4',
       )}
     >
       <AddLine />

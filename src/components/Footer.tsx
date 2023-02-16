@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { BeakerIcon, FullScreen } from "./Icon";
+import { useEffect, useState } from 'react';
+
+import { FullScreen } from './Icon';
 
 /**
  * TODO

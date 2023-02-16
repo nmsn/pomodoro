@@ -1,10 +1,13 @@
-import { useRef, useState, useMemo } from "react";
-import Header from "./Header";
-import Button from "./Button";
-import classnames from "classnames";
-import { useAppDispatch, useAppSelector } from "../store";
-import { openTodoList } from "@/store/features/todoListSlice";
-import { fireworks } from "../utils/confetti";
+import { useMemo, useRef, useState } from 'react';
+import classnames from 'classnames';
+
+import { openTodoList } from '@/store/features/todoListSlice';
+
+import { useAppDispatch, useAppSelector } from '../store';
+import { fireworks } from '../utils/confetti';
+
+import Button from './Button';
+import Header from './Header';
 
 const workMins = 25;
 
@@ -20,30 +23,30 @@ const timeFormat = (val: number) => {
   return [m, s];
 };
 
-type StatusType = "initial" | "processing" | "paused";
+type StatusType = 'initial' | 'processing' | 'paused';
 
 const Clock = () => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
-  const [status, setStatus] = useState<StatusType>("initial");
+  const [status, setStatus] = useState<StatusType>('initial');
 
   const dispatch = useAppDispatch();
-  const { visible } = useAppSelector((state) => state.todoList);
+  const { visible } = useAppSelector(state => state.todoList);
 
   const onOpen = (visible: boolean) => {
     dispatch(openTodoList(visible));
   };
 
-  const [timeType, setTimeType] = useState<"normal" | "double">("normal");
+  const [timeType, setTimeType] = useState<'normal' | 'double'>('normal');
 
   const timeDisplay = useMemo(() => {
-    return timeFormat(time)?.map((item) => item.toString().padStart(2, "0"));
+    return timeFormat(time)?.map(item => item.toString().padStart(2, '0'));
   }, [time]);
 
   const onStart = () => {
-    setStatus("processing");
+    setStatus('processing');
     timer.current = window.setInterval(() => {
-      setTime((pre) => {
+      setTime(pre => {
         if (pre === 0) {
           // timer is finish
           fireworks();
@@ -56,15 +59,15 @@ const Clock = () => {
 
   const onPause = () => {
     if (timer.current) {
-      setStatus("paused");
+      setStatus('paused');
       window.clearInterval(timer.current);
       timer.current = null;
     }
   };
 
-  const onReset = (type: "normal" | "double" = "normal") => {
-    setTime(type === "double" ? baseTime * 2 : baseTime);
-    setStatus("initial");
+  const onReset = (type: 'normal' | 'double' = 'normal') => {
+    setTime(type === 'double' ? baseTime * 2 : baseTime);
+    setStatus('initial');
 
     if (timer.current) {
       window.clearInterval(timer.current);
@@ -72,7 +75,7 @@ const Clock = () => {
     }
   };
 
-  const onChangeTimeType = (type: "normal" | "double") => {
+  const onChangeTimeType = (type: 'normal' | 'double') => {
     setTimeType(type);
     // TODO is timing, prompt user whether reset
     onReset(type);
@@ -81,8 +84,8 @@ const Clock = () => {
   return (
     <div
       className={classnames(
-        visible ? "w-1/2" : "w-full",
-        "h-full flex justify-center items-center duration-300 bg-blue-400 relative"
+        visible ? 'w-1/2' : 'w-full',
+        'h-full flex justify-center items-center duration-300 bg-blue-400 relative',
       )}
     >
       <Header open={visible} onChange={onOpen} />
@@ -90,15 +93,15 @@ const Clock = () => {
         <div className="flex justify-end gap-2">
           <Button
             size="small"
-            type={timeType === "normal" ? "inverse" : "positive"}
-            onClick={() => onChangeTimeType("normal")}
+            type={timeType === 'normal' ? 'inverse' : 'positive'}
+            onClick={() => onChangeTimeType('normal')}
           >
             NORMAL
           </Button>
           <Button
             size="small"
-            type={timeType === "double" ? "inverse" : "positive"}
-            onClick={() => onChangeTimeType("double")}
+            type={timeType === 'double' ? 'inverse' : 'positive'}
+            onClick={() => onChangeTimeType('double')}
           >
             DOUBLE
           </Button>
@@ -107,14 +110,14 @@ const Clock = () => {
           {`${timeDisplay[0]}:${timeDisplay[1]}`}
         </div>
         <div className="flex justify-center space-x-16">
-          {status === "initial" && <Button onClick={onStart}>START</Button>}
-          {status === "processing" && (
+          {status === 'initial' && <Button onClick={onStart}>START</Button>}
+          {status === 'processing' && (
             <>
               <Button onClick={onPause}>PAUSE</Button>
               <Button onClick={onReset}>RESET</Button>
             </>
           )}
-          {status === "paused" && (
+          {status === 'paused' && (
             <>
               <Button onClick={onStart}>CONTINUE</Button>
               <Button onClick={onReset}>RESET</Button>

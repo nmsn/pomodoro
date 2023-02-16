@@ -1,13 +1,8 @@
-import { ArrowRight } from "./Icon";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
 
-const Header = ({
-  open,
-  onChange,
-}: {
-  open: boolean;
-  onChange: (open: boolean) => void;
-}) => {
+import { ArrowRight } from './Icon';
+
+const Header = ({ open, onChange }: { open: boolean; onChange: (open: boolean) => void }) => {
   const [curOpen, setOpen] = useState(false);
 
   useEffect(() => {

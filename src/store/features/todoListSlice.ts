@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { TodoItemDataType } from "@/components/Todo";
+import { TodoItemDataType } from '@/components/Todo';
+import { createSlice } from '@reduxjs/toolkit';
 
 export type TodoListStateType = {
   visible: boolean;
@@ -12,7 +12,7 @@ const initialState: TodoListStateType = {
 };
 
 export const todoListSlice = createSlice({
-  name: "todoList",
+  name: 'todoList',
   initialState,
   reducers: {
     setTodoList(state, { payload }) {

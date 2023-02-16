@@ -1,7 +1,8 @@
-import type { NextPage } from "next";
-import Todo from "@/components/Todo";
-import Footer from "@/components/Footer";
-import Clock from "@/components/Clock";
+import type { NextPage } from 'next';
+
+import Clock from '@/components/Clock';
+import Footer from '@/components/Footer';
+import Todo from '@/components/Todo';
 
 const Home: NextPage = () => {
   return (

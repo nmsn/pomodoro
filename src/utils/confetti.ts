@@ -1,6 +1,6 @@
-import confetti from "canvas-confetti";
+import confetti from 'canvas-confetti';
 
-export const fireworks = (sec: number = 3) => {
+export const fireworks = () => {
   const count = 200;
   const defaults = {
     origin: { y: 0.7 },
@@ -13,12 +13,12 @@ export const fireworks = (sec: number = 3) => {
       startVelocity?: number;
       decay?: number;
       scalar?: number;
-    }
+    },
   ) {
     confetti(
       Object.assign({}, defaults, opts, {
         particleCount: Math.floor(count * particleRatio),
-      })
+      }),
     );
   }
 
@@ -53,8 +53,8 @@ export const shine = () => {
     gravity: 0,
     decay: 0.94,
     startVelocity: 30,
-    shapes: ["star"],
-    colors: ["FFE400", "FFBD00", "E89400", "FFCA6C", "FDFFB8"],
+    shapes: ['star'],
+    colors: ['FFE400', 'FFBD00', 'E89400', 'FFCA6C', 'FDFFB8'],
   };
 
   function shoot() {
@@ -62,14 +62,14 @@ export const shine = () => {
       ...defaults,
       particleCount: 40,
       scalar: 1.2,
-      shapes: ["star"],
+      shapes: ['star'],
     });
 
     confetti({
       ...defaults,
       particleCount: 10,
       scalar: 0.75,
-      shapes: ["circle"],
+      shapes: ['circle'],
     });
   }
 
