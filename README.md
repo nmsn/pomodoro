@@ -47,8 +47,10 @@ English | [简体中文](./README.zh-CN.md)
 - [ ] Sound when finished.
 - [ ] Mobile adaptation.
 
-## Contribution
+## Contributing
 
 - [nmsn](https://github.com/nmsn)
+
+## License
 
 [MIT License](https://github.com/nmsn/pomodoro/blob/main/LICENSE)
