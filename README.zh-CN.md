@@ -5,6 +5,8 @@
 
 [English](./README.md) | 简体中文
 
+在线地址: [https://pomodoro-easy.vercel.app/](https://pomodoro-easy.vercel.app/)
+
 ![pomodoro.png](https://s2.loli.net/2023/02/18/dRlCoLftjqX7IUZ.png)
 
 ![pomodoro_todo.png](https://s2.loli.net/2023/02/18/PeAHoVTN6tE4JWB.png)
@@ -14,11 +16,6 @@
 - 轻量：打开网页就可使用，不需要额外的客户端
 - 安全：使用 `localstorage` 保存数据，不涉及网络请求
 - 简洁：使用 `tailwindcss` 打造的扁平化界面，没有其他复杂功能
-
-
-## 地址
-
-在线地址: [https://pomodoro-easy.vercel.app/](https://pomodoro-easy.vercel.app/)
 
 ## 技术栈
 
