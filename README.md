@@ -4,6 +4,9 @@ A online pomodoro clock + Todo List.
 
 English | [简体中文](./README.zh-CN.md)
 
+![pomodoro.png](https://s2.loli.net/2023/02/18/dRlCoLftjqX7IUZ.png)
+
+![pomodoro_todo.png](https://s2.loli.net/2023/02/18/PeAHoVTN6tE4JWB.png)
 ## Features
 
 - Lightweight: Open a web page and use it, no additional client is required.

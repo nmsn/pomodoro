@@ -5,6 +5,10 @@
 
 [English](./README.md) | 简体中文
 
+![pomodoro.png](https://s2.loli.net/2023/02/18/dRlCoLftjqX7IUZ.png)
+
+![pomodoro_todo.png](https://s2.loli.net/2023/02/18/PeAHoVTN6tE4JWB.png)
+
 ## 特征
 
 - 轻量：打开网页就可使用，不需要额外的客户端
