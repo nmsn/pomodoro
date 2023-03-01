@@ -1,5 +1,10 @@
 # Pomodoro
 
+![github version](https://img.shields.io/github/package-json/v/nmsn/pomodoro)
+![license](https://img.shields.io/github/license/nmsn/pomodoro)
+![last commit](https://img.shields.io/github/last-commit/nmsn/pomodoro)
+![commit activity](https://img.shields.io/github/commit-activity/y/nmsn/pomodoro)
+
 A online pomodoro clock + Todo List.
 
 English | [简体中文](./README.zh-CN.md)

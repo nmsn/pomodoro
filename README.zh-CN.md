@@ -1,6 +1,11 @@
 
 # Pomodoro
 
+![github version](https://img.shields.io/github/package-json/v/nmsn/pomodoro)
+![license](https://img.shields.io/github/license/nmsn/pomodoro)
+![last commit](https://img.shields.io/github/last-commit/nmsn/pomodoro)
+![commit activity](https://img.shields.io/github/commit-activity/y/nmsn/pomodoro)
+
 一个在线的番茄钟 + Todo List。
 
 [English](./README.md) | 简体中文
