@@ -106,7 +106,10 @@ const Clock = () => {
             DOUBLE
           </Button>
         </div>
-        <div className="text-9xl mb-12 font-bold select-none">
+        <div
+          className="text-9xl mb-12 font-bold select-none"
+          style={{ fontVariantNumeric: 'tabular-nums' }}
+        >
           {`${timeDisplay[0]}:${timeDisplay[1]}`}
         </div>
         <div className="flex justify-center space-x-16">
