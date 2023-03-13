@@ -40,14 +40,14 @@ Online address: [https://pomodoro-easy.vercel.app/](https://pomodoro-easy.vercel
 
 - [x] Base pomodoro clock.
 - [x] Editable todo list.
-  - [ ] Add\Delete.
-  - [ ] Switch finished and unfinished status.
-  - [ ] Drag and drop to change the TODO List order.
-  - [ ] Mark an expired item.
+  - [x] Add\Delete.
+  - [x] Switch finished and unfinished status.
+  - [x] Drag and drop to change the TODO List order.
+  - [x] Mark an expired item.
 - [x] Persist data.
-- [ ] Two time formats(25min/50min)
-- [ ] Full screen.
-- [ ] Animation when finished.
+- [x] Two time formats(25min/50min)
+- [x] Full screen.
+- [x] Animation when finished.
 - [x] Full screen.
 
 
