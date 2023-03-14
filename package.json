@@ -23,6 +23,7 @@
   "homepage": "https://github.com/nmsn/promodoro#readme",
   "license": "MIT",
   "scripts": {
+    "prepare": "husky install",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
