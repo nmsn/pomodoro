@@ -17,6 +17,7 @@ specifiers:
   eslint-config-prettier: ^8.8.0
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-simple-import-sort: ^10.0.0
+  husky: ^8.0.3
   next: 12.3.1
   next-redux-wrapper: ^8.1.0
   postcss: ^8.4.21
@@ -60,6 +61,7 @@ devDependencies:
   eslint-config-prettier: 8.8.0_eslint@8.23.1
   eslint-plugin-prettier: 4.2.1_skgnpszpbldzyrvqhwfeq524qu
   eslint-plugin-simple-import-sort: 10.0.0_eslint@8.23.1
+  husky: 8.0.3
   postcss: 8.4.21
   prettier: 2.8.7
   release-toolbox: 0.1.0
@@ -1712,6 +1714,12 @@ packages:
     dependencies:
       react-is: 16.13.1
     dev: false
+
+  /husky/8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
 
   /iconv-lite/0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
