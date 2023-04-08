@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { ArrowRight } from './Icon';
+import isMobile from '@/utils/isMobile';
+
+import { Arrow } from './Icon';
 
 const Header = ({ open, onChange }: { open: boolean; onChange: (open: boolean) => void }) => {
   const [curOpen, setOpen] = useState(false);
@@ -16,7 +18,11 @@ const Header = ({ open, onChange }: { open: boolean; onChange: (open: boolean) =
 
   return (
     <div className="absolute top-0 w-full h-12 flex items-center px-4 space-x-4">
-      <ArrowRight open={curOpen} onClick={() => onCurChange(!curOpen)} />
+      <Arrow
+        open={curOpen}
+        onClick={() => onCurChange(!curOpen)}
+        direction={isMobile() ? 'vertical' : 'horizontal'}
+      />
     </div>
   );
 };

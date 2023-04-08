@@ -98,22 +98,23 @@ export const SwitchLoopIcon = ({
   return <LoopIcon onClick={() => onCurChange(true)} />;
 };
 
-export const ArrowLeft = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className="w-6 h-6 cursor-pointer"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-    </svg>
-  );
-};
+export const Arrow = ({
+  open,
+  onClick,
+  direction = 'horizontal',
+}: {
+  open?: boolean;
+  onClick?: () => void;
+  direction?: 'vertical' | 'horizontal';
+}) => {
+  const directionCss = (() => {
+    if (direction === 'horizontal') {
+      return open ? 'rotate-180' : 'rotate-0';
+    } else {
+      return open ? '-rotate-90' : 'rotate-90';
+    }
+  })();
 
-export const ArrowRight = ({ open, onClick }: { open?: boolean; onClick?: () => void }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +124,7 @@ export const ArrowRight = ({ open, onClick }: { open?: boolean; onClick?: () => 
       stroke="currentColor"
       className={classnames(
         'w-6 h-6 cursor-pointer transition-transform duration-300',
-        open ? 'rotate-180' : undefined,
+        directionCss,
       )}
       onClick={onClick}
     >
