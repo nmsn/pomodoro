@@ -1,13 +1,9 @@
 import { useMemo, useRef, useState } from 'react';
 import classnames from 'classnames';
 
-import { openTodoList } from '@/store/features/todoListSlice';
-
-import { useAppDispatch, useAppSelector } from '../store';
 import { fireworks } from '../utils/confetti';
 
 import Button from './Button';
-import Header from './Header';
 
 const workMins = 25;
 
@@ -25,17 +21,10 @@ const timeFormat = (val: number) => {
 
 type StatusType = 'initial' | 'processing' | 'paused';
 
-const Clock = () => {
+const Clock = ({ width = 'w-0', height = 'h-0' }: { width: string; height: string }) => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
   const [status, setStatus] = useState<StatusType>('initial');
-
-  const dispatch = useAppDispatch();
-  const { visible } = useAppSelector(state => state.todoList);
-
-  const onOpen = (visible: boolean) => {
-    dispatch(openTodoList(visible));
-  };
 
   const [timeType, setTimeType] = useState<'normal' | 'double'>('normal');
 
@@ -84,11 +73,11 @@ const Clock = () => {
   return (
     <div
       className={classnames(
-        visible ? 'w-1/2' : 'w-full',
-        'h-full flex justify-center items-center duration-300 bg-blue-400 relative',
+        width,
+        height,
+        'flex justify-center items-center duration-300 bg-blue-400 relative overflow-hidden',
       )}
     >
-      <Header open={visible} onChange={onOpen} />
       <div className="w-120 flex-col block">
         <div className="flex justify-end gap-2">
           <Button

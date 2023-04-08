@@ -216,14 +216,13 @@ const AddLine = () => {
   );
 };
 
-const Todo = () => {
-  const { visible } = useAppSelector(state => state.todoList);
-
+const Todo = ({ width = 'w-0', height = 'h-0' }: { width: string; height: string }) => {
   return (
     <div
       className={classnames(
-        visible ? 'w-1/2' : 'w-0',
-        'h-full flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4',
+        width,
+        height,
+        'flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4 overflow-hidden',
       )}
     >
       <AddLine />

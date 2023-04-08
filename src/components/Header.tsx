@@ -17,7 +17,7 @@ const Header = ({ open, onChange }: { open: boolean; onChange: (open: boolean) =
   };
 
   return (
-    <div className="absolute top-0 w-full h-12 flex items-center px-4 space-x-4">
+    <div className="absolute top-0 w-screen h-12 flex items-center px-4 space-x-4 z-10">
       <Arrow
         open={curOpen}
         onClick={() => onCurChange(!curOpen)}
