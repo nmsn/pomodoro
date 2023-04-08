@@ -12,7 +12,7 @@ const Footer = () => {
     document.fullscreenEnabled && setCanFullScreen(true);
   }, []);
   return (
-    <div className="absolute bottom-0 w-screen h-12 flex justify-end items-center px-4 space-x-4">
+    <div className="absolute bottom-0 w-screen h-12 flex justify-end items-center px-4 space-x-4 z-10">
       {/* <BeakerIcon /> */}
       {canFullScreen && <FullScreen />}
     </div>
