@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Todo from '@/components/Todo';
 import { openTodoList } from '@/store/features/todoListSlice';
-import isMobile from '@/utils/isMobile';
+import { isMobile } from '@/utils';
 
 import { useAppDispatch, useAppSelector } from '../store';
 

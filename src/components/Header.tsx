@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import isMobile from '@/utils/isMobile';
+import { isMobile } from '@/utils';
 
 import { Arrow } from './Icon';
 
