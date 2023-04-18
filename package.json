@@ -38,9 +38,8 @@
     "next": "13.3.0",
     "next-redux-wrapper": "^8.1.0",
     "react": "18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-color": "^2.19.3",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5",
     "redux-persist": "^6.0.0"
@@ -49,6 +48,7 @@
     "@types/canvas-confetti": "^1.6.0",
     "@types/node": "18.15.11",
     "@types/react": "18.0.35",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-color": "^3.0.6",
     "@types/react-dom": "18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
