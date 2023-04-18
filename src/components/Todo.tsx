@@ -1,11 +1,9 @@
 import { useCallback, useLayoutEffect, useState } from 'react';
 import classnames from 'classnames';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { useAppDispatch, useAppSelector } from '@/store';
 import { openTodoList, setTodoList } from '@/store/features/todoListSlice';
-
+import { DragDropContext, Droppable, Draggable, OnDragEndResponder } from 'react-beautiful-dnd';
 import { shine } from '../utils/confetti';
 
 import Button from './Button';
@@ -41,38 +39,6 @@ const TodoItem = ({ id, value, date, checked, sortMark, find, move }: TodoItemPr
   const dispatch = useAppDispatch();
 
   const originalIndex = find(id).index;
-  const [{ isDragging }, drag] = useDrag(
-    () => ({
-      type: ItemTypes.TODO_ITEM,
-      item: { id, originalIndex },
-      collect: monitor => ({
-        isDragging: monitor.isDragging(),
-      }),
-      end: (item, monitor) => {
-        const { id: droppedId, originalIndex } = item;
-        const didDrop = monitor.didDrop();
-
-        // 恢复原位
-        if (!didDrop) {
-          move(droppedId, originalIndex);
-        }
-      },
-    }),
-    [id, originalIndex, move],
-  );
-
-  const [, drop] = useDrop(
-    () => ({
-      accept: ItemTypes.TODO_ITEM,
-      hover({ id: draggedId }: TodoItemDataType) {
-        if (draggedId !== id) {
-          const { index: overIndex } = find(id);
-          move(draggedId, overIndex);
-        }
-      },
-    }),
-    [find, move],
-  );
 
   const onDelete = (id: string) => {
     dispatch(setTodoList(todoList.filter(item => item.id !== id)));
@@ -99,31 +65,36 @@ const TodoItem = ({ id, value, date, checked, sortMark, find, move }: TodoItemPr
 
   const isExpired = checkExpired(date);
 
-  const opacity = isDragging ? 0 : 1;
-
   return (
-    <div
-      className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold transform"
-      style={{ opacity }}
-      ref={node => drag(drop(node))}
-    >
-      <div className="flex justify-start flex-auto truncate">
-        <div className="font-bold pr-2">{sortMark + 1}.</div>
-        <div className={classnames('font-bold  truncate', checked ? 'line-through' : undefined)}>
-          {value}
+    <Draggable draggableId={id} index={originalIndex} key={id}>
+      {(provided, snapshot) => (
+        <div
+          className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold transform"
+          {...provided.dragHandleProps}
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+        >
+          <div className="flex justify-start flex-auto truncate">
+            <div className="font-bold pr-2">{sortMark + 1}.</div>
+            <div
+              className={classnames('font-bold  truncate', checked ? 'line-through' : undefined)}
+            >
+              {value}
+            </div>
+          </div>
+          {/* TODO change animation */}
+          <div className="pl-4 flex justify-end flex-none">
+            {isExpired && <div className="pr-2">E</div>}
+            {checked ? (
+              <LoopIcon onClick={() => onChangeStats(id)} />
+            ) : (
+              <Check onClick={() => onChangeStats(id)} />
+            )}
+            <XMark onClick={() => onDelete(id)} />
+          </div>
         </div>
-      </div>
-      {/* TODO change animation */}
-      <div className="pl-4 flex justify-end flex-none">
-        {isExpired && <div className="pr-2">E</div>}
-        {checked ? (
-          <LoopIcon onClick={() => onChangeStats(id)} />
-        ) : (
-          <Check onClick={() => onChangeStats(id)} />
-        )}
-        <XMark onClick={() => onDelete(id)} />
-      </div>
-    </div>
+      )}
+    </Draggable>
   );
 };
 
@@ -156,8 +127,6 @@ const TodoList = () => {
     [dispatch, find, todoList],
   );
 
-  const [, drop] = useDrop(() => ({ accept: ItemTypes.TODO_ITEM }));
-
   // 初始化时清除过期且完成的 todo
   useLayoutEffect(() => {
     const validTodoList = todoList.filter(item => {
@@ -170,12 +139,38 @@ const TodoList = () => {
     dispatch(openTodoList(!!todoList.length));
   }, []);
 
+  const onDragEnd: OnDragEndResponder = result => {
+    const { source, destination } = result || {};
+
+    const { index: sourceIndex } = source || {};
+    const { index: toIndex = 0 } = destination || {};
+
+    const newTodoList = [...todoList];
+    const sourceItem = newTodoList.find((item, index) => index === sourceIndex)!;
+
+    newTodoList.splice(sourceIndex, 1);
+    newTodoList.splice(toIndex, 0, sourceItem);
+
+    dispatch(setTodoList(newTodoList));
+  };
+
   return (
-    <div className="w-10/12 flex flex-col space-y-4" ref={drop}>
-      {todoList?.map((item, index) => (
-        <TodoItem {...item} key={item.id} sortMark={index} find={find} move={move} />
-      ))}
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="LIST">
+        {(provided, snapshot) => (
+          <div
+            className="w-10/12 flex flex-col space-y-4"
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {todoList?.map((item, index) => (
+              <TodoItem {...item} key={item.id} sortMark={index} find={find} move={move} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 
@@ -226,9 +221,7 @@ const Todo = ({ width = 'w-0', height = 'h-0' }: { width: string; height: string
       )}
     >
       <AddLine />
-      <DndProvider backend={HTML5Backend}>
-        <TodoList />
-      </DndProvider>
+      <TodoList />
     </div>
   );
 };
