@@ -33,7 +33,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="w-screen h-screen">
+    <div className="absolute inset-0">
       <Header open={visible} onChange={onOpen} />
       <div className={classnames('w-full h-full flex', _isMobile ? 'flex-col' : 'flex-row')}>
         <Todo width={todoWidth} height={todoHeight} />
