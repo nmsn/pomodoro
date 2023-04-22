@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 import classnames from 'classnames';
 
-import Clock from '@/components/Clock';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import Pomodoro from '@/components/Pomodoro';
 import Todo from '@/components/Todo';
 import { openTodoList } from '@/store/features/todoListSlice';
 import { isMobile } from '@/utils';
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
       <Header open={visible} onChange={onOpen} />
       <div className={classnames('w-full h-full flex', _isMobile ? 'flex-col' : 'flex-row')}>
         <Todo width={todoWidth} height={todoHeight} />
-        <Clock width={clockWidth} height={clockHeight} />
+        <Pomodoro width={clockWidth} height={clockHeight} />
       </div>
       <Footer />
     </div>

@@ -21,7 +21,7 @@ const timeFormat = (val: number) => {
 
 type StatusType = 'initial' | 'processing' | 'paused';
 
-const Clock = ({ width = 'w-0', height = 'h-0' }: { width: string; height: string }) => {
+const Pomodoro = ({ width = 'w-0', height = 'h-0' }: { width: string; height: string }) => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
   const [status, setStatus] = useState<StatusType>('initial');
@@ -121,4 +121,4 @@ const Clock = ({ width = 'w-0', height = 'h-0' }: { width: string; height: strin
   );
 };
 
-export default Clock;
+export default Pomodoro;
