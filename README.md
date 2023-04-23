@@ -56,6 +56,7 @@ Online address: [https://pomodoro-easy.vercel.app/](https://pomodoro-easy.vercel
 - [ ] Custom theme color.
 - [ ] Sound when finished.
 - [ ] Mobile adaptation.
+- [ ] Add a clock mode.
 
 ## Contributing
 
