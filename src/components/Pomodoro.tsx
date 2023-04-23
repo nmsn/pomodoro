@@ -1,7 +1,8 @@
 import { useMemo, useRef, useState } from 'react';
 import classnames from 'classnames';
 
-import { fireworks } from '../utils/confetti';
+import { isPhone } from '@/utils';
+import { fireworks } from '@/utils/confetti';
 
 import Button from './Button';
 
@@ -96,7 +97,10 @@ const Pomodoro = ({ width = 'w-0', height = 'h-0' }: { width: string; height: st
           </Button>
         </div>
         <div
-          className="text-9xl mt-6 mb-12 font-bold select-none"
+          className={classnames(
+            isPhone() ? 'text-8xl' : 'text-9xl',
+            `mt-6 mb-12 font-bold select-none`,
+          )}
           style={{ fontVariantNumeric: 'tabular-nums' }}
         >
           {`${timeDisplay[0]}:${timeDisplay[1]}`}

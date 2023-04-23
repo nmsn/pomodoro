@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import classnames from 'classnames';
 
+import { isPhone } from '@/utils';
+
 const Clock = ({ width = 'w-0', height = 'h-0' }: { width: string; height: string }) => {
   const [date, setDate] = useState(new Date());
 
@@ -32,7 +34,10 @@ const Clock = ({ width = 'w-0', height = 'h-0' }: { width: string; height: strin
     >
       <div className="w-120 flex-col block">
         <div
-          className="text-9xl mt-6 mb-12 font-bold select-none"
+          className={classnames(
+            isPhone() ? 'text-8xl' : 'text-9xl',
+            'text-9xl mt-6 mb-12 font-bold select-none',
+          )}
           style={{ fontVariantNumeric: 'tabular-nums' }}
         >
           {timeStr}
