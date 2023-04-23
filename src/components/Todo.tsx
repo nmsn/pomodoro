@@ -1,9 +1,10 @@
 import { useCallback, useLayoutEffect, useState } from 'react';
 import classnames from 'classnames';
+import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 
 import { useAppDispatch, useAppSelector } from '@/store';
 import { openTodoList, setTodoList } from '@/store/features/todoListSlice';
-import { DragDropContext, Droppable, Draggable, OnDragEndResponder } from 'react-beautiful-dnd';
+
 import { shine } from '../utils/confetti';
 
 import Button from './Button';
@@ -34,7 +35,7 @@ const checkExpired = (date: number) => {
   return date < today;
 };
 
-const TodoItem = ({ id, value, date, checked, sortMark, find, move }: TodoItemProps) => {
+const TodoItem = ({ id, value, date, checked, sortMark, find }: TodoItemProps) => {
   const { todoList } = useAppSelector(state => state.todoList);
   const dispatch = useAppDispatch();
 
@@ -67,7 +68,7 @@ const TodoItem = ({ id, value, date, checked, sortMark, find, move }: TodoItemPr
 
   return (
     <Draggable draggableId={id} index={originalIndex} key={id}>
-      {(provided, snapshot) => (
+      {provided => (
         <div
           className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold transform"
           {...provided.dragHandleProps}
@@ -157,7 +158,7 @@ const TodoList = () => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="LIST">
-        {(provided, snapshot) => (
+        {provided => (
           <div
             className="w-10/12 flex flex-col space-y-4"
             ref={provided.innerRef}
