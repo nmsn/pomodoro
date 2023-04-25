@@ -70,7 +70,7 @@ const TodoItem = ({ id, value, date, checked, sortMark, find }: TodoItemProps) =
     <Draggable draggableId={id} index={originalIndex} key={id}>
       {provided => (
         <div
-          className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold transform"
+          className="w-full flex justify-between rounded-lg bg-black text-red-400 p-2 font-bold transform mb-4"
           {...provided.dragHandleProps}
           {...provided.draggableProps}
           ref={provided.innerRef}
@@ -160,7 +160,7 @@ const TodoList = () => {
       <Droppable droppableId="LIST">
         {provided => (
           <div
-            className="w-10/12 flex flex-col space-y-4"
+            className="w-10/12 flex flex-col"
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
