@@ -23,7 +23,7 @@ export type TodoItemDataType = {
 
 type TodoItemProps = TodoItemDataType & {
   sortMark: number;
-  find: (id: TodoItemDataType['id']) => DragItemType;
+  find: (id: TodoItemDataType['id']) => DragItemType | undefined;
   move: (id: TodoItemDataType['id'], toIndex: number) => void;
 };
 
@@ -39,7 +39,7 @@ const TodoItem = ({ id, value, date, checked, sortMark, find }: TodoItemProps) =
   const { todoList } = useAppSelector(state => state.todoList);
   const dispatch = useAppDispatch();
 
-  const originalIndex = find(id).index;
+  const originalIndex = find(id)?.index ?? 0;
 
   const onDelete = (id: string) => {
     dispatch(setTodoList(todoList.filter(item => item.id !== id)));
@@ -105,25 +105,32 @@ const TodoList = () => {
 
   const find = useCallback(
     (id: TodoItemDataType['id']) => {
-      const curItem = todoList.find(c => `${c.id}` === id)!;
+      const curItem = todoList.find(c => `${c?.id}` === id);
 
-      return {
-        item: curItem,
-        index: todoList.indexOf(curItem!),
-      };
+      if (curItem) {
+        return {
+          item: curItem,
+          index: todoList.indexOf(curItem),
+        };
+      }
+
+      return undefined;
     },
     [todoList],
   );
 
   const move = useCallback(
     (id: TodoItemDataType['id'], toIndex: number) => {
-      const { item: curItem, index } = find(id);
+      const findItem = find(id);
 
-      const newTodoList = [...todoList];
-      newTodoList.splice(index, 1);
-      newTodoList.splice(toIndex, 0, curItem);
+      if (findItem) {
+        const { item: curItem, index } = findItem;
+        const newTodoList = [...todoList];
+        newTodoList.splice(index, 1);
+        newTodoList.splice(toIndex, 0, curItem);
 
-      dispatch(setTodoList(newTodoList));
+        dispatch(setTodoList(newTodoList));
+      }
     },
     [dispatch, find, todoList],
   );
@@ -147,12 +154,14 @@ const TodoList = () => {
     const { index: toIndex = 0 } = destination || {};
 
     const newTodoList = [...todoList];
-    const sourceItem = newTodoList.find((item, index) => index === sourceIndex)!;
+    const sourceItem = newTodoList.find((item, index) => index === sourceIndex);
 
-    newTodoList.splice(sourceIndex, 1);
-    newTodoList.splice(toIndex, 0, sourceItem);
+    if (sourceItem) {
+      newTodoList.splice(sourceIndex, 1);
+      newTodoList.splice(toIndex, 0, sourceItem);
 
-    dispatch(setTodoList(newTodoList));
+      dispatch(setTodoList(newTodoList));
+    }
   };
 
   return (
