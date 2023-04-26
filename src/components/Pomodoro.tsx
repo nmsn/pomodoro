@@ -99,13 +99,18 @@ const Pomodoro = ({ width = 'w-0', height = 'h-0' }: { width: string; height: st
         <div
           className={classnames(
             isPhone() ? 'text-8xl' : 'text-9xl',
-            `mt-6 mb-12 font-bold select-none`,
+            `mt-6 mb-6 font-bold select-none text-center`,
           )}
           style={{ fontVariantNumeric: 'tabular-nums' }}
         >
           {`${timeDisplay[0]}:${timeDisplay[1]}`}
         </div>
-        <div className="flex justify-center space-x-16">
+        <div
+          className={classnames(
+            'flex justify-center',
+            status === 'initial' ? 'justify-center' : 'justify-between',
+          )}
+        >
           {status === 'initial' && <Button onClick={onStart}>START</Button>}
           {status === 'processing' && (
             <>
