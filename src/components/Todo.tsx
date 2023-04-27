@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 
@@ -190,7 +190,7 @@ const AddLine = () => {
   const { todoList } = useAppSelector(state => state.todoList);
   const dispatch = useAppDispatch();
 
-  const onAdd = () => {
+  const onAdd = useCallback(() => {
     if (!value) {
       return;
     }
@@ -205,7 +205,17 @@ const AddLine = () => {
 
     dispatch(setTodoList([...todoList, item]));
     onChange('');
-  };
+  }, [dispatch, todoList, value]);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        onAdd();
+      }
+    });
+  }, [onAdd]);
 
   return (
     <div className="flex space-x-4 w-10/12">
@@ -213,6 +223,7 @@ const AddLine = () => {
         className="rounded-lg shadow-md flex-1 px-4 py-2 font-bold focus:outline-red-400"
         value={value}
         onChange={e => onChange(e.target.value)}
+        ref={inputRef}
       />
       <Button className="text-red-400" onClick={onAdd}>
         ADD
