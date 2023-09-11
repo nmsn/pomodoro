@@ -44,8 +44,8 @@ dependencies:
 
 devDependencies:
   '@types/canvas-confetti':
-    specifier: ^1.6.0
-    version: 1.6.0
+    specifier: ^1.6.1
+    version: 1.6.1
   '@types/node':
     specifier: 20.5.9
     version: 20.5.9
@@ -454,8 +454,8 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@types/canvas-confetti@1.6.0:
-    resolution: {integrity: sha512-Yq6rIccwcco0TLD5SMUrIM7Fk7Fe/C0jmNRxJJCLtAF6gebDkPuUjK5EHedxecm69Pi/aA+It39Ux4OHmFhjRw==}
+  /@types/canvas-confetti@1.6.1:
+    resolution: {integrity: sha512-wTSI/k/586KnzL8Inm0yXe/U9x0sO2tc4j/osIAZVsE+hyj2S/M+sdR5zDDLygEkohhlG948zNVBG5QiI4Z2mw==}
     dev: true
 
   /@types/hoist-non-react-statics@3.3.1:
