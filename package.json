@@ -45,13 +45,13 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@types/canvas-confetti": "^1.6.0",
+    "@types/canvas-confetti": "^1.6.1",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-color": "^3.0.6",
     "@types/react-dom": "18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
     "autoprefixer": "^10.4.15",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
@@ -60,7 +60,7 @@
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "husky": "^8.0.3",
     "postcss": "^8.4.29",
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
     "release-toolbox": "^0.2.0",
     "tailwindcss": "^3.3.3",
     "typescript": "5.2.2"
