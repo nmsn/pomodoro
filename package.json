@@ -47,7 +47,7 @@
   "devDependencies": {
     "@types/canvas-confetti": "^1.6.1",
     "@types/node": "20.5.9",
-    "@types/react": "18.2.21",
+    "@types/react": "18.2.22",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-color": "^3.0.6",
     "@types/react-dom": "18.2.7",
