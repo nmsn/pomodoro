@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import classnames from 'classnames';
 
+import Calendar from '@/components/Calendar';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Pomodoro from '@/components/Pomodoro';
@@ -36,8 +37,9 @@ const Home: NextPage = () => {
     <div className="absolute inset-0">
       <Header open={visible} onChange={onOpen} />
       <div className={classnames('w-full h-full flex', _isMobile ? 'flex-col' : 'flex-row')}>
-        <Todo width={todoWidth} height={todoHeight} />
-        <Pomodoro width={clockWidth} height={clockHeight} />
+        {/* <Todo width={todoWidth} height={todoHeight} />
+        <Pomodoro width={clockWidth} height={clockHeight} /> */}
+        <Calendar />
       </div>
       <Footer />
     </div>
