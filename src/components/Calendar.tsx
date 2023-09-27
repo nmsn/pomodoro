@@ -2,13 +2,22 @@ import classnames from 'classnames';
 import dayjs from 'dayjs';
 
 const W_SUM = 7;
-const H_SUM = 6;
+const H_SUM = 5;
 
 export const getDaysOfMonth = (year: number, month: number) => {
-  const firstDayOfMonth = dayjs(`${year}-${month}-1`);
-  const lastDayOfMonth = dayjs(`${year}-${month + 1}-1`).subtract(1, 'day');
-  const days = [];
+  let firstDayOfMonth = dayjs(`${year}-${month}-1`);
+  let lastDayOfMonth = dayjs(`${year}-${month + 1}-1`).subtract(1, 'day');
+  // 开始补全第一天前的日期
+  while (firstDayOfMonth.day() !== 0) {
+    firstDayOfMonth = firstDayOfMonth.subtract(1, 'day');
+  }
 
+  // 开始补全最后一天后的日期
+  while (lastDayOfMonth.day() !== 6) {
+    lastDayOfMonth = lastDayOfMonth.add(1, 'day');
+  }
+
+  const days = [];
   let tempDate = firstDayOfMonth;
   while (tempDate.isBefore(lastDayOfMonth) || tempDate.isSame(lastDayOfMonth)) {
     days.push(tempDate);
@@ -18,10 +27,18 @@ export const getDaysOfMonth = (year: number, month: number) => {
   return days;
 };
 
+const curYear = dayjs().year();
+const curMonth = dayjs().month();
+
+console.log(getDaysOfMonth(curYear, curMonth));
+
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const block = new Array(H_SUM).fill('').map(_ => new Array(W_SUM).fill(''));
+const block = new Array(H_SUM)
+  .fill('')
+  .map(() => new Array(W_SUM).fill(''))
+  .flat(1);
 
 const Num = ({ children }: { children: number }) => {
   return (
@@ -39,37 +56,25 @@ const BlockItem = ({
   itemClassName?: string;
 }) => {
   return (
-    <div
-      className={classnames(
-        'w-40 h-24 relative border-teal-200 border-2 bg-red-200',
-        itemClassName,
-      )}
-    >
-      {children}
-    </div>
+    <div className={classnames('w-40 h-24 relative  bg-red-200', itemClassName)}>{children}</div>
   );
 };
 
 const Calendar = () => {
   return (
     <div className={classnames('h-full w-full flex justify-center items-center')}>
-      <div>
-        {block.map((item, index) => (
-          <div key={item.toString()} className="flex">
-            {index === 0
-              ? item.map((item2, index2) => (
-                  <BlockItem key={item2}>
-                    <div className="w-full h-full flex justify-center items-center">
-                      <div>{weekDays[index2]}</div>
-                    </div>
-                  </BlockItem>
-                ))
-              : item.map((item2, index2) => (
-                  <BlockItem key={item2}>
-                    <Num>{index2}</Num>
-                  </BlockItem>
-                ))}
-          </div>
+      <div className="grid grid-rows-6 grid-cols-7 gap-1">
+        {weekDays.map(item => (
+          <BlockItem key={item}>
+            <div className="w-full h-full flex justify-center items-center">
+              <div>{item}</div>
+            </div>
+          </BlockItem>
+        ))}
+        {block.map(item => (
+          <BlockItem key={item}>
+            <Num>{item}</Num>
+          </BlockItem>
         ))}
       </div>
     </div>
