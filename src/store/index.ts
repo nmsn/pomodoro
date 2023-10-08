@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage';
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
+import displaySlice from './features/displaySlice';
 import todoListSlice from './features/todoListSlice';
 
 const persistConfig = {
@@ -16,6 +17,7 @@ const persistConfig = {
 
 const persistedReducers = combineReducers({
   todoList: persistReducer(persistConfig, todoListSlice),
+  display: persistReducer(persistConfig, displaySlice),
 });
 
 export const store = configureStore({

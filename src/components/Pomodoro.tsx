@@ -22,7 +22,7 @@ const timeFormat = (val: number) => {
 
 type StatusType = 'initial' | 'processing' | 'paused';
 
-const Pomodoro = ({ width = 'w-0', height = 'h-0' }: { width: string; height: string }) => {
+const Pomodoro = ({ open = false }: { open?: boolean }) => {
   const timer = useRef<number | null>(null);
   const [time, setTime] = useState(baseTime);
   const [status, setStatus] = useState<StatusType>('initial');
@@ -74,9 +74,8 @@ const Pomodoro = ({ width = 'w-0', height = 'h-0' }: { width: string; height: st
   return (
     <div
       className={classnames(
-        width,
-        height,
-        'flex justify-center items-center duration-300 bg-blue-400 relative overflow-hidden',
+        open ? 'w-full' : 'w-0',
+        'h-full flex justify-center items-center duration-300 bg-blue-400 relative overflow-hidden',
       )}
     >
       <div className="w-120 flex-col block">

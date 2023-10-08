@@ -98,22 +98,24 @@ export const SwitchLoopIcon = ({
   return <LoopIcon onClick={() => onCurChange(true)} />;
 };
 
+// TODO 用方向控制
 export const Arrow = ({
-  open,
   onClick,
-  direction = 'horizontal',
+  className,
+  type = 'right',
 }: {
-  open?: boolean;
   onClick?: () => void;
   direction?: 'vertical' | 'horizontal';
+  className?: string;
+  type: 'top' | 'right' | 'bottom' | 'left';
 }) => {
-  const directionCss = (() => {
-    if (direction === 'horizontal') {
-      return open ? 'rotate-180' : 'rotate-0';
-    } else {
-      return open ? '-rotate-90' : 'rotate-90';
-    }
-  })();
+  const typeMap = {
+    top: 'rotate-180',
+    right: '-rotate-90',
+    bottom: 'rotate-0',
+    left: 'rotate-90',
+  };
+  const directionCss = typeMap[type];
 
   return (
     <svg
@@ -125,6 +127,7 @@ export const Arrow = ({
       className={classnames(
         'w-6 h-6 cursor-pointer transition-transform duration-300',
         directionCss,
+        className,
       )}
       onClick={onClick}
     >

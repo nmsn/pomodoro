@@ -3,7 +3,8 @@ import classnames from 'classnames';
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 
 import { useAppDispatch, useAppSelector } from '@/store';
-import { openTodoList, setTodoList } from '@/store/features/todoListSlice';
+import { setDisplayType } from '@/store/features/displaySlice';
+import { setTodoList } from '@/store/features/todoListSlice';
 
 import { shine } from '../utils/confetti';
 
@@ -144,7 +145,7 @@ const TodoList = () => {
     });
 
     dispatch(setTodoList(validTodoList));
-    dispatch(openTodoList(!!todoList.length));
+    dispatch(setDisplayType(!!todoList.length ? 'todo' : 'pomodoro'));
   }, []);
 
   const onDragEnd: OnDragEndResponder = result => {
@@ -232,13 +233,12 @@ const AddLine = () => {
   );
 };
 
-const Todo = ({ width = 'w-0', height = 'h-0' }: { width: string; height: string }) => {
+const Todo = ({ open = false }: { open?: boolean }) => {
   return (
     <div
       className={classnames(
-        width,
-        height,
-        'flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4 overflow-hidden',
+        open ? 'w-full' : 'w-0',
+        'h-full relative flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4 overflow-hidden',
       )}
     >
       <AddLine />

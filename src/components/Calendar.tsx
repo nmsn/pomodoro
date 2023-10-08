@@ -59,14 +59,16 @@ const BlockItem = ({
   itemClassName?: string;
 }) => {
   return (
-    <div className={classnames('w-40 h-24 relative  bg-black p-2', itemClassName)}>{children}</div>
+    <div className={classnames('w-40 h-24 relative  bg-black p-2 rounded-lg', itemClassName)}>
+      {children}
+    </div>
   );
 };
 
 const curYear = dayjs().year();
 const curMonth = dayjs().month() + 1;
 
-const Calendar = () => {
+const Calendar = ({ open = false }: { open?: boolean }) => {
   const [time, setTime] = useState<[number, number]>([curYear, curMonth]);
 
   const [year, month] = time;
@@ -93,20 +95,19 @@ const Calendar = () => {
   });
 
   return (
-    <div className={classnames('h-full w-full flex justify-center items-center bg-red-400')}>
+    <div
+      className={classnames(
+        open ? 'w-full' : 'w-0',
+        'h-full flex justify-center items-center bg-green-400 overflow-hidden duration-300',
+      )}
+    >
       <div>
-        <div className="w-full h-20 bg-black flex justify-center items-center gap-2 mb-2">
-          <div
-            onClick={() => onMonthSwitch(-1)}
-            className="font-bold text-sm text-red-400 cursor-pointer"
-          >
+        <div className="w-full h-20 bg-black flex justify-center items-center gap-2 mb-2 rounded-lg text-xl font-bold  text-green-400">
+          <div onClick={() => onMonthSwitch(-1)} className="cursor-pointer">
             {'<'}
           </div>
-          <div className="font-bold text-sm text-red-400">{`${year}-${month}`}</div>
-          <div
-            className="font-bold text-sm text-red-400 cursor-pointer"
-            onClick={() => onMonthSwitch(1)}
-          >
+          <div>{`${year}-${month}`}</div>
+          <div className="cursor-pointer" onClick={() => onMonthSwitch(1)}>
             {'>'}
           </div>
         </div>
@@ -114,7 +115,7 @@ const Calendar = () => {
           {WEEK_DAYS.map(item => (
             <BlockItem key={item}>
               <div className="w-full h-full flex justify-center items-center">
-                <div className="font-bold text-sm text-red-400">{item}</div>
+                <div className="font-bold text-sm text-green-400">{item}</div>
               </div>
             </BlockItem>
           ))}
@@ -123,7 +124,7 @@ const Calendar = () => {
               <div>
                 <div
                   className={classnames(
-                    'font-bold text-sm text-red-400',
+                    'font-bold text-sm text-green-400',
                     item.isCurMonth ? '' : 'opacity-70',
                   )}
                 >
