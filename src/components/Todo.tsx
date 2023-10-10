@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 
-import { useAppDispatch, useAppSelector } from '@/store';
-import { setDisplayType } from '@/store/features/displaySlice';
-import { setTodoList } from '@/store/features/todoListSlice';
+import useTodoStore, { TodoItemType } from '@/store/todo';
 
 import { shine } from '../utils/confetti';
 
@@ -24,6 +22,7 @@ export type TodoItemDataType = {
 
 type TodoItemProps = TodoItemDataType & {
   sortMark: number;
+  status: 'success' | 'failure' | 'processing';
   find: (id: TodoItemDataType['id']) => DragItemType | undefined;
   move: (id: TodoItemDataType['id'], toIndex: number) => void;
 };
@@ -36,36 +35,23 @@ const checkExpired = (date: number) => {
   return date < today;
 };
 
-const TodoItem = ({ id, value, date, checked, sortMark, find }: TodoItemProps) => {
-  const { todoList } = useAppSelector(state => state.todoList);
-  const dispatch = useAppDispatch();
+const TodoItem = ({ id, content, sortMark, status }: TodoItemType & { sortMark: number }) => {
+  const updateItem = useTodoStore(state => state.update);
+  const deleteItem = useTodoStore(state => state.delete);
+  const date = useTodoStore(state => state.date);
 
   const originalIndex = find(id)?.index ?? 0;
 
   const onDelete = (id: string) => {
-    dispatch(setTodoList(todoList.filter(item => item.id !== id)));
+    deleteItem(date, id);
   };
 
-  const onChangeStats = (id: string) => {
-    // TODO if all checked, show firework
-    const result = [...todoList];
-    const index = result.findIndex(item => item.id === id);
-
-    const newStatus = !result[index].checked;
-
-    if (newStatus) {
+  const onChangeStats = (id: string, status: 'success' | 'failed') => {
+    if (status === 'success') {
       shine();
     }
-
-    result[index] = {
-      ...result[index],
-      checked: newStatus,
-    };
-
-    dispatch(setTodoList(result));
+    updateItem(date, id, status);
   };
-
-  const isExpired = checkExpired(date);
 
   return (
     <Draggable draggableId={id} index={originalIndex} key={id}>
@@ -79,18 +65,20 @@ const TodoItem = ({ id, value, date, checked, sortMark, find }: TodoItemProps) =
           <div className="flex justify-start flex-auto truncate">
             <div className="font-bold pr-2">{sortMark + 1}.</div>
             <div
-              className={classnames('font-bold  truncate', checked ? 'line-through' : undefined)}
+              className={classnames(
+                'font-bold  truncate',
+                status === 'success' ? 'line-through' : undefined,
+              )}
             >
-              {value}
+              {content}
             </div>
           </div>
           {/* TODO change animation */}
           <div className="pl-4 flex justify-end flex-none">
-            {isExpired && <div className="pr-2">E</div>}
-            {checked ? (
-              <LoopIcon onClick={() => onChangeStats(id)} />
+            {status === 'success' ? (
+              <LoopIcon onClick={() => onChangeStats(id, 'failed')} />
             ) : (
-              <Check onClick={() => onChangeStats(id)} />
+              <Check onClick={() => onChangeStats(id, 'success')} />
             )}
             <XMark onClick={() => onDelete(id)} />
           </div>
@@ -101,52 +89,28 @@ const TodoItem = ({ id, value, date, checked, sortMark, find }: TodoItemProps) =
 };
 
 const TodoList = () => {
-  const { todoList } = useAppSelector(state => state.todoList);
-  const dispatch = useAppDispatch();
+  // const { todoList } = useAppSelector(state => state.todoList);
+  // const dispatch = useAppDispatch();
 
-  const find = useCallback(
-    (id: TodoItemDataType['id']) => {
-      const curItem = todoList.find(c => `${c?.id}` === id);
+  const calendar = useTodoStore(state => state.calendar);
+  const date = useTodoStore(state => state.date);
+  const move = useTodoStore(state => state.move);
 
-      if (curItem) {
-        return {
-          item: curItem,
-          index: todoList.indexOf(curItem),
-        };
-      }
+  const { todoList } =
+    calendar.find(item => item.date === date) || ({ todoList: [] } as { todoList: TodoItemType[] });
 
-      return undefined;
-    },
-    [todoList],
-  );
+  const find = (id: TodoItemDataType['id']) => {
+    const curItem = todoList.find(item => `${item?.id}` === id) as TodoItemType;
 
-  const move = useCallback(
-    (id: TodoItemDataType['id'], toIndex: number) => {
-      const findItem = find(id);
+    if (curItem) {
+      return {
+        item: curItem,
+        index: todoList.indexOf(curItem),
+      };
+    }
 
-      if (findItem) {
-        const { item: curItem, index } = findItem;
-        const newTodoList = [...todoList];
-        newTodoList.splice(index, 1);
-        newTodoList.splice(toIndex, 0, curItem);
-
-        dispatch(setTodoList(newTodoList));
-      }
-    },
-    [dispatch, find, todoList],
-  );
-
-  // 初始化时清除过期且完成的 todo
-  useLayoutEffect(() => {
-    const validTodoList = todoList.filter(item => {
-      const { checked, date } = item;
-      const isExpired = checkExpired(date);
-      return !(isExpired && checked);
-    });
-
-    dispatch(setTodoList(validTodoList));
-    dispatch(setDisplayType(!!todoList.length ? 'todo' : 'pomodoro'));
-  }, []);
+    return undefined;
+  };
 
   const onDragEnd: OnDragEndResponder = result => {
     const { source, destination } = result || {};
@@ -154,15 +118,7 @@ const TodoList = () => {
     const { index: sourceIndex } = source || {};
     const { index: toIndex = 0 } = destination || {};
 
-    const newTodoList = [...todoList];
-    const sourceItem = newTodoList.find((item, index) => index === sourceIndex);
-
-    if (sourceItem) {
-      newTodoList.splice(sourceIndex, 1);
-      newTodoList.splice(toIndex, 0, sourceItem);
-
-      dispatch(setTodoList(newTodoList));
-    }
+    move(date, sourceIndex, toIndex);
   };
 
   return (
@@ -175,7 +131,7 @@ const TodoList = () => {
             {...provided.droppableProps}
           >
             {todoList?.map((item, index) => (
-              <TodoItem {...item} key={item.id} sortMark={index} find={find} move={move} />
+              <TodoItem {...item} key={item.id} sortMark={index} find={find} />
             ))}
             {provided.placeholder}
           </div>
@@ -187,26 +143,17 @@ const TodoList = () => {
 
 const AddLine = () => {
   const [value, onChange] = useState('');
-
-  const { todoList } = useAppSelector(state => state.todoList);
-  const dispatch = useAppDispatch();
+  const date = useTodoStore(state => state.date);
+  const add = useTodoStore(state => state.add);
 
   const onAdd = useCallback(() => {
     if (!value) {
       return;
     }
 
-    const date = Date.now();
-    const item = {
-      checked: false,
-      value,
-      date,
-      id: value + '+' + date,
-    };
-
-    dispatch(setTodoList([...todoList, item]));
+    add(date, value);
     onChange('');
-  }, [dispatch, todoList, value]);
+  }, [add, date, value]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 

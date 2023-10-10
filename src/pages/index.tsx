@@ -6,11 +6,10 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Pomodoro from '@/components/Pomodoro';
 import Todo from '@/components/Todo';
-
-import { useAppSelector } from '../store';
+import useDisplayStore from '@/store/display';
 
 const Home: NextPage = () => {
-  const { displayType } = useAppSelector(state => state.display);
+  const displayType = useDisplayStore(state => state.displayType);
 
   return (
     <div className="absolute inset-0">

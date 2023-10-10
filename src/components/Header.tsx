@@ -1,9 +1,7 @@
 import Image from 'next/image';
 import classnames from 'classnames';
 
-import { setDisplayType } from '@/store/features/displaySlice';
-
-import { useAppDispatch, useAppSelector } from '../store';
+import useDisplayStore from '@/store/display';
 
 const Block = ({
   visible = false,
@@ -33,11 +31,13 @@ const Block = ({
 };
 
 const Navigation = () => {
-  const { displayType } = useAppSelector(state => state.display);
-  const dispatch = useAppDispatch();
+  const [setDisplayType, displayType] = useDisplayStore(state => [
+    state.setDisplayType,
+    state.displayType,
+  ]);
 
   const onClick = (type: 'pomodoro' | 'todo' | 'calendar') => {
-    dispatch(setDisplayType(type));
+    setDisplayType(type);
   };
   const map = ['calendar', 'todo', 'pomodoro'] as const;
   return (

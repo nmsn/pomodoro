@@ -1,10 +1,6 @@
 import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-
-import { persistor, store, wrapper } from '@/store';
 
 import '../styles/styles.css';
 import '../styles/globals.css';
@@ -53,13 +49,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="apple-mobile-web-app-capable " content="yes " />
         <title>Pomodoro</title>
       </Head>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <Component {...pageProps} />
-        </PersistGate>
-      </Provider>
+
+      <Component {...pageProps} />
     </>
   );
 }
 
-export default wrapper.withRedux(MyApp);
+export default MyApp;
