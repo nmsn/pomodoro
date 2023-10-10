@@ -110,7 +110,6 @@ const TodoList = () => {
 
     const { index: sourceIndex } = source || {};
     const { index: toIndex = 0 } = destination || {};
-
     move(date, sourceIndex, toIndex);
   };
 

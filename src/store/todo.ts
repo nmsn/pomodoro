@@ -38,11 +38,10 @@ const useTodoStore = create<State & Actions>(set => ({
       const newCalendar = [...calendar];
       const todayIndex = newCalendar.findIndex(item => item.date === date);
       const { todoList } = newCalendar[todayIndex];
-      const newTodoList = [...todoList];
-      const sourceItem = newTodoList.find((item, index) => index === sourceIndex) as TodoItemType;
+      const sourceItem = todoList.find((item, index) => index === sourceIndex) as TodoItemType;
 
-      newTodoList.splice(sourceIndex, 1);
-      newTodoList.splice(toIndex, 0, sourceItem);
+      todoList.splice(sourceIndex, 1);
+      todoList.splice(toIndex, 0, sourceItem);
       return { calendar: newCalendar };
     }),
   // 没有 content 的情况为增加当天空数据列表
@@ -53,7 +52,6 @@ const useTodoStore = create<State & Actions>(set => ({
       const { calendar } = state;
       const newCalendar = [...calendar];
       const todayIndex = newCalendar.findIndex(item => item.date === date);
-      console.log(date, todayIndex, newCalendar, content);
       if (todayIndex < 0) {
         newCalendar.push({
           date,
