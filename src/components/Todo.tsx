@@ -9,10 +9,6 @@ import { shine } from '../utils/confetti';
 import Button from './Button';
 import { Check, LoopIcon, XMark } from './Icon';
 
-export const ItemTypes = {
-  TODO_ITEM: 'todoItem',
-};
-
 export type TodoItemDataType = {
   value: string;
   checked: boolean;
@@ -20,22 +16,22 @@ export type TodoItemDataType = {
   id: string; // use value + Date.now() as unique key
 };
 
-type TodoItemProps = TodoItemDataType & {
+// FIXME 切换顺序有问题
+const TodoItem = ({
+  id,
+  content,
+  sortMark,
+  find,
+  status,
+}: TodoItemType & {
   sortMark: number;
-  status: 'success' | 'failure' | 'processing';
-  find: (id: TodoItemDataType['id']) => DragItemType | undefined;
-  move: (id: TodoItemDataType['id'], toIndex: number) => void;
-};
-
-type DragItemType = { item: TodoItemDataType } & { index: number };
-
-const checkExpired = (date: number) => {
-  const today = new Date().setHours(0, 0, 0, 0);
-
-  return date < today;
-};
-
-const TodoItem = ({ id, content, sortMark, status }: TodoItemType & { sortMark: number }) => {
+  find: (id: string) =>
+    | {
+        item: TodoItemType;
+        index: number;
+      }
+    | undefined;
+}) => {
   const updateItem = useTodoStore(state => state.update);
   const deleteItem = useTodoStore(state => state.delete);
   const date = useTodoStore(state => state.date);
@@ -89,9 +85,6 @@ const TodoItem = ({ id, content, sortMark, status }: TodoItemType & { sortMark: 
 };
 
 const TodoList = () => {
-  // const { todoList } = useAppSelector(state => state.todoList);
-  // const dispatch = useAppDispatch();
-
   const calendar = useTodoStore(state => state.calendar);
   const date = useTodoStore(state => state.date);
   const move = useTodoStore(state => state.move);
@@ -181,6 +174,7 @@ const AddLine = () => {
 };
 
 const Todo = ({ open = false }: { open?: boolean }) => {
+  const date = useTodoStore(state => state.date);
   return (
     <div
       className={classnames(
@@ -188,6 +182,7 @@ const Todo = ({ open = false }: { open?: boolean }) => {
         'h-full relative flex flex-col justify-center items-center duration-300 bg-red-400 space-y-4 overflow-hidden',
       )}
     >
+      <div className="w-10/12 flex justify-start font-bold">{date}</div>
       <AddLine />
       <TodoList />
     </div>
