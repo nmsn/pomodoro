@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
 
+import useDisplayStore from '@/store/display';
 import useTodoStore from '@/store/todo';
 
 const W_SUM = 7;
@@ -56,12 +57,17 @@ const Num = ({ children, type = 'fail' }: { children: number; type?: 'success' |
 const BlockItem = ({
   children,
   itemClassName,
+  onClick,
 }: {
   children: React.ReactNode;
   itemClassName?: string;
+  onClick?: () => void;
 }) => {
   return (
-    <div className={classnames('w-40 h-24 relative  bg-black p-2 rounded-lg', itemClassName)}>
+    <div
+      onClick={onClick}
+      className={classnames('w-40 h-24 relative  bg-black p-2 rounded-lg', itemClassName)}
+    >
       {children}
     </div>
   );
@@ -69,11 +75,19 @@ const BlockItem = ({
 
 const curYear = dayjs().year();
 const curMonth = dayjs().month() + 1;
+const today = dayjs().date();
+
+console.log(curYear, curMonth, today);
 
 const Calendar = ({ open = false }: { open?: boolean }) => {
   const [time, setTime] = useState<[number, number]>([curYear, curMonth]);
 
   const [year, month] = time;
+
+  const calendar = useTodoStore(state => state.calendar);
+  const setDate = useTodoStore(state => state.setDate);
+
+  // 当月存在 todoList 数据的数组
 
   const onMonthSwitch = (action: number) => {
     const day = dayjs(`${year}-${month}`);
@@ -86,15 +100,28 @@ const Calendar = ({ open = false }: { open?: boolean }) => {
     return getDaysOfMonth(year, month);
   }, [month, year]);
 
+  const blockHasTodoList = curDays.map(item => calendar.find(day => day.date === item));
+
   const curBlocks = BLOCKS.map((_, index) => {
     const isCurMonth = curDays[index].includes(`${curYear}-${curMonth}`);
+    const isToday = curDays[index] === `${curYear}-${curMonth}-${today}`;
+    const { todoList = [] } = blockHasTodoList[index] || {};
+    const success = todoList.filter(item => item.status === 'success').length;
+    const fail = isToday ? 0 : todoList.length - success;
     return {
       date: curDays[index],
-      success: 1,
-      fail: 2,
+      success,
+      fail,
       isCurMonth,
     };
   });
+
+  const setDisplayType = useDisplayStore(state => state.setDisplayType);
+
+  const onToTodo = (date: string) => {
+    setDate(date);
+    setDisplayType('todo');
+  };
 
   return (
     <div
@@ -122,7 +149,7 @@ const Calendar = ({ open = false }: { open?: boolean }) => {
             </BlockItem>
           ))}
           {curBlocks.map(item => (
-            <BlockItem key={item.date}>
+            <BlockItem key={item.date} onClick={() => onToTodo(item.date)}>
               <div>
                 <div
                   className={classnames(
@@ -133,8 +160,8 @@ const Calendar = ({ open = false }: { open?: boolean }) => {
                   {item.date}
                 </div>
                 <div className="flex justify-center items-center absolute right-1 bottom-1">
-                  <Num type="success">{item.success}</Num>
-                  <Num>{item.fail}</Num>
+                  {item.success > 0 && <Num type="success">{item.success}</Num>}
+                  {item.fail > 0 && <Num>{item.fail}</Num>}
                 </div>
               </div>
             </BlockItem>

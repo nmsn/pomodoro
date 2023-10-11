@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { create } from 'zustand';
 
 export type TodoItemType = {
-  status: 'success' | 'failed' | 'processing';
+  status: 'success' | 'processing';
   content: string;
   createdTime: string;
   id: string;

@@ -42,7 +42,7 @@ const TodoItem = ({
     deleteItem(date, id);
   };
 
-  const onChangeStats = (id: string, status: 'success' | 'failed') => {
+  const onChangeStats = (id: string, status: 'success' | 'processing') => {
     if (status === 'success') {
       shine();
     }
@@ -72,7 +72,7 @@ const TodoItem = ({
           {/* TODO change animation */}
           <div className="pl-4 flex justify-end flex-none">
             {status === 'success' ? (
-              <LoopIcon onClick={() => onChangeStats(id, 'failed')} />
+              <LoopIcon onClick={() => onChangeStats(id, 'processing')} />
             ) : (
               <Check onClick={() => onChangeStats(id, 'success')} />
             )}
