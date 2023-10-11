@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
 
+import useTodoStore from '@/store/todo';
+
 const W_SUM = 7;
 const H_SUM = 5;
 const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -85,7 +87,7 @@ const Calendar = ({ open = false }: { open?: boolean }) => {
   }, [month, year]);
 
   const curBlocks = BLOCKS.map((_, index) => {
-    const isCurMonth = curDays[index].includes(`${year}-${month}`);
+    const isCurMonth = curDays[index].includes(`${curYear}-${curMonth}`);
     return {
       date: curDays[index],
       success: 1,
