@@ -15,7 +15,6 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     useTodoStore.persist.rehydrate();
-    useDisplayStore.persist.rehydrate();
   }, []);
 
   return (

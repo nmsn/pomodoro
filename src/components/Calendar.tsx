@@ -77,8 +77,6 @@ const curYear = dayjs().year();
 const curMonth = dayjs().month() + 1;
 const today = dayjs().date();
 
-console.log(curYear, curMonth, today);
-
 const Calendar = ({ open = false }: { open?: boolean }) => {
   const [time, setTime] = useState<[number, number]>([curYear, curMonth]);
 
