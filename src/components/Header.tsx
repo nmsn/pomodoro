@@ -1,16 +1,17 @@
 import Image from 'next/image';
 import classnames from 'classnames';
+import dayjs from 'dayjs';
 
 import useDisplayStore from '@/store/display';
-
-const Block = ({
-  visible = false,
+import useTodoStore from '@/store/todo';
+const NavItem = ({
   type,
   onClick,
+  active = false,
 }: {
-  visible?: boolean;
   type: 'pomodoro' | 'todo' | 'calendar';
   onClick?: () => void;
+  active?: boolean;
 }) => {
   const color = {
     pomodoro: 'blue',
@@ -23,7 +24,7 @@ const Block = ({
       className={classnames(
         'w-4 h-4 rounded-full border-2',
         `bg-${color[type]}-400`,
-        visible ? 'border-white' : 'border-black',
+        active ? 'border-white cursor-default' : 'border-black cursor-pointer',
       )}
       onClick={onClick}
     />
@@ -31,22 +32,28 @@ const Block = ({
 };
 
 const Navigation = () => {
-  const [setDisplayType, displayType] = useDisplayStore(state => [
-    state.setDisplayType,
+  const [displayType, setDisplayType] = useDisplayStore(state => [
     state.displayType,
+    state.setDisplayType,
   ]);
+
+  const setDate = useTodoStore(state => state.setDate);
 
   const onClick = (type: 'pomodoro' | 'todo' | 'calendar') => {
     setDisplayType(type);
+
+    const today = dayjs().format('YYYY-MM-DD');
+    setDate(today);
   };
+
   const map = ['calendar', 'todo', 'pomodoro'] as const;
   return (
-    <div className="flex gap-2 justify-between">
+    <div className={classnames('flex gap-2 justify-between')}>
       {map.map(item => (
-        <Block
+        <NavItem
           key={item}
-          onClick={() => onClick(item)}
-          visible={displayType === item}
+          onClick={item === displayType ? undefined : () => onClick(item)}
+          active={displayType === item}
           type={item}
         />
       ))}
