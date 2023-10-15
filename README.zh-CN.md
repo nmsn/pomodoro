@@ -14,7 +14,9 @@
 
 ![pomodoro.png](https://s2.loli.net/2023/02/18/dRlCoLftjqX7IUZ.png)
 
-![pomodoro_todo.png](https://s2.loli.net/2023/02/18/PeAHoVTN6tE4JWB.png)
+![pomodoro_todo.png](https://s2.loli.net/2023/10/15/T4VCIw7iotQ2JDq.png)
+
+![pomodoro_calendar.png](https://s2.loli.net/2023/10/15/BxbkyRU4fXipC8S.png)
 
 ## 特征
 
@@ -28,7 +30,6 @@
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=TypeScript&logoColor=white&style=flat)
 ![React](https://img.shields.io/badge/-React-61DAFB?logo=React&logoColor=white&style=flat)
 ![TailwindCSS](https://img.shields.io/badge/-TailwindCSS-06B6D4?logo=TailwindCSS&logoColor=white&style=flat)
-![Redux](https://img.shields.io/badge/-Redux-764ABC?logo=Redux&logoColor=white&style=flat)
 
 - 使用 `Nextjs` 搭建开发环境
 - 全程使用 `Typescript` 开发
@@ -36,7 +37,7 @@
 - 使用 `React-Dnd` 开发 Todo List 的拖拽排序功能
 - 使用 `canvas-confetti` 增加完成时的动画特效
 - 使用 `Tailwindcss` 开发样式
-- 使用 `Redux` `Redux-Toolkit` `Redux-Persist` 来维护全局状态数据
+- 使用 `Zustand` 来维护全局状态数据
 
 ## 已完成功能
 
@@ -55,7 +56,6 @@
 
 - [ ] 自定义主题色功能
 - [ ] 完成任务时的音效
-- [ ] 移动端的适配
 - [ ] 增加时钟模式
 
 ## 参与贡献

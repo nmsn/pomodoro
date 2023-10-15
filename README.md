@@ -13,7 +13,9 @@ Online address: [https://pomodoro-easy.vercel.app/](https://pomodoro-easy.vercel
 
 ![pomodoro.png](https://s2.loli.net/2023/02/18/dRlCoLftjqX7IUZ.png)
 
-![pomodoro_todo.png](https://s2.loli.net/2023/02/18/PeAHoVTN6tE4JWB.png)
+![pomodoro_todo.png](https://s2.loli.net/2023/10/15/T4VCIw7iotQ2JDq.png)
+
+![pomodoro_calendar.png](https://s2.loli.net/2023/10/15/BxbkyRU4fXipC8S.png)
 ## Features
 
 - Lightweight: Open a web page and use it, no additional client is required.
@@ -26,7 +28,6 @@ Online address: [https://pomodoro-easy.vercel.app/](https://pomodoro-easy.vercel
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=TypeScript&logoColor=white&style=flat)
 ![React](https://img.shields.io/badge/-React-61DAFB?logo=React&logoColor=white&style=flat)
 ![TailwindCSS](https://img.shields.io/badge/-TailwindCSS-06B6D4?logo=TailwindCSS&logoColor=white&style=flat)
-![Redux](https://img.shields.io/badge/-Redux-764ABC?logo=Redux&logoColor=white&style=flat)
 
 - Use `Nextjs` to set up a development environment.
 - Developed using `Typescript` throughout.
@@ -34,7 +35,7 @@ Online address: [https://pomodoro-easy.vercel.app/](https://pomodoro-easy.vercel
 - Use `React-Dnd` to develop the drag-and-drop sorting function of Todo List.
 - Use `canvas-confetti` to add animation effects when finished.
 - Use `Tailwindcss` to develop styles.
-- Use `Redux` `Redux-Toolkit` `Redux-Persist` to maintain global state data.
+- Use `Zustand` to maintain global state data.
 
 ## Finished
 
@@ -55,7 +56,6 @@ Online address: [https://pomodoro-easy.vercel.app/](https://pomodoro-easy.vercel
 
 - [ ] Custom theme color.
 - [ ] Sound when finished.
-- [ ] Mobile adaptation.
 - [ ] Add a clock mode.
 
 ## Contributing
