@@ -66,7 +66,11 @@ const BlockItem = ({
   return (
     <div
       onClick={onClick}
-      className={classnames('w-40 h-24 relative  bg-black p-2 rounded-lg', itemClassName)}
+      className={classnames(
+        'w-40 h-24 relative  bg-black p-2 rounded-lg',
+        onClick ? 'cursor-pointer' : 'cursor-default',
+        itemClassName,
+      )}
     >
       {children}
     </div>
@@ -138,7 +142,7 @@ const Calendar = ({ open = false }: { open?: boolean }) => {
             {'>'}
           </div>
         </div>
-        <div className="grid grid-rows-6 grid-cols-7 gap-1">
+        <div className="grid grid-rows-6 grid-cols-7 gap-2">
           {WEEK_DAYS.map(item => (
             <BlockItem key={item}>
               <div className="w-full h-full flex justify-center items-center">
