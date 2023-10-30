@@ -34,7 +34,7 @@ dependencies:
     version: 18.2.0(react@18.2.0)
   zustand:
     specifier: ^4.4.3
-    version: 4.4.3(@types/react@18.2.21)(react@18.2.0)
+    version: 4.4.3(@types/react@18.2.33)(react@18.2.0)
 
 devDependencies:
   '@types/canvas-confetti':
@@ -44,8 +44,8 @@ devDependencies:
     specifier: 20.5.9
     version: 20.5.9
   '@types/react':
-    specifier: 18.2.21
-    version: 18.2.21
+    specifier: 18.2.33
+    version: 18.2.33
   '@types/react-beautiful-dnd':
     specifier: ^13.1.5
     version: 13.1.5
@@ -454,7 +454,7 @@ packages:
   /@types/hoist-non-react-statics@3.3.1:
     resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
     dependencies:
-      '@types/react': 18.2.21
+      '@types/react': 18.2.33
       hoist-non-react-statics: 3.3.2
     dev: false
 
@@ -476,33 +476,33 @@ packages:
   /@types/react-beautiful-dnd@13.1.5:
     resolution: {integrity: sha512-mzohmMtV48b0bXF2dP8188LzUv9HAGHKucOORYsd5Sqq830pJ4gseFyDDAH0TR4TeD1ceG9DxTQ0FOFbtCSy4Q==}
     dependencies:
-      '@types/react': 18.2.21
+      '@types/react': 18.2.33
     dev: true
 
   /@types/react-color@3.0.7:
     resolution: {integrity: sha512-IGZA7e8Oia0+Sb3/1KP0qTThGelZ9DRspfeLrFWQWv5vXHiYlJJQMC2kgQr75CtP4uL8/kvT8qBgrOVlxVoNTw==}
     dependencies:
-      '@types/react': 18.2.21
+      '@types/react': 18.2.33
       '@types/reactcss': 1.2.6
     dev: true
 
   /@types/react-dom@18.2.7:
     resolution: {integrity: sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==}
     dependencies:
-      '@types/react': 18.2.21
+      '@types/react': 18.2.33
     dev: true
 
   /@types/react-redux@7.1.25:
     resolution: {integrity: sha512-bAGh4e+w5D8dajd6InASVIyCo4pZLJ66oLb80F9OBLO1gKESbZcRCJpTT6uLXX+HAB57zw1WTdwJdAsewuTweg==}
     dependencies:
       '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 18.2.21
+      '@types/react': 18.2.33
       hoist-non-react-statics: 3.3.2
       redux: 4.2.1
     dev: false
 
-  /@types/react@18.2.21:
-    resolution: {integrity: sha512-neFKG/sBAwGxHgXiIxnbm3/AAVQ/cMRS93hvBpg8xYRbeQSPVABp9U2bRnPf0iI4+Ucdv3plSxKK+3CW2ENJxA==}
+  /@types/react@18.2.33:
+    resolution: {integrity: sha512-v+I7S+hu3PIBoVkKGpSYYpiBT1ijqEzWpzQD62/jm4K74hPpSP7FF9BnKG6+fg2+62weJYkkBWDJlZt5JO/9hg==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
@@ -511,7 +511,7 @@ packages:
   /@types/reactcss@1.2.6:
     resolution: {integrity: sha512-qaIzpCuXNWomGR1Xq8SCFTtF4v8V27Y6f+b9+bzHiv087MylI/nTCqqdChNeWS7tslgROmYB7yeiruWX7WnqNg==}
     dependencies:
-      '@types/react': 18.2.21
+      '@types/react': 18.2.33
     dev: true
 
   /@types/scheduler@0.16.2:
@@ -3262,7 +3262,7 @@ packages:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
     dev: false
 
-  /zustand@4.4.3(@types/react@18.2.21)(react@18.2.0):
+  /zustand@4.4.3(@types/react@18.2.33)(react@18.2.0):
     resolution: {integrity: sha512-oRy+X3ZazZvLfmv6viIaQmtLOMeij1noakIsK/Y47PWYhT8glfXzQ4j0YcP5i0P0qI1A4rIB//SGROGyZhx91A==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
@@ -3277,7 +3277,7 @@ packages:
       react:
         optional: true
     dependencies:
-      '@types/react': 18.2.21
+      '@types/react': 18.2.33
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
