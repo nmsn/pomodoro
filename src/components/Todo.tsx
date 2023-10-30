@@ -150,11 +150,13 @@ const AddLine = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    inputRef.current?.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter') {
-        onAdd();
-      }
-    });
+    if(inputRef.current) {
+      inputRef.current.onkeydown = event => {
+        if (event.key === 'Enter') {
+          onAdd();
+        };
+      };  
+    }
   }, [onAdd]);
 
   return (
