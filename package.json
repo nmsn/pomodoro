@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.6.1",
-    "@types/node": "20.5.9",
+    "@types/node": "20.9.2",
     "@types/react": "18.2.21",
     "@types/react-beautiful-dnd": "^13.1.5",
     "@types/react-color": "^3.0.7",
