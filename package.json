@@ -33,6 +33,7 @@
     "canvas-confetti": "^1.9.2",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.10",
+    "lucide-react": "^0.447.0",
     "next": "13.4.19",
     "react": "18.2.0",
     "react-beautiful-dnd": "^13.1.1",
