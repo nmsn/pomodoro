@@ -16,6 +16,11 @@ export type TodoItemDataType = {
   id: string; // use value + Date.now() as unique key
 };
 
+type FindResult = {
+  item: TodoItemType;
+  index: number;
+};
+
 // FIXME 切换顺序有问题
 const TodoItem = ({
   id,
@@ -25,12 +30,7 @@ const TodoItem = ({
   status,
 }: TodoItemType & {
   sortMark: number;
-  find: (id: string) =>
-    | {
-        item: TodoItemType;
-        index: number;
-      }
-    | undefined;
+  find: (id: string) => FindResult | undefined;
 }) => {
   const updateItem = useTodoStore(state => state.update);
   const deleteItem = useTodoStore(state => state.delete);
