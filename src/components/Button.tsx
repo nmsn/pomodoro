@@ -1,9 +1,8 @@
-import classnames from 'classnames';
-
+import { clsx } from 'clsx';
 const Button = ({
   children,
   onClick,
-  className = 'text-blue-400',
+  className,
   size = 'normal',
   type = 'inverse',
 }: {
@@ -16,7 +15,7 @@ const Button = ({
   return (
     <button
       // className={classnames(size === "small" ? "btn-small" : "btn", className)}
-      className={classnames(
+      className={clsx(
         {
           'btn-small': size === 'small',
           'btn-normal': size === 'normal',

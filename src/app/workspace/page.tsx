@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import TDPomodoro from '@/components/Pomodoro/TDPomodoro';
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
 import HyperText from '@/components/ui/hyper-text';
 
@@ -59,16 +60,12 @@ export function ThreeDCardDemo() {
   );
 }
 
-// function Card() {
-//   return <div className="w-[300px] h-[300px] bg-white" />;
-// }
-
 export default function Page() {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <Title />
-
-      <ThreeDCardDemo />
+      {/* <ThreeDCardDemo /> */}
+      <TDPomodoro />
       {/* <Card /> */}
     </div>
   );
