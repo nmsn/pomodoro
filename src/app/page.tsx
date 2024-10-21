@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import type { NextPage } from 'next';
 import classnames from 'classnames';
@@ -18,7 +20,7 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className="absolute inset-0">
+    <div className="absolute inset-0 w-full h-full">
       <Header />
       <div className={classnames('w-full h-full flex flex-row')}>
         <Calendar open={displayType === 'calendar'} />

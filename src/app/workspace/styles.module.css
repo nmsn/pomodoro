@@ -1,0 +1,4 @@
+.background {
+  background-size: 14px 14px;
+  background-image: linear-gradient(to right, #F6F6F6 1px, transparent 1px), linear-gradient(to bottom, #F6F6F6 1px, transparent 1px);
+}
