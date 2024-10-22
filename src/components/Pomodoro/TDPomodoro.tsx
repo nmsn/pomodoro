@@ -7,13 +7,13 @@ import Button from '../Button';
 import usePomodoro from './usePomodoro';
 
 export default function BasePomodoro() {
-  const { onStart, onPause, onReset, onChangeTimeType, timeDisplay, status, timeType } =
+  const { onStart, onPause, onReset, onChangeTimeType, timeDisplay, status, timeType, ratio } =
     usePomodoro();
 
   return (
-    <CardContainer className="inter-var">
-      <CardBody className="bg-gray-50  flex flex-col items-center p-8 w-80 h-80 rounded">
-        <div className="flex justify-end gap-2">
+    <CardContainer className="inter-var border-black/[0.1]">
+      <CardBody className="bg-gray-50  flex flex-col justify-between items-center p-10 w-[300px] h-[300px] rounded-xl border border-black/[0.1]">
+        <div className="flex justify-end gap-4 w-full">
           <CardItem translateZ={20}>
             <Button
               size="small"
@@ -33,19 +33,18 @@ export default function BasePomodoro() {
             </Button>
           </CardItem>
         </div>
-        <CardItem
-          translateZ={50}
-          className="text-7xl mt-12 mb-12 font-bold select-none text-center"
-        >
+        <CardItem translateZ={50} className="text-7xl font-bold select-none text-center">
           <div style={{ fontVariantNumeric: 'tabular-nums' }} className="mb-4">
             {`${timeDisplay[0]}:${timeDisplay[1]}`}
           </div>
-          <div className="w-full h-1 bg-black" />
+          <div className="w-full">
+            <div className="h-[2px] bg-black" style={{ width: ratio * 100 + '%' }} />
+          </div>
         </CardItem>
         <CardItem
           translateZ={50}
           class={clsx(
-            'flex justify-center',
+            'flex justify-center w-full',
             status === 'initial' ? 'justify-center' : 'justify-between',
           )}
         >

@@ -29,6 +29,11 @@ export default function usePomodoro() {
     return timeFormat(time)?.map(item => item.toString().padStart(2, '0'));
   }, [time]);
 
+  const ratio = useMemo(() => {
+    const _ratio = time / (timeType === 'double' ? baseTime * 2 : baseTime);
+    return +_ratio.toFixed(2);
+  }, [time, timeType]);
+
   const onStart = () => {
     setStatus('processing');
     timer.current = window.setInterval(() => {
@@ -75,5 +80,6 @@ export default function usePomodoro() {
     timeDisplay,
     status,
     timeType,
+    ratio,
   };
 }
