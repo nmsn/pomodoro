@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import Calendar from '@/components/Calendar/index';
 import TDPomodoro from '@/components/Pomodoro/TDPomodoro';
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card';
 import HyperText from '@/components/ui/hyper-text';
@@ -66,6 +67,7 @@ export default function Page() {
       <Title />
       {/* <ThreeDCardDemo /> */}
       <TDPomodoro />
+      <Calendar />
       {/* <Card /> */}
     </div>
   );
