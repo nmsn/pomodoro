@@ -3,10 +3,12 @@ import { clsx } from 'clsx';
 import useCalendar from './useCalendar';
 export default function Calendar() {
   const { curBlocks, onMonthSwitch, WEEK_DAYS, year, month } = useCalendar();
+
+  console.log(curBlocks, WEEK_DAYS);
   return (
-    <div className="h-full flex justify-center items-center overflow-hidden duration-300">
+    <div className="flex justify-center items-center p-4 w-[280px] rounded-xl border border-black/[0.1] bg-gray-50">
       <div>
-        <div className="w-full h-20 bg-black flex justify-center items-center gap-2 mb-2 rounded-lg text-xl font-bold text-white">
+        <div className="flex justify-between items-center mb-2 rounded-lg text-xl text-black">
           <div onClick={() => onMonthSwitch(-1)} className="cursor-pointer">
             {'<'}
           </div>
@@ -18,15 +20,18 @@ export default function Calendar() {
         <div className="grid grid-rows-6 grid-cols-7 gap-2">
           {WEEK_DAYS.map(item => (
             <div key={item}>
-              <div className="w-full h-full flex justify-center items-center"></div>
+              <div className="w-full h-full flex justify-center items-center">{item}</div>
             </div>
           ))}
           {curBlocks.map(item => (
             <div key={item.date}>
-              <div>
-                <div className={clsx('font-bold text-sm', item.isCurMonth ? '' : 'opacity-70')}>
-                  {item.day}
-                </div>
+              <div
+                className={clsx(
+                  'text-sm w-[32px] h-[32px] flex justify-center items-center rounded-full',
+                  item.isCurMonth ? '' : 'opacity-50',
+                )}
+              >
+                {item.day}
               </div>
             </div>
           ))}

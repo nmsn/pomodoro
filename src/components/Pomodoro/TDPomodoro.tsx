@@ -33,7 +33,7 @@ export default function BasePomodoro() {
 
   return (
     <CardContainer className="inter-var border-black/[0.1]">
-      <CardBody className="bg-gray-50  flex flex-col justify-between items-center p-10 w-[280px] h-[280px] rounded-xl border border-black/[0.1]">
+      <CardBody className="  flex flex-col justify-between items-center p-10 w-[280px] h-[280px] rounded-xl border border-black/[0.1] bg-gray-50">
         <div className="flex justify-end gap-4 w-full">
           <CardItem translateZ={20}>
             <CircleButton

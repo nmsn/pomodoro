@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
+// TODO 更轻量日期库
 import dayjs from 'dayjs';
 
 const W_SUM = 7;
 const H_SUM = 5;
-const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const WEEK_DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
 const BLOCKS = new Array(H_SUM)
   .fill('')
   .map(() => new Array(W_SUM).fill(''))
@@ -39,6 +40,7 @@ export const getDaysOfMonth = (
 
 const curYear = dayjs().year();
 const curMonth = dayjs().month() + 1;
+const curDate = dayjs().date();
 
 export default function useCalendar() {
   const [time, setTime] = useState<[number, number]>([curYear, curMonth]);
@@ -56,10 +58,9 @@ export default function useCalendar() {
     return getDaysOfMonth(year, month);
   }, [month, year]);
 
-  // const blockHasTodoList = curDays.map(item => calendar.find(day => day.date === item));
-
   const curBlocks = BLOCKS.map((_, index) => {
     const isCurMonth = curDays[index].includes(`${curYear}-${curMonth}`);
+    const isCurDate = curDays[index].includes(`${curYear}-${curMonth}-${curDate}`);
     const date = curDays[index];
     const [year, month, day] = date.split('-').map(Number);
     return {
@@ -68,7 +69,7 @@ export default function useCalendar() {
       month,
       day,
       isCurMonth,
-      // day: isCurMonth,
+      isCurDate,
     };
   });
 
