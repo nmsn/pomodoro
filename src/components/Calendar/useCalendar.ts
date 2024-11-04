@@ -35,7 +35,7 @@ export const getDaysOfMonth = (
     tempDate = tempDate.add(1, 'day');
   }
 
-  return days.map(item => item.format('YYYY-MM-DD'));
+  return days.map(item => item.format('YYYY-MM-D'));
 };
 
 const curYear = dayjs().year();

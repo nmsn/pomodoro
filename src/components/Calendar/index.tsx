@@ -4,7 +4,6 @@ import useCalendar from './useCalendar';
 export default function Calendar() {
   const { curBlocks, onMonthSwitch, WEEK_DAYS, year, month } = useCalendar();
 
-  console.log(curBlocks, WEEK_DAYS);
   return (
     <div className="flex justify-center items-center p-4 w-[280px] rounded-xl border border-black/[0.1] bg-gray-50">
       <div>
@@ -20,7 +19,9 @@ export default function Calendar() {
         <div className="grid grid-rows-6 grid-cols-7 gap-2">
           {WEEK_DAYS.map(item => (
             <div key={item}>
-              <div className="w-full h-full flex justify-center items-center">{item}</div>
+              <div className="w-full h-full flex justify-center items-center opacity-50">
+                {item}
+              </div>
             </div>
           ))}
           {curBlocks.map(item => (
@@ -29,6 +30,7 @@ export default function Calendar() {
                 className={clsx(
                   'text-sm w-[32px] h-[32px] flex justify-center items-center rounded-full',
                   item.isCurMonth ? '' : 'opacity-50',
+                  item.isCurDate ? 'border-2 border-black border-solid' : '',
                 )}
               >
                 {item.day}
