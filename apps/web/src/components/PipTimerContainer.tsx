@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { TimerRenderer } from "./timer-renderer";
-import { TimerState, TimerMode } from "@/hooks/use-pomodoro-timer";
+import { TimerRenderer } from "./TimerRenderer";
+import { TimerState, TimerMode } from "@/hooks/usePomodoroTimer";
 
 interface PiPTimerContainerProps {
   pipWindow: Window;

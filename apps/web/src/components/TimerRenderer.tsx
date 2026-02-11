@@ -3,7 +3,7 @@
 import { Play, Pause, RotateCcw, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { TimerState, TimerMode } from "@/hooks/use-pomodoro-timer";
+import { TimerState, TimerMode } from "@/hooks/usePomodoroTimer";
 
 export type TimerVariant = "default" | "mini";
 

@@ -6,9 +6,9 @@ import { PictureInPicture2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PomodoroTimer } from "@/components/pomodoro-timer";
 import { DrawerScrollableContent } from "@/components/ConfigDrawer";
-import { useDocumentPiP } from "@/hooks/use-document-pip";
-import { PiPTimerContainer } from "@/components/pip-timer-container";
-import { TimerMode, TimerState } from "@/hooks/use-pomodoro-timer";
+import { useDocumentPiP } from "@/hooks/useDocumentPiP";
+import { PiPTimerContainer } from "@/components/PipTimerContainer";
+import { TimerMode, TimerState } from "@/hooks/usePomodoroTimer";
 
 export default function Home() {
   const { isSupported, isOpen, pipWindow, openPiP, closePiP, togglePiP } =

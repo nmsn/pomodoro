@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Coffee, Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { usePomodoroTimer, TimerMode, TimerState } from "@/hooks/use-pomodoro-timer";
-import { TimerRenderer } from "./timer-renderer";
+import { usePomodoroTimer, TimerMode, TimerState } from "@/hooks/usePomodoroTimer";
+import { TimerRenderer } from "./TimerRenderer";
 
 interface PomodoroTimerProps {
   workDuration?: number;
