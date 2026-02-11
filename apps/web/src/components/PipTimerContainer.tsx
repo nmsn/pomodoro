@@ -10,7 +10,6 @@ interface PiPTimerContainerProps {
   timerState: TimerState;
   onToggle: () => void;
   onReset: () => void;
-  onClose: () => void;
 }
 
 export function PiPTimerContainer({
@@ -18,7 +17,6 @@ export function PiPTimerContainer({
   timerState,
   onToggle,
   onReset,
-  onClose,
 }: PiPTimerContainerProps) {
   const [container, setContainer] = useState<HTMLElement | null>(null);
 
@@ -100,10 +98,9 @@ export function PiPTimerContainer({
         state={timerState}
         onToggle={onToggle}
         onReset={onReset}
-        onClose={onClose}
         variant="mini"
         showModeSwitch={false}
-        showCloseButton={true}
+        showCloseButton={false}
       />
     </div>,
     container

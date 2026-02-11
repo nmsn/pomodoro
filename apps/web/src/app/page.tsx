@@ -46,9 +46,7 @@ export default function Home() {
     window.dispatchEvent(new CustomEvent("PIP_RESET_TIMER"));
   }, []);
 
-  const handlePiPClose = useCallback(() => {
-    closePiP();
-  }, [closePiP]);
+
 
   // 监听 PiP 按钮点击
   const handlePiPButtonClick = useCallback(async () => {
@@ -61,12 +59,15 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4 relative">
-      <PomodoroTimer
-        workDuration={25}
-        breakDuration={5}
-        className="shadow-2xl"
-        onTimerUpdate={handleTimerUpdate}
-      />
+      {/* 当 PiP 窗口打开时隐藏主页面的番茄钟 */}
+      {!isOpen && (
+        <PomodoroTimer
+          workDuration={25}
+          breakDuration={5}
+          className="shadow-2xl"
+          onTimerUpdate={handleTimerUpdate}
+        />
+      )}
 
       {/* 设置按钮 - 右下角 */}
       <div className="fixed bottom-6 right-6 flex flex-col gap-3">
@@ -96,7 +97,6 @@ export default function Home() {
           timerState={timerStateRef.current}
           onToggle={handlePiPToggle}
           onReset={handlePiPReset}
-          onClose={handlePiPClose}
         />
       )}
     </main>
