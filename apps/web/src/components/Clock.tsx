@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import classnames from 'classnames';
 
+import { cn } from "@/lib/utils";
 import { isPhone } from '@/utils';
 
 const Clock = ({ width = 'w-0', height = 'h-0' }: { width: string; height: string }) => {
@@ -26,7 +26,7 @@ const Clock = ({ width = 'w-0', height = 'h-0' }: { width: string; height: strin
 
   return (
     <div
-      className={classnames(
+      className={cn(
         width,
         height,
         'flex justify-center items-center duration-300 bg-blue-400 relative overflow-hidden',
@@ -34,7 +34,7 @@ const Clock = ({ width = 'w-0', height = 'h-0' }: { width: string; height: strin
     >
       <div className="w-120 flex-col block">
         <div
-          className={classnames(
+          className={cn(
             isPhone() ? 'text-8xl' : 'text-9xl',
             'text-9xl mt-6 mb-12 font-bold select-none',
           )}

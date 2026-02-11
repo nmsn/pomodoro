@@ -1,0 +1,57 @@
+{
+  "name": "web",
+  "version": "0.3.0",
+  "private": true,
+  "author": "nmsn",
+  "description": "A web pomodoro clock.",
+  "keywords": [
+    "pomodoro",
+    "clock",
+    "timer",
+    "todo list",
+    "react",
+    "tailwindcss",
+    "typescript",
+    "nextjs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nmsn/promodoro.git"
+  },
+  "homepage": "https://github.com/nmsn/promodoro#readme",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.5.0",
+    "canvas-confetti": "^1.9.3",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-color": "^2.19.3",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.4.0",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-beautiful-dnd": "^13.1.8",
+    "@types/react-color": "^3.0.13",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^8.48.0",
+    "eslint-config-next": "^16.0.0",
+    "release-toolbox": "^0.2.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.2.2"
+  }
+}

@@ -1,19 +1,20 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules/
+.pnp
 .pnp.js
 
 # testing
-/coverage
+coverage/
 
-# next.js
-/.next/
-/out/
+# next.js (monorepo - all apps)
+.next/
+out/
 
 # production
-/build
+build/
+dist/
 
 # misc
 .DS_Store
@@ -27,6 +28,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -35,7 +37,17 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# vsode
+# IDE
 .vscode/
+.idea/
+*.swp
+*.swo
 
+# release toolbox
 release-toolbox.json
+
+# turbo (if used in future)
+.turbo/
+
+# cache
+.cache/

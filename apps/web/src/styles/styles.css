@@ -1,0 +1,23 @@
+@reference "tailwindcss";
+
+@layer components {
+  .btn {
+    @apply rounded-lg font-bold shadow-md select-none;
+  }
+
+  .btn-small {
+    @apply px-2 py-1 text-sm;
+  }
+
+  .btn-normal {
+    @apply px-4 py-2;
+  }
+
+  .btn-positive {
+    @apply bg-white text-black;
+  }
+
+  .btn-inverse {
+    @apply bg-black text-white;
+  }
+}

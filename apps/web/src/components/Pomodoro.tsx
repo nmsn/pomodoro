@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
-import classnames from 'classnames';
 
+import { cn } from "@/lib/utils";
 import { isPhone } from '@/utils';
 import { fireworks } from '@/utils/confetti';
 
@@ -73,7 +73,7 @@ const Pomodoro = ({ open = false }: { open?: boolean }) => {
 
   return (
     <div
-      className={classnames(
+      className={cn(
         open ? 'w-full' : 'w-0',
         'h-full flex justify-center items-center duration-300 bg-blue-400 relative overflow-hidden',
       )}
@@ -96,7 +96,7 @@ const Pomodoro = ({ open = false }: { open?: boolean }) => {
           </Button>
         </div>
         <div
-          className={classnames(
+          className={cn(
             isPhone() ? 'text-8xl' : 'text-9xl',
             `mt-6 mb-6 font-bold select-none text-center`,
           )}
@@ -105,7 +105,7 @@ const Pomodoro = ({ open = false }: { open?: boolean }) => {
           {`${timeDisplay[0]}:${timeDisplay[1]}`}
         </div>
         <div
-          className={classnames(
+          className={cn(
             'flex justify-center',
             status === 'initial' ? 'justify-center' : 'justify-between',
           )}
