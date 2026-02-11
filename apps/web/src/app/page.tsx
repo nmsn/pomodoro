@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { PictureInPicture2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { PomodoroTimer } from "@/components/pomodoro-timer";
+import { PomodoroTimer } from "@/components/PomodoroTimer";
 import { DrawerScrollableContent } from "@/components/ConfigDrawer";
 import { useDocumentPiP } from "@/hooks/useDocumentPiP";
 import { PiPTimerContainer } from "@/components/PipTimerContainer";
