@@ -413,8 +413,8 @@ export function DrawerScrollableContent() {
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
-        <Button variant="outline" size="icon" className="h-12 w-12 rounded-full shadow-lg">
-          <Settings className="h-5 w-5" />
+        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-lg bg-background/80 backdrop-blur-sm">
+          <Settings className="h-4 w-4" />
         </Button>
       </DrawerTrigger>
       <DrawerContent>
