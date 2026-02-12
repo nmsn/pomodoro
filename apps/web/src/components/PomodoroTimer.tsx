@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Coffee, Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,34 +20,11 @@ export function PomodoroTimer({
   className,
   onTimerUpdate,
 }: PomodoroTimerProps) {
-  const handleStateChange = useCallback(
-    (state: TimerState) => {
-      if (onTimerUpdate) {
-        onTimerUpdate(state);
-      }
-    },
-    [onTimerUpdate]
-  );
-
   const { state, toggleTimer, resetTimer, switchMode } = usePomodoroTimer({
     workDuration,
     breakDuration,
-    onStateChange: handleStateChange,
+    onStateChange: onTimerUpdate,
   });
-
-  // 监听 PiP 窗口的事件
-  useEffect(() => {
-    const handlePiPToggle = () => toggleTimer();
-    const handlePiPReset = () => resetTimer();
-
-    window.addEventListener("PIP_TOGGLE_TIMER", handlePiPToggle);
-    window.addEventListener("PIP_RESET_TIMER", handlePiPReset);
-
-    return () => {
-      window.removeEventListener("PIP_TOGGLE_TIMER", handlePiPToggle);
-      window.removeEventListener("PIP_RESET_TIMER", handlePiPReset);
-    };
-  }, [toggleTimer, resetTimer]);
 
   return (
     <Card className={cn("w-full max-w-md mx-auto", className)}>

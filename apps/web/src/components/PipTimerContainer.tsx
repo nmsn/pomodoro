@@ -1,24 +1,26 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useAtomValue, useSetAtom } from "jotai";
 import { TimerRenderer } from "./TimerRenderer";
-import { TimerState, TimerMode } from "@/hooks/usePomodoroTimer";
+import {
+  timerStateAtom,
+  toggleTimerAtom,
+  resetTimerAtom,
+} from "@/atoms/timer";
 
 interface PiPTimerContainerProps {
   pipWindow: Window;
-  timerState: TimerState;
-  onToggle: () => void;
-  onReset: () => void;
 }
 
-export function PiPTimerContainer({
-  pipWindow,
-  timerState,
-  onToggle,
-  onReset,
-}: PiPTimerContainerProps) {
+export function PiPTimerContainer({ pipWindow }: PiPTimerContainerProps) {
   const [container, setContainer] = useState<HTMLElement | null>(null);
+
+  // 直接使用 jotai atoms
+  const timerState = useAtomValue(timerStateAtom);
+  const toggleTimer = useSetAtom(toggleTimerAtom);
+  const resetTimer = useSetAtom(resetTimerAtom);
 
   useEffect(() => {
     if (!pipWindow) return;
@@ -96,8 +98,8 @@ export function PiPTimerContainer({
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <TimerRenderer
         state={timerState}
-        onToggle={onToggle}
-        onReset={onReset}
+        onToggle={toggleTimer}
+        onReset={resetTimer}
         variant="mini"
         showModeSwitch={false}
         showCloseButton={false}

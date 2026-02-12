@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import "@/styles/styles.css";
 import "@/styles/globals.css";
+import { TimerProvider } from "@/components/TimerProvider";
 
 export const metadata: Metadata = {
   title: "Pomodoro",
@@ -23,7 +24,9 @@ export default function RootLayout({
         />
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <TimerProvider>{children}</TimerProvider>
+      </body>
     </html>
   );
 }
