@@ -40,6 +40,11 @@ import {
   switchBackgroundThemeAtom,
   BackgroundTheme,
 } from "@/atoms/background"
+import {
+  themeModeAtom,
+  setThemeModeAtom,
+  ThemeMode,
+} from "@/atoms/theme"
 
 type NavItem = {
   id: string
@@ -212,9 +217,15 @@ function TimerSettings() {
 function AppearanceSettings() {
   const currentTheme = useAtomValue(backgroundThemeAtom)
   const [, switchTheme] = useAtom(switchBackgroundThemeAtom)
+  const themeMode = useAtomValue(themeModeAtom)
+  const [, setThemeMode] = useAtom(setThemeModeAtom)
 
   const handleThemeChange = (theme: BackgroundTheme) => {
     switchTheme(theme)
+  }
+
+  const handleModeChange = (mode: ThemeMode) => {
+    setThemeMode(mode)
   }
 
   // 获取背景预览样式
@@ -243,15 +254,27 @@ function AppearanceSettings() {
         <h3 className="text-lg font-medium">主题</h3>
         <p className="text-sm text-muted-foreground">选择您喜欢的主题风格</p>
         <div className="mt-4 grid grid-cols-3 gap-4">
-          <Button variant="outline" className="h-20 flex flex-col gap-2">
-            <div className="w-8 h-8 rounded-full bg-white border" />
+          <Button
+            variant={themeMode === "light" ? "default" : "outline"}
+            className="h-20 flex flex-col gap-2"
+            onClick={() => handleModeChange("light")}
+          >
+            <div className="w-8 h-8 rounded-full bg-white border border-gray-300" />
             <span className="text-xs">浅色</span>
           </Button>
-          <Button variant="outline" className="h-20 flex flex-col gap-2">
+          <Button
+            variant={themeMode === "dark" ? "default" : "outline"}
+            className="h-20 flex flex-col gap-2"
+            onClick={() => handleModeChange("dark")}
+          >
             <div className="w-8 h-8 rounded-full bg-slate-900 border" />
             <span className="text-xs">深色</span>
           </Button>
-          <Button variant="outline" className="h-20 flex flex-col gap-2">
+          <Button
+            variant={themeMode === "system" ? "default" : "outline"}
+            className="h-20 flex flex-col gap-2"
+            onClick={() => handleModeChange("system")}
+          >
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-white to-slate-900 border" />
             <span className="text-xs">跟随系统</span>
           </Button>

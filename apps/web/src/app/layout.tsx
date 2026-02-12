@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "@/styles/styles.css";
 import "@/styles/globals.css";
 import { TimerProvider } from "@/components/TimerProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Pomodoro",
@@ -15,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/logo.png" />
         <meta
@@ -25,7 +26,9 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </head>
       <body className="antialiased">
-        <TimerProvider>{children}</TimerProvider>
+        <ThemeProvider>
+          <TimerProvider>{children}</TimerProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
