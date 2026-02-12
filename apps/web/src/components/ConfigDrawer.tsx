@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useAtom, useAtomValue } from "jotai"
-import { Settings, Clock, Palette, Bell, User, ChevronRight } from "lucide-react"
+import { Settings, Clock, Palette, Bell, User, ChevronRight, Check } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -34,6 +34,12 @@ import {
   timerTypeConfig,
   TimerType,
 } from "@/atoms/timer"
+import {
+  backgroundThemeAtom,
+  backgroundThemes,
+  switchBackgroundThemeAtom,
+  BackgroundTheme,
+} from "@/atoms/background"
 
 type NavItem = {
   id: string
@@ -204,8 +210,35 @@ function TimerSettings() {
 }
 
 function AppearanceSettings() {
+  const currentTheme = useAtomValue(backgroundThemeAtom)
+  const [, switchTheme] = useAtom(switchBackgroundThemeAtom)
+
+  const handleThemeChange = (theme: BackgroundTheme) => {
+    switchTheme(theme)
+  }
+
+  // 获取背景预览样式
+  const getPreviewStyle = (themeKey: BackgroundTheme): React.CSSProperties => {
+    const config = backgroundThemes[themeKey]
+
+    if (config.type === "solid") {
+      return {
+        background: themeKey === "solid-dark" ? "#0f172a" : "#f8fafc",
+      }
+    }
+
+    // Shader 背景使用渐变色预览
+    if (config.colors && config.colors.length > 0) {
+      const gradient = `linear-gradient(135deg, ${config.colors.join(", ")})`
+      return { background: gradient }
+    }
+
+    return {}
+  }
+
   return (
     <div className="space-y-6">
+      {/* 主题选择 */}
       <div>
         <h3 className="text-lg font-medium">主题</h3>
         <p className="text-sm text-muted-foreground">选择您喜欢的主题风格</p>
@@ -222,6 +255,55 @@ function AppearanceSettings() {
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-white to-slate-900 border" />
             <span className="text-xs">跟随系统</span>
           </Button>
+        </div>
+      </div>
+
+      <Separator />
+
+      {/* 背景选择 */}
+      <div>
+        <h3 className="text-lg font-medium">背景效果</h3>
+        <p className="text-sm text-muted-foreground">选择动态背景效果</p>
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          {(Object.keys(backgroundThemes) as BackgroundTheme[]).map((themeKey) => {
+            const config = backgroundThemes[themeKey]
+            const isSelected = currentTheme === themeKey
+
+            return (
+              <Button
+                key={themeKey}
+                variant="outline"
+                className={cn(
+                  "h-24 flex flex-col gap-2 relative overflow-hidden",
+                  isSelected && "ring-2 ring-primary ring-offset-2"
+                )}
+                onClick={() => handleThemeChange(themeKey)}
+              >
+                {/* 背景预览 */}
+                <div
+                  className="absolute inset-0 opacity-60"
+                  style={getPreviewStyle(themeKey)}
+                />
+
+                {/* 选中标记 */}
+                {isSelected && (
+                  <div className="absolute top-2 right-2 z-10">
+                    <div className="bg-primary text-primary-foreground rounded-full p-1">
+                      <Check className="h-3 w-3" />
+                    </div>
+                  </div>
+                )}
+
+                {/* 内容 */}
+                <div className="relative z-10 flex flex-col items-center">
+                  <span className="font-medium text-sm">{config.name}</span>
+                  <span className="text-xs text-muted-foreground line-clamp-1">
+                    {config.description}
+                  </span>
+                </div>
+              </Button>
+            )
+          })}
         </div>
       </div>
     </div>

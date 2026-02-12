@@ -1,12 +1,13 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useAtomValue } from "jotai";
 import { Coffee, Brain, Timer, Hourglass, Watch, Tv, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { usePomodoroTimer, TimerMode, TimerState } from "@/hooks/usePomodoroTimer";
 import { TimerRenderer } from "./TimerRenderer";
 import { timerTypeConfig, TimerType } from "@/atoms/timer";
+import { isDarkBackgroundAtom } from "@/atoms/background";
 
 interface PomodoroTimerProps {
   workDuration?: number;
@@ -16,20 +17,21 @@ interface PomodoroTimerProps {
 }
 
 // 获取计时模式对应的图标
-const getTimerIcon = (timerType: TimerType) => {
+const getTimerIcon = (timerType: TimerType, isDark: boolean) => {
+  const iconClass = cn("h-5 w-5", isDark && "text-white");
   switch (timerType) {
     case "pomodoro":
-      return <Timer className="h-5 w-5" />;
+      return <Timer className={iconClass} />;
     case "countdown":
-      return <Hourglass className="h-5 w-5" />;
+      return <Hourglass className={iconClass} />;
     case "stopwatch":
-      return <Watch className="h-5 w-5" />;
+      return <Watch className={iconClass} />;
     case "animedoro":
-      return <Tv className="h-5 w-5" />;
+      return <Tv className={iconClass} />;
     case "52-17":
-      return <Calendar className="h-5 w-5" />;
+      return <Calendar className={iconClass} />;
     default:
-      return <Timer className="h-5 w-5" />;
+      return <Timer className={iconClass} />;
   }
 };
 
@@ -44,6 +46,7 @@ export function PomodoroTimer({
   className,
   onTimerUpdate,
 }: PomodoroTimerProps) {
+  const isDark = useAtomValue(isDarkBackgroundAtom);
   const { state, toggleTimer, resetTimer, switchMode } = usePomodoroTimer({
     workDuration,
     breakDuration,
@@ -54,14 +57,18 @@ export function PomodoroTimer({
   const showModeSwitch = config.breakDuration > 0;
 
   return (
-    <Card className={cn("w-full max-w-md mx-auto", className)}>
-      <CardHeader className="space-y-1">
+    <div className={cn("w-full max-w-md mx-auto p-6", className)}>
+      {/* 头部区域 */}
+      <div className="space-y-1 mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {getTimerIcon(state.timerType)}
-            <CardTitle className="text-2xl font-semibold tracking-tight">
+            {getTimerIcon(state.timerType, isDark)}
+            <h2 className={cn(
+              "text-2xl font-semibold tracking-tight",
+              isDark && "text-white"
+            )}>
               {getTimerTitle(state.timerType)}
-            </CardTitle>
+            </h2>
           </div>
           {showModeSwitch && (
             <div className="flex gap-2">
@@ -86,21 +93,23 @@ export function PomodoroTimer({
             </div>
           )}
         </div>
-        <CardDescription>
+        <p className={cn(
+          "text-sm",
+          isDark ? "text-white/70" : "text-muted-foreground"
+        )}>
           {config.description}
-        </CardDescription>
-      </CardHeader>
+        </p>
+      </div>
 
-      <CardContent className="space-y-8">
-        <TimerRenderer
-          state={state}
-          onToggle={toggleTimer}
-          onReset={resetTimer}
-          variant="default"
-          showModeSwitch={false}
-        />
-      </CardContent>
-    </Card>
+      {/* 计时器区域 */}
+      <TimerRenderer
+        state={state}
+        onToggle={toggleTimer}
+        onReset={resetTimer}
+        variant="default"
+        showModeSwitch={false}
+      />
+    </div>
   );
 }
 

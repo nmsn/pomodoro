@@ -1,9 +1,11 @@
 "use client";
 
+import { useAtomValue } from "jotai";
 import { Play, Pause, RotateCcw, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { TimerState, TimerMode } from "@/hooks/usePomodoroTimer";
+import { isDarkBackgroundAtom } from "@/atoms/background";
 
 export type TimerVariant = "default" | "mini";
 
@@ -30,6 +32,7 @@ export function TimerRenderer({
   showCloseButton = false,
   className,
 }: TimerRendererProps) {
+  const isDark = useAtomValue(isDarkBackgroundAtom);
   const isMini = variant === "mini";
   const { mode, timeString, modeLabel, progress, isActive, statusText } = state;
 
@@ -38,7 +41,7 @@ export function TimerRenderer({
       className={cn(
         "relative",
         isMini
-          ? "w-full max-w-[280px] bg-card border rounded-xl shadow-lg p-6"
+          ? "w-full max-w-[280px] p-6"
           : "w-full max-w-md mx-auto",
         className
       )}
@@ -58,7 +61,10 @@ export function TimerRenderer({
       {/* 模式切换（仅 default 模式显示） */}
       {showModeSwitch && onSwitchMode && !isMini && (
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-semibold tracking-tight">番茄钟</h2>
+          <h2 className={cn(
+            "text-2xl font-semibold tracking-tight",
+            isDark && "text-white"
+          )}>番茄钟</h2>
           <div className="flex gap-2">
             <Button
               variant={mode === "work" ? "default" : "outline"}
@@ -86,8 +92,8 @@ export function TimerRenderer({
           "font-medium text-center",
           isMini ? "text-sm mb-2" : "text-base mb-4",
           mode === "work"
-            ? "text-red-600 dark:text-red-400"
-            : "text-green-600 dark:text-green-400"
+            ? isDark ? "text-red-400" : "text-red-600"
+            : isDark ? "text-green-400" : "text-green-600"
         )}
       >
         {modeLabel}
@@ -96,8 +102,9 @@ export function TimerRenderer({
       {/* 时间显示 */}
       <div
         className={cn(
-          "font-bold tracking-tighter tabular-nums text-foreground text-center",
-          isMini ? "text-5xl" : "text-8xl"
+          "font-bold tracking-tighter tabular-nums text-center",
+          isMini ? "text-5xl" : "text-8xl",
+          isDark ? "text-white" : "text-foreground"
         )}
       >
         {timeString}
@@ -106,8 +113,9 @@ export function TimerRenderer({
       {/* 状态文本 */}
       <p
         className={cn(
-          "text-muted-foreground text-center mt-2",
-          isMini ? "text-xs" : "text-sm"
+          "text-center mt-2",
+          isMini ? "text-xs" : "text-sm",
+          isDark ? "text-white/70" : "text-muted-foreground"
         )}
       >
         {isActive ? (
@@ -125,7 +133,10 @@ export function TimerRenderer({
 
       {/* 进度条 */}
       <div className={cn("w-full mt-4", isMini ? "" : "max-w-[300px] mx-auto")}>
-        <div className="h-2 bg-primary/20 rounded-full overflow-hidden">
+        <div className={cn(
+          "h-2 rounded-full overflow-hidden",
+          isDark ? "bg-white/20" : "bg-primary/20"
+        )}>
           <div
             className={cn(
               "h-full transition-all duration-1000",
@@ -147,7 +158,10 @@ export function TimerRenderer({
           variant="outline"
           size="icon"
           onClick={onReset}
-          className="h-10 w-10 rounded-full"
+          className={cn(
+            "h-10 w-10 rounded-full",
+            isDark && "bg-white/10 border-white/20 text-white hover:bg-white/20"
+          )}
         >
           <RotateCcw className="h-4 w-4" />
         </Button>
