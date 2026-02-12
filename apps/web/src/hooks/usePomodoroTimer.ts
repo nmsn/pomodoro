@@ -11,9 +11,10 @@ import {
   switchModeAtom,
   TimerMode,
   TimerState,
+  TimerType,
 } from "@/atoms/timer";
 
-export type { TimerMode, TimerState };
+export type { TimerMode, TimerState, TimerType };
 
 export interface UsePomodoroTimerOptions {
   workDuration?: number;

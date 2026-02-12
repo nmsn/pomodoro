@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useAtom, useAtomValue } from "jotai"
 import { Settings, Clock, Palette, Bell, User, ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -17,12 +18,27 @@ import {
 } from "@/components/ui/drawer"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  timerTypeAtom,
+  workDurationAtom,
+  breakDurationAtom,
+  switchTimerTypeAtom,
+  updateDurationAtom,
+  timerTypeConfig,
+  TimerType,
+} from "@/atoms/timer"
 
 type NavItem = {
   id: string
   label: string
   icon: React.ReactNode
-  children?: NavItem[]
 }
 
 const navItems: NavItem[] = [
@@ -30,10 +46,6 @@ const navItems: NavItem[] = [
     id: "timer",
     label: "计时器",
     icon: <Clock className="h-4 w-4" />,
-    children: [
-      { id: "timer-focus", label: "专注时长", icon: <Clock className="h-4 w-4" /> },
-      { id: "timer-break", label: "休息时长", icon: <Clock className="h-4 w-4" /> },
-    ],
   },
   {
     id: "appearance",
@@ -53,28 +65,139 @@ const navItems: NavItem[] = [
 ]
 
 function TimerSettings() {
+  const timerType = useAtomValue(timerTypeAtom)
+  const workDuration = useAtomValue(workDurationAtom)
+  const breakDuration = useAtomValue(breakDurationAtom)
+  const [, switchTimerType] = useAtom(switchTimerTypeAtom)
+  const [, updateDuration] = useAtom(updateDurationAtom)
+  const config = timerTypeConfig[timerType]
+
+  const handleTypeChange = (value: string) => {
+    switchTimerType(value as TimerType)
+  }
+
+  const adjustDuration = (type: "work" | "break", delta: number) => {
+    const current = type === "work" ? workDuration : breakDuration
+    const newValue = Math.max(1, current + delta)
+    updateDuration({ type, duration: newValue })
+  }
+
   return (
     <div className="space-y-6">
+      {/* 计时类型选择 */}
       <div>
-        <h3 className="text-lg font-medium">专注时长</h3>
-        <p className="text-sm text-muted-foreground">设置每次专注的默认时长</p>
-        <div className="mt-4 flex items-center gap-4">
-          <Button variant="outline" size="sm">-</Button>
-          <span className="text-2xl font-bold">25</span>
-          <Button variant="outline" size="sm">+</Button>
-          <span className="text-sm text-muted-foreground">分钟</span>
+        <h3 className="text-lg font-medium">计时模式</h3>
+        <p className="text-sm text-muted-foreground">选择适合您的计时方式</p>
+        <div className="mt-4">
+          <Select value={timerType} onValueChange={handleTypeChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="选择计时模式" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="pomodoro">
+                <div className="flex flex-col items-start">
+                  <span className="font-medium">番茄钟</span>
+                  <span className="text-xs text-muted-foreground">经典番茄工作法：专注与休息交替</span>
+                </div>
+              </SelectItem>
+              <SelectItem value="countdown">
+                <div className="flex flex-col items-start">
+                  <span className="font-medium">倒计时</span>
+                  <span className="text-xs text-muted-foreground">自定义倒计时</span>
+                </div>
+              </SelectItem>
+              <SelectItem value="stopwatch">
+                <div className="flex flex-col items-start">
+                  <span className="font-medium">码表</span>
+                  <span className="text-xs text-muted-foreground">从 0 开始正计时</span>
+                </div>
+              </SelectItem>
+              <SelectItem value="animedoro">
+                <div className="flex flex-col items-start">
+                  <span className="font-medium">Animedoro</span>
+                  <span className="text-xs text-muted-foreground">看番剧/视频作为奖励的番茄变体</span>
+                </div>
+              </SelectItem>
+              <SelectItem value="52-17">
+                <div className="flex flex-col items-start">
+                  <span className="font-medium">52/17</span>
+                  <span className="text-xs text-muted-foreground">工作 52 分钟，休息 17 分钟</span>
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
+
       <Separator />
-      <div>
-        <h3 className="text-lg font-medium">休息时长</h3>
-        <p className="text-sm text-muted-foreground">设置每次休息的默认时长</p>
-        <div className="mt-4 flex items-center gap-4">
-          <Button variant="outline" size="sm">-</Button>
-          <span className="text-2xl font-bold">5</span>
-          <Button variant="outline" size="sm">+</Button>
-          <span className="text-sm text-muted-foreground">分钟</span>
-        </div>
+
+      {/* 专注时长 - 只在需要显示时展示 */}
+      {config.showDurations && (
+        <>
+          <div>
+            <h3 className="text-lg font-medium">
+              {timerType === "countdown" ? "倒计时时长" : "专注时长"}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {timerType === "countdown" ? "设置倒计时时间" : "设置每次专注的默认时长"}
+            </p>
+            <div className="mt-4 flex items-center gap-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => adjustDuration("work", -1)}
+              >
+                -
+              </Button>
+              <span className="text-2xl font-bold w-16 text-center">{workDuration}</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => adjustDuration("work", 1)}
+              >
+                +
+              </Button>
+              <span className="text-sm text-muted-foreground">分钟</span>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* 休息时长 - 只在有休息时间的模式下显示 */}
+          {config.breakDuration > 0 && (
+            <>
+              <div>
+                <h3 className="text-lg font-medium">休息时长</h3>
+                <p className="text-sm text-muted-foreground">设置每次休息的默认时长</p>
+                <div className="mt-4 flex items-center gap-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => adjustDuration("break", -1)}
+                  >
+                    -
+                  </Button>
+                  <span className="text-2xl font-bold w-16 text-center">{breakDuration}</span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => adjustDuration("break", 1)}
+                  >
+                    +
+                  </Button>
+                  <span className="text-sm text-muted-foreground">分钟</span>
+                </div>
+              </div>
+              <Separator />
+            </>
+          )}
+        </>
+      )}
+
+      {/* 模式说明 */}
+      <div className="bg-muted p-4 rounded-lg">
+        <h4 className="font-medium mb-1">{config.name}</h4>
+        <p className="text-sm text-muted-foreground">{config.description}</p>
       </div>
     </div>
   )
@@ -157,8 +280,6 @@ function AccountSettings() {
 
 const contentMap: Record<string, React.ReactNode> = {
   timer: <TimerSettings />,
-  "timer-focus": <TimerSettings />,
-  "timer-break": <TimerSettings />,
   appearance: <AppearanceSettings />,
   notifications: <NotificationSettings />,
   account: <AccountSettings />,
@@ -166,54 +287,20 @@ const contentMap: Record<string, React.ReactNode> = {
 
 export function DrawerScrollableContent() {
   const [selectedNav, setSelectedNav] = useState<string>("timer")
-  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
 
-  const toggleExpand = (id: string) => {
-    const newExpanded = new Set(expandedItems)
-    if (newExpanded.has(id)) {
-      newExpanded.delete(id)
-    } else {
-      newExpanded.add(id)
-    }
-    setExpandedItems(newExpanded)
-  }
-
-  const renderNavItem = (item: NavItem, level: number = 0) => {
-    const hasChildren = item.children && item.children.length > 0
-    const isExpanded = expandedItems.has(item.id)
+  const renderNavItem = (item: NavItem) => {
     const isSelected = selectedNav === item.id
 
     return (
       <div key={item.id}>
         <Button
           variant={isSelected ? "secondary" : "ghost"}
-          className={cn(
-            "w-full justify-start gap-2",
-            level > 0 && "pl-8"
-          )}
-          onClick={() => {
-            if (hasChildren) {
-              toggleExpand(item.id)
-            }
-            setSelectedNav(item.id)
-          }}
+          className="w-full justify-start gap-2"
+          onClick={() => setSelectedNav(item.id)}
         >
           {item.icon}
           <span className="flex-1 text-left">{item.label}</span>
-          {hasChildren && (
-            <ChevronRight
-              className={cn(
-                "h-4 w-4 transition-transform",
-                isExpanded && "rotate-90"
-              )}
-            />
-          )}
         </Button>
-        {hasChildren && isExpanded && (
-          <div className="mt-1">
-            {item.children!.map((child) => renderNavItem(child, level + 1))}
-          </div>
-        )}
       </div>
     )
   }
@@ -232,7 +319,7 @@ export function DrawerScrollableContent() {
         </DrawerHeader>
 
         <div className="flex h-[calc(100vh-12rem)]">
-          {/* 左侧导航栏 */}
+          {/* 左侧导航栏 - 删除二级菜单 */}
           <div className="w-56 border-r bg-muted/30 flex-shrink-0">
             <ScrollArea className="h-full py-4">
               <div className="px-2 space-y-1">
