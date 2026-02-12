@@ -10,6 +10,7 @@ import {
   resetTimerAtom,
 } from "@/atoms/timer";
 import { backgroundThemeAtom, backgroundThemes } from "@/atoms/background";
+import { MeshGradient } from "@paper-design/shaders-react";
 
 interface PiPTimerContainerProps {
   pipWindow: Window;
@@ -119,6 +120,11 @@ export function PiPTimerContainer({ pipWindow }: PiPTimerContainerProps) {
 
   return createPortal(
     <div className="min-h-screen flex items-center justify-center p-4">
+      <MeshGradient
+        className="absolute inset-0 w-full h-full"
+        style={{ zIndex: -1 }}
+        colors={["#3b82f6", "#8b5cf6"]}
+      />
       <TimerRenderer
         state={timerState}
         onToggle={toggleTimer}
