@@ -22,7 +22,7 @@
     "lint": "pnpm --filter web lint"
   },
   "devDependencies": {
-    "husky": "^8.0.3",
-    "prettier": "^3.2.5"
+    "husky": "^9.1.7",
+    "prettier": "^3.8.1"
   }
 }
