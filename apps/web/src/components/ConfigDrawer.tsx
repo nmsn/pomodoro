@@ -52,22 +52,22 @@ const navItems: NavItem[] = [
   {
     id: "timer",
     label: "计时器",
-    icon: <Clock className="h-4 w-4" />,
+    icon: <Clock className="h-5 w-5" />,
   },
   {
     id: "appearance",
     label: "外观",
-    icon: <Palette className="h-4 w-4" />,
+    icon: <Palette className="h-5 w-5" />,
   },
   {
     id: "notifications",
     label: "通知",
-    icon: <Bell className="h-4 w-4" />,
+    icon: <Bell className="h-5 w-5" />,
   },
   {
     id: "account",
     label: "账户",
-    icon: <User className="h-4 w-4" />,
+    icon: <User className="h-5 w-5" />,
   },
 ]
 
@@ -98,12 +98,12 @@ function TimerSettings() {
           <p className="text-sm text-muted-foreground mt-1">选择适合您的计时方式</p>
         </div>
         <Select value={timerType} onValueChange={handleTypeChange}>
-          <SelectTrigger className="w-full h-12 rounded-xl border-muted-foreground/20">
+          <SelectTrigger className="w-full h-12 rounded-2xl border-muted-foreground/20 cursor-pointer">
             <SelectValue placeholder="选择计时模式">
               {timerTypeConfig[timerType]?.name}
             </SelectValue>
           </SelectTrigger>
-          <SelectContent className="rounded-xl">
+          <SelectContent className="rounded-2xl">
             <SelectItem value="pomodoro" className="rounded-lg">
               <div className="flex flex-col items-start py-1">
                 <span className="font-medium">番茄钟</span>
@@ -152,25 +152,27 @@ function TimerSettings() {
                 {timerType === "countdown" ? "设置倒计时时间" : "设置每次专注的默认时长"}
               </p>
             </div>
-            <div className="flex items-center gap-3 bg-muted/50 rounded-2xl p-4 w-fit">
+            <div className="flex items-center gap-4 bg-gradient-to-br from-muted/80 to-muted/40 rounded-2xl p-5 w-fit border border-muted-foreground/10">
               <Button
                 variant="outline"
                 size="icon"
                 onClick={() => adjustDuration("work", -1)}
-                className="h-10 w-10 rounded-xl border-muted-foreground/20"
+                aria-label="减少专注时长"
+                className="group h-12 w-12 rounded-xl border-2 border-muted-foreground/20 cursor-pointer hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
               >
-                -
+                <span className="text-2xl text-muted-foreground group-hover:text-foreground transition-colors font-light">−</span>
               </Button>
-              <span className="text-3xl font-bold w-16 text-center tabular-nums">{workDuration}</span>
+              <span className="text-4xl font-bold w-20 text-center tabular-nums font-mono bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">{workDuration}</span>
               <Button
                 variant="outline"
                 size="icon"
                 onClick={() => adjustDuration("work", 1)}
-                className="h-10 w-10 rounded-xl border-muted-foreground/20"
+                aria-label="增加专注时长"
+                className="group h-12 w-12 rounded-xl border-2 border-muted-foreground/20 cursor-pointer hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
               >
-                +
+                <span className="text-2xl text-muted-foreground group-hover:text-foreground transition-colors font-light">+</span>
               </Button>
-              <span className="text-sm text-muted-foreground ml-2">分钟</span>
+              <span className="text-sm text-muted-foreground font-medium ml-2">分钟</span>
             </div>
           </div>
 
@@ -184,25 +186,27 @@ function TimerSettings() {
                   <h3 className="text-lg font-semibold tracking-tight">休息时长</h3>
                   <p className="text-sm text-muted-foreground mt-1">设置每次休息的默认时长</p>
                 </div>
-                <div className="flex items-center gap-3 bg-muted/50 rounded-2xl p-4 w-fit">
+                <div className="flex items-center gap-4 bg-gradient-to-br from-muted/80 to-muted/40 rounded-2xl p-5 w-fit border border-muted-foreground/10">
                   <Button
                     variant="outline"
                     size="icon"
                     onClick={() => adjustDuration("break", -1)}
-                    className="h-10 w-10 rounded-xl border-muted-foreground/20"
+                    aria-label="减少休息时长"
+                    className="group h-12 w-12 rounded-xl border-2 border-muted-foreground/20 cursor-pointer hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
                   >
-                    -
+                    <span className="text-2xl text-muted-foreground group-hover:text-foreground transition-colors font-light">−</span>
                   </Button>
-                  <span className="text-3xl font-bold w-16 text-center tabular-nums">{breakDuration}</span>
+                  <span className="text-4xl font-bold w-20 text-center tabular-nums font-mono bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">{breakDuration}</span>
                   <Button
                     variant="outline"
                     size="icon"
                     onClick={() => adjustDuration("break", 1)}
-                    className="h-10 w-10 rounded-xl border-muted-foreground/20"
+                    aria-label="增加休息时长"
+                    className="group h-12 w-12 rounded-xl border-2 border-muted-foreground/20 cursor-pointer hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
                   >
-                    +
+                    <span className="text-2xl text-muted-foreground group-hover:text-foreground transition-colors font-light">+</span>
                   </Button>
-                  <span className="text-sm text-muted-foreground ml-2">分钟</span>
+                  <span className="text-sm text-muted-foreground font-medium ml-2">分钟</span>
                 </div>
               </div>
               <Separator className="bg-muted-foreground/10" />
@@ -278,27 +282,29 @@ function AppearanceSettings() {
               key={mode}
               onClick={() => handleModeChange(mode)}
               className={cn(
-                "relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-200",
+                "group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-200 cursor-pointer",
                 themeMode === mode
-                  ? "border-primary bg-primary/5"
-                  : "border-muted-foreground/10 bg-muted/30 hover:border-muted-foreground/20 hover:bg-muted/50"
+                  ? "border-primary bg-gradient-to-br from-primary/10 to-primary/5 shadow-md hover:shadow-lg hover:scale-105"
+                  : "border-muted-foreground/10 bg-muted/30 hover:border-muted-foreground/20 hover:bg-muted/50 hover:shadow-md hover:scale-105"
               )}
             >
               <div className={cn(
-                "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
-                themeMode === mode ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground"
+                "w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200",
+                themeMode === mode 
+                  ? "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground shadow-lg group-hover:scale-110" 
+                  : "bg-background text-muted-foreground border-2 border-muted-foreground/10 group-hover:scale-110"
               )}>
                 {getThemeIcon(mode)}
               </div>
               <span className={cn(
                 "text-sm font-medium",
-                themeMode === mode ? "text-foreground" : "text-muted-foreground"
+                themeMode === mode ? "text-foreground font-semibold" : "text-muted-foreground"
               )}>
                 {mode === "light" ? "浅色" : mode === "dark" ? "深色" : "跟随系统"}
               </span>
               {themeMode === mode && (
                 <div className="absolute top-2 right-2">
-                  <div className="bg-primary text-primary-foreground rounded-full p-0.5">
+                  <div className="bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-full p-1 shadow-lg">
                     <Check className="h-3 w-3" />
                   </div>
                 </div>
@@ -326,28 +332,28 @@ function AppearanceSettings() {
                 key={themeKey}
                 onClick={() => handleThemeChange(themeKey)}
                 className={cn(
-                  "relative h-28 rounded-2xl border-2 overflow-hidden transition-all duration-200",
+                  "group relative h-28 rounded-2xl border-2 overflow-hidden transition-all duration-200 cursor-pointer",
                   isSelected
-                    ? "border-primary ring-2 ring-primary/20"
-                    : "border-transparent hover:border-muted-foreground/20"
+                    ? "border-primary ring-2 ring-primary/20 shadow-lg hover:shadow-xl hover:scale-105"
+                    : "border-transparent hover:border-muted-foreground/20 hover:shadow-md hover:scale-105"
                 )}
               >
                 {/* 背景预览 */}
                 <div
-                  className="absolute inset-0"
+                  className="absolute inset-0 transition-transform duration-300 group-hover:scale-110"
                   style={getPreviewStyle(themeKey)}
                 />
 
                 {/* 遮罩层 */}
                 <div className={cn(
-                  "absolute inset-0 transition-opacity",
-                  isSelected ? "bg-black/20" : "bg-black/40 hover:bg-black/30"
+                  "absolute inset-0 transition-opacity duration-200",
+                  isSelected ? "bg-black/20" : "bg-black/40 group-hover:bg-black/30"
                 )} />
 
                 {/* 选中标记 */}
                 {isSelected && (
                   <div className="absolute top-2 right-2 z-10">
-                    <div className="bg-white text-black rounded-full p-1 shadow-lg">
+                    <div className="bg-gradient-to-br from-white to-white/90 text-black rounded-full p-1 shadow-lg">
                       <Check className="h-3 w-3" />
                     </div>
                   </div>
@@ -440,19 +446,27 @@ export function DrawerScrollableContent() {
         key={item.id}
         onClick={() => setSelectedNav(item.id)}
         className={cn(
-          "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200",
+          "group w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 cursor-pointer relative overflow-hidden",
           isSelected
-            ? "bg-primary text-primary-foreground shadow-md"
+            ? "bg-gradient-to-r from-primary/90 to-primary text-primary-foreground shadow-lg"
             : "text-muted-foreground hover:bg-muted hover:text-foreground"
         )}
       >
+        {isSelected && (
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white/50 rounded-l-full" />
+        )}
         <span className={cn(
           "transition-transform duration-200",
-          isSelected && "scale-110"
+          "group-hover:scale-110"
         )}>
           {item.icon}
         </span>
         <span className="flex-1 text-left font-medium">{item.label}</span>
+        {isSelected && (
+          <svg className="w-5 h-5 opacity-70" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+          </svg>
+        )}
       </button>
     )
   }
@@ -478,7 +492,7 @@ export function DrawerScrollableContent() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-9 w-9 rounded-xl hover:bg-muted"
+                  className="h-9 w-9 rounded-2xl hover:bg-muted cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                 </Button>

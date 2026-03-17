@@ -118,13 +118,26 @@ export function PiPTimerContainer({ pipWindow }: PiPTimerContainerProps) {
 
   if (!container) return null;
 
+  const config = backgroundThemes[currentTheme];
+
   return createPortal(
     <div className="min-h-screen flex items-center justify-center p-4">
-      <MeshGradient
-        className="absolute inset-0 w-full h-full"
-        style={{ zIndex: -1 }}
-        colors={["#3b82f6", "#8b5cf6"]}
-      />
+      {/* 根据当前主题类型渲染背景 */}
+      {config.type === "solid" ? (
+        <div className="absolute inset-0 w-full h-full" 
+             style={{ 
+               backgroundColor: currentTheme === "solid-dark" ? "#0f172a" : 
+                              currentTheme === "solid-light" ? "#f8fafc" : 
+                              "hsl(var(--background))",
+               zIndex: -1 
+             }} />
+      ) : (
+        <MeshGradient
+          className="absolute inset-0 w-full h-full"
+          style={{ zIndex: -1 }}
+          colors={config.colors || ["#3b82f6", "#8b5cf6"]}
+        />
+      )}
       <TimerRenderer
         state={timerState}
         onToggle={toggleTimer}
