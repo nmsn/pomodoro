@@ -51,3 +51,4 @@ release-toolbox.json
 
 # cache
 .cache/
+.worktrees/
