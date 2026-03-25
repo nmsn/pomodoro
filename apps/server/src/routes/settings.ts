@@ -1,9 +1,9 @@
 import { Hono } from 'hono'
 import { z } from 'zod'
 import { getSettings, updateSettings } from '../services/settings'
-import { authMiddleware } from '../middleware/auth'
+import { authMiddleware, type AuthVariables } from '../middleware/auth'
 
-const app = new Hono()
+const app = new Hono<{ Variables: AuthVariables }>()
 
 app.use('/*', authMiddleware)
 

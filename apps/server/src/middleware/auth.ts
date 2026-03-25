@@ -2,7 +2,7 @@ import type { Context, Next } from 'hono'
 import { auth } from '../lib/auth'
 
 export interface AuthVariables {
-  userId: string
+  userId: string | undefined
   session: {
     id: string
     userId: string
@@ -17,12 +17,15 @@ export async function authMiddleware(c: Context, next: Next) {
   })
 
   if (session) {
-    c.set('userId', session.user.id)
+    c.set('userId', session.user.id as string)
     c.set('session', {
       id: session.session.id,
       userId: session.user.id,
       expiresAt: new Date(session.session.expiresAt),
     })
+  } else {
+    c.set('userId', undefined)
+    c.set('session', null)
   }
 
   await next()

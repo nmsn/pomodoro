@@ -1,13 +1,13 @@
 import { Hono } from 'hono'
-import { authMiddleware } from '../middleware/auth'
+import { authMiddleware, type AuthVariables } from '../middleware/auth'
 import { addSSEClient, removeSSEClient } from '../lib/sseClients'
 
-const app = new Hono()
+const app = new Hono<{ Variables: AuthVariables }>()
 
 app.use('/*', authMiddleware)
 
 app.get('/', async (c) => {
-  const userId = c.get('userId')
+  const userId = c.get('userId') as string | undefined
   if (!userId) {
     return c.json({ error: 'Unauthorized' }, 401)
   }

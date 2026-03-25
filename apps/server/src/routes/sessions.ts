@@ -1,9 +1,9 @@
 import { Hono } from 'hono'
 import { z } from 'zod'
 import { createSession, getSessions } from '../services/session'
-import { authMiddleware } from '../middleware/auth'
+import { authMiddleware, type AuthVariables } from '../middleware/auth'
 
-const app = new Hono()
+const app = new Hono<{ Variables: AuthVariables }>()
 
 app.use('/*', authMiddleware)
 
@@ -39,7 +39,7 @@ app.get('/', async (c) => {
     return c.json({ error: 'Unauthorized' }, 401)
   }
 
-  const limit = parseInt(c.req.query('limit') || '50')
+  const limit = parseInt(c.req.query('limit') ?? '50')
   const sessions = await getSessions(userId, limit)
   return c.json({ success: true, data: sessions })
 })

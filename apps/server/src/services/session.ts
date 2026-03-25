@@ -19,7 +19,12 @@ export async function createSession(userId: string, input: CreateSessionInput) {
   const [session] = await db.insert(pomodoroSessions).values({
     id,
     userId,
-    ...input,
+    timerType: input.timerType,
+    mode: input.mode,
+    startTime: new Date(input.startTime),
+    endTime: new Date(input.endTime),
+    duration: input.duration,
+    completed: input.completed,
   }).returning()
 
   // Update daily stats if this was a completed work session
@@ -37,8 +42,8 @@ export async function createSession(userId: string, input: CreateSessionInput) {
     if (existing) {
       await db.update(dailyStats)
         .set({
-          totalFocusMinutes: existing.totalFocusMinutes + focusMinutes,
-          completedPomodoros: existing.completedPomodoros + 1,
+          totalFocusMinutes: (existing.totalFocusMinutes ?? 0) + focusMinutes,
+          completedPomodoros: (existing.completedPomodoros ?? 0) + 1,
         })
         .where(eq(dailyStats.id, existing.id))
     } else {

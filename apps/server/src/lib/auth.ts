@@ -19,9 +19,6 @@ export const auth = betterAuth({
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
   },
-  advanced: {
-    generateCustomUserId: () => crypto.randomUUID(),
-  },
 })
 
 export type Auth = typeof auth

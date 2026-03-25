@@ -3,7 +3,8 @@ import { auth } from '../lib/auth'
 
 const app = new Hono()
 
-// better-auth 会自动处理 /sign-in/github, /sign-out 等路由
-app.route('/', auth)
+// better-auth 导出 handler 作为 Hono 中间件
+// @ts-ignore - better-auth 类型与 Hono 有轻微不兼容
+app.route('/', auth.handler)
 
 export default app
