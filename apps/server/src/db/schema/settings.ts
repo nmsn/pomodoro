@@ -1,4 +1,5 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
+import { users } from './users'
 
 export const userSettings = sqliteTable('user_settings', {
   id: text('id').primaryKey(),

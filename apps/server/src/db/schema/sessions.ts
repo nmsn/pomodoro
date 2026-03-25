@@ -1,4 +1,5 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
+import { users } from './users'
 
 export const pomodoroSessions = sqliteTable('pomodoro_sessions', {
   id: text('id').primaryKey(),
