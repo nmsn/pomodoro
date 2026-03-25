@@ -18,8 +18,8 @@ app.use('/*', cors({
 // Health check
 app.get('/health', (c) => c.json({ status: 'ok' }))
 
-// Mount better-auth routes - use app.mount for better-auth handler
-app_mount('/api/auth', auth.handler)
+// Mount better-auth routes
+app.mount('/api/auth', auth.handler)
 
 // Mount API routes
 app.route('/api/settings', settingsRoute)
@@ -35,15 +35,3 @@ serve({
   fetch: app.fetch,
   port,
 })
-
-// Helper to mount better-auth handler
-function app_mount(path: string, handler: (request: Request) => Promise<Response>) {
-  app.use(path + '/*', async (c) => {
-    const response = await handler(c.req.raw)
-    return response
-  })
-  app.use(path, async (c) => {
-    const response = await handler(c.req.raw)
-    return response
-  })
-}

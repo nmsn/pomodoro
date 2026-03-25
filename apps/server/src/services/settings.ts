@@ -38,9 +38,11 @@ export async function createSettings(userId: string) {
 }
 
 export async function updateSettings(userId: string, input: UpdateSettingsInput) {
-  let settings = await getSettings(userId)
-  if (!settings) {
-    settings = await createSettings(userId)
+  const existing = await getSettings(userId)
+  if (!existing) {
+    const created = await createSettings(userId)
+    broadcastToUser(userId, 'settings_update', created)
+    return created
   }
 
   const [updated] = await db.update(userSettings)
@@ -48,7 +50,6 @@ export async function updateSettings(userId: string, input: UpdateSettingsInput)
     .where(eq(userSettings.userId, userId))
     .returning()
 
-  // Broadcast to all connected clients of this user
   broadcastToUser(userId, 'settings_update', updated)
 
   return updated

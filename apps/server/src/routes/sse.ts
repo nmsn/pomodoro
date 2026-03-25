@@ -14,25 +14,27 @@ app.get('/', async (c) => {
 
   const encoder = new TextEncoder()
   let controllerRef: ReadableStreamDefaultController | null = null
+  let intervalRef: ReturnType<typeof setInterval> | null = null
 
   const stream = new ReadableStream({
     start(controller) {
       controllerRef = controller
       addSSEClient(userId, controller)
 
-      // Send initial ping
       controller.enqueue(encoder.encode(`event: ping\ndata: {}\n\n`))
 
-      // Keep-alive ping every 30 seconds
-      const interval = setInterval(() => {
+      intervalRef = setInterval(() => {
         try {
           controller.enqueue(encoder.encode(`event: ping\ndata: {}\n\n`))
         } catch {
-          clearInterval(interval)
+          clearInterval(intervalRef!)
         }
       }, 30000)
     },
     cancel() {
+      if (intervalRef) {
+        clearInterval(intervalRef)
+      }
       if (controllerRef) {
         removeSSEClient(userId, controllerRef)
       }

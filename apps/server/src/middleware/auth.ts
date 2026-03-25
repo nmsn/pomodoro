@@ -11,13 +11,12 @@ export interface AuthVariables {
 }
 
 export async function authMiddleware(c: Context, next: Next) {
-  // better-auth 会自动从 cookie 中解析 session
   const session = await auth.api.getSession({
     headers: c.req.raw.headers,
   })
 
   if (session) {
-    c.set('userId', session.user.id as string)
+    c.set('userId', session.user.id)
     c.set('session', {
       id: session.session.id,
       userId: session.user.id,
