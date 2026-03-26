@@ -12,12 +12,18 @@ import { DynamicBackground } from "@/components/DynamicBackground";
 
 export default function Home() {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isPipMounted, setIsPipMounted] = useState(false);
   const { isSupported, isOpen, pipWindow, openPiP, closePiP } = useDocumentPiP(
     {
       width: 320,
       height: 280,
     }
   );
+
+  // 延迟渲染 PiP 按钮到 hydration 完成后，避免 mismatch
+  useEffect(() => {
+    setIsPipMounted(true);
+  }, []);
 
   const handlePiPButtonClick = useCallback(async () => {
     if (!isOpen) {
@@ -52,14 +58,13 @@ export default function Home() {
           <PomoTimer
             workDuration={25}
             breakDuration={5}
-          // className="shadow-2xl"
           />
         )}
 
         {/* 设置按钮 - 右下角横向排列 */}
         <div className="fixed bottom-6 right-6 flex flex-row gap-2">
-          {/* PiP 模式按钮 */}
-          {isSupported && (
+          {/* PiP 模式按钮 - 延迟渲染避免 hydration mismatch */}
+          {isPipMounted && isSupported && (
             <Button
               variant="outline"
               size="icon"

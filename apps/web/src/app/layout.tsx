@@ -4,7 +4,6 @@ import "@/styles/styles.css";
 import "@/styles/globals.css";
 import { TimerProvider } from "@/components/TimerProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { SettingsInitializer } from "@/components/SettingsInitializer";
 import { getServerUserSettings } from "@/lib/server-settings";
 
 export const metadata: Metadata = {
@@ -18,7 +17,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // 服务端加载用户设置，避免客户端闪烁
-  const settings = await getServerUserSettings()
+  const settings = await getServerUserSettings();
 
   return (
     <html lang="zh-CN" suppressHydrationWarning>
@@ -31,8 +30,7 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </head>
       <body className="antialiased">
-        <ThemeProvider>
-          <SettingsInitializer settings={settings} />
+        <ThemeProvider serverSettings={settings}>
           <TimerProvider>{children}</TimerProvider>
         </ThemeProvider>
       </body>
