@@ -5,6 +5,6 @@ export default defineConfig({
   out: './drizzle',
   dialect: 'sqlite',
   dbCredentials: {
-    url: 'file:./data/pomodoro.db',
+    url: 'file:./data/pomo.db',
   },
 })

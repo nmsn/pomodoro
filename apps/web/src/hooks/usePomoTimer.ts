@@ -16,22 +16,22 @@ import {
 
 export type { TimerMode, TimerState, TimerType };
 
-export interface UsePomodoroTimerOptions {
+export interface UsePomoTimerOptions {
   workDuration?: number;
   breakDuration?: number;
   onStateChange?: (state: TimerState) => void;
 }
 
-export interface UsePomodoroTimerReturn {
+export interface UsePomoTimerReturn {
   state: TimerState;
   toggleTimer: () => void;
   resetTimer: () => void;
   switchMode: (mode: TimerMode) => void;
 }
 
-export function usePomodoroTimer(
-  options: UsePomodoroTimerOptions = {}
-): UsePomodoroTimerReturn {
+export function usePomoTimer(
+  options: UsePomoTimerOptions = {}
+): UsePomoTimerReturn {
   const { workDuration = 25, breakDuration = 5, onStateChange } = options;
 
   const state = useAtomValue(timerStateAtom);

@@ -1,5 +1,5 @@
 import { db } from '../db'
-import { pomodoroSessions } from '../db/schema/sessions'
+import { pomoSessions } from '../db/schema/sessions'
 import { dailyStats } from '../db/schema/stats'
 import { eq, and, desc } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
@@ -16,7 +16,7 @@ export interface CreateSessionInput {
 export async function createSession(userId: string, input: CreateSessionInput) {
   const id = nanoid()
 
-  const [session] = await db.insert(pomodoroSessions).values({
+  const [session] = await db.insert(pomoSessions).values({
     id,
     userId,
     timerType: input.timerType,
@@ -43,7 +43,7 @@ export async function createSession(userId: string, input: CreateSessionInput) {
       await db.update(dailyStats)
         .set({
           totalFocusMinutes: (existing.totalFocusMinutes ?? 0) + focusMinutes,
-          completedPomodoros: (existing.completedPomodoros ?? 0) + 1,
+          completedPomos: (existing.completedPomos ?? 0) + 1,
         })
         .where(eq(dailyStats.id, existing.id))
     } else {
@@ -52,7 +52,7 @@ export async function createSession(userId: string, input: CreateSessionInput) {
         userId,
         date: today,
         totalFocusMinutes: focusMinutes,
-        completedPomodoros: 1,
+        completedPomos: 1,
       })
     }
   }
@@ -61,9 +61,9 @@ export async function createSession(userId: string, input: CreateSessionInput) {
 }
 
 export async function getSessions(userId: string, limit = 50) {
-  const sessions = await db.query.pomodoroSessions.findMany({
-    where: eq(pomodoroSessions.userId, userId),
-    orderBy: [desc(pomodoroSessions.startTime)],
+  const sessions = await db.query.pomoSessions.findMany({
+    where: eq(pomoSessions.userId, userId),
+    orderBy: [desc(pomoSessions.startTime)],
     limit,
   })
   return sessions

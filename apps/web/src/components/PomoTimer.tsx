@@ -4,7 +4,7 @@ import { useAtomValue } from "jotai";
 import { Coffee, Brain, Timer, Hourglass, Watch, Tv, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { usePomodoroTimer, TimerMode, TimerState } from "@/hooks/usePomodoroTimer";
+import { usePomoTimer, TimerMode, TimerState } from "@/hooks/usePomoTimer";
 import { TimerRenderer } from "./TimerRenderer";
 import { timerTypeConfig, TimerType } from "@/atoms/timer";
 import { isDarkBackgroundAtom } from "@/atoms/background";
@@ -40,7 +40,7 @@ const getTimerTitle = (timerType: TimerType) => {
   return timerTypeConfig[timerType].name;
 };
 
-export function PomodoroTimer({
+export function PomoTimer({
   workDuration = 25,
   breakDuration = 5,
   className,

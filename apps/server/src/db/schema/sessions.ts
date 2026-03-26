@@ -1,7 +1,7 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
 import { users } from './users'
 
-export const pomodoroSessions = sqliteTable('pomodoro_sessions', {
+export const pomoSessions = sqliteTable('pomo_sessions', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().references(() => users.id),
   timerType: text('timer_type').notNull(),

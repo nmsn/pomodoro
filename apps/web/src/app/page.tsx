@@ -4,7 +4,7 @@ import { useCallback, useState, useEffect } from "react";
 import { PictureInPicture2, Maximize, Minimize } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { PomodoroTimer } from "@/components/PomodoroTimer";
+import { PomoTimer } from "@/components/PomoTimer";
 import { DrawerScrollableContent } from "@/components/ConfigDrawer";
 import { useDocumentPiP } from "@/hooks/useDocumentPiP";
 import { PiPTimerContainer } from "@/components/PipTimerContainer";
@@ -49,7 +49,7 @@ export default function Home() {
       <main className="min-h-screen flex items-center justify-center p-4 relative">
         {/* 当 PiP 窗口打开时隐藏主页面的番茄钟 */}
         {!isOpen && (
-          <PomodoroTimer
+          <PomoTimer
             workDuration={25}
             breakDuration={5}
           // className="shadow-2xl"

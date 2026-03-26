@@ -4,7 +4,7 @@ import { useAtomValue } from "jotai";
 import { Play, Pause, RotateCcw, X, Brain, Coffee } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { TimerState, TimerMode } from "@/hooks/usePomodoroTimer";
+import { TimerState, TimerMode } from "@/hooks/usePomoTimer";
 import { isDarkBackgroundAtom } from "@/atoms/background";
 
 export type TimerVariant = "default" | "mini";

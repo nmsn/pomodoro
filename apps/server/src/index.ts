@@ -18,8 +18,8 @@ app.use('/*', cors({
 // Health check
 app.get('/health', (c) => c.json({ status: 'ok' }))
 
-// Mount better-auth routes
-app.mount('/api/auth', auth.handler)
+// Mount better-auth at root - better-auth internally uses basePath /api/auth
+app.mount('/', auth.handler)
 
 // Mount API routes
 app.route('/api/settings', settingsRoute)

@@ -6,5 +6,5 @@ export const dailyStats = sqliteTable('daily_stats', {
   userId: text('user_id').notNull().references(() => users.id),
   date: text('date').notNull(), // YYYY-MM-DD
   totalFocusMinutes: integer('total_focus_minutes').default(0),
-  completedPomodoros: integer('completed_pomodoros').default(0),
+  completedPomos: integer('completed_pomos').default(0),
 })

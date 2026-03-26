@@ -1,6 +1,6 @@
 import type { User, NewUser } from './db/schema/users'
 import type { userSettings } from './db/schema/settings'
-import type { pomodoroSessions } from './db/schema/sessions'
+import type { pomoSessions } from './db/schema/sessions'
 import type { dailyStats } from './db/schema/stats'
 
 export type { User, NewUser }
@@ -9,7 +9,7 @@ export interface Settings extends Omit<typeof userSettings.$inferSelect, 'update
   updatedAt: number
 }
 
-export interface Session extends Omit<typeof pomodoroSessions.$inferSelect, 'startTime' | 'endTime'> {
+export interface Session extends Omit<typeof pomoSessions.$inferSelect, 'startTime' | 'endTime'> {
   startTime: number
   endTime: number | null
 }

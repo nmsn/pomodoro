@@ -37,7 +37,7 @@ export async function getWeeklyStats(userId: string) {
       userId,
       date: dateStr,
       totalFocusMinutes: 0,
-      completedPomodoros: 0,
+      completedPomos: 0,
     })
   }
 
