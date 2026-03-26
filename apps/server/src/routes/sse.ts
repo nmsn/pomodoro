@@ -1,16 +1,13 @@
 import { Hono } from 'hono'
-import { authMiddleware, type AuthVariables } from '../middleware/auth'
+import { requireAuthMiddleware, type AuthVariables } from '../middleware/auth'
 import { addSSEClient, removeSSEClient } from '../lib/sseClients'
 
 const app = new Hono<{ Variables: AuthVariables }>()
 
-app.use('/*', authMiddleware)
+app.use('/*', requireAuthMiddleware)
 
 app.get('/', async (c) => {
-  const userId = c.get('userId') as string | undefined
-  if (!userId) {
-    return c.json({ error: 'Unauthorized' }, 401)
-  }
+  const userId = c.get('userId')!
 
   const encoder = new TextEncoder()
   let controllerRef: ReadableStreamDefaultController | null = null

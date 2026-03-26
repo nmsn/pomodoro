@@ -1,11 +1,11 @@
 import { Hono } from 'hono'
 import { z } from 'zod'
 import { createSession, getSessions } from '../services/session'
-import { authMiddleware, type AuthVariables } from '../middleware/auth'
+import { requireAuthMiddleware, type AuthVariables } from '../middleware/auth'
 
 const app = new Hono<{ Variables: AuthVariables }>()
 
-app.use('/*', authMiddleware)
+app.use('/*', requireAuthMiddleware)
 
 const createSessionSchema = z.object({
   timerType: z.string(),
@@ -17,10 +17,7 @@ const createSessionSchema = z.object({
 })
 
 app.post('/', async (c) => {
-  const userId = c.get('userId')
-  if (!userId) {
-    return c.json({ error: 'Unauthorized' }, 401)
-  }
+  const userId = c.get('userId')!
 
   const body = await c.req.json()
   const parsed = createSessionSchema.safeParse(body)
@@ -34,10 +31,7 @@ app.post('/', async (c) => {
 })
 
 app.get('/', async (c) => {
-  const userId = c.get('userId')
-  if (!userId) {
-    return c.json({ error: 'Unauthorized' }, 401)
-  }
+  const userId = c.get('userId')!
 
   const limit = parseInt(c.req.query('limit') ?? '50')
   const sessions = await getSessions(userId, limit)
