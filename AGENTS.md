@@ -41,6 +41,8 @@ export const toggleTimerAtom = atom(null, (get, set) => {
 - `src/services/` - Business logic
 - `src/middleware/auth.ts` - Session-based auth middleware
 
+**API Path Convention**: Do NOT add trailing slashes to API paths. Use `/api/settings`, not `/api/settings/`.
+
 ### Database
 - Drizzle ORM with SQLite via @libsql/client
 - Schemas in `src/db/schema/`
