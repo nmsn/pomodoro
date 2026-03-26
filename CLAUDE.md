@@ -1,4 +1,4 @@
-# Project: Pomodoro
+# Project: Pomo
 
 A web-based pomodoro timer with multiple timer modes, themes, backgrounds, and cloud sync capabilities.
 

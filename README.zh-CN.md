@@ -1,22 +1,22 @@
 
-# Pomodoro
+# Pomo
 
-![github version](https://img.shields.io/github/package-json/v/nmsn/pomodoro)
-![license](https://img.shields.io/github/license/nmsn/pomodoro)
-![last commit](https://img.shields.io/github/last-commit/nmsn/pomodoro)
-![commit activity](https://img.shields.io/github/commit-activity/y/nmsn/pomodoro)
+![github version](https://img.shields.io/github/package-json/v/nmsn/pomo)
+![license](https://img.shields.io/github/license/nmsn/pomo)
+![last commit](https://img.shields.io/github/last-commit/nmsn/pomo)
+![commit activity](https://img.shields.io/github/commit-activity/y/nmsn/pomo)
 
 一个在线的番茄钟 + Todo List。
 
 [English](./README.md) | 简体中文
 
-在线地址: [https://pomodoro-easy.vercel.app/](https://pomodoro-easy.vercel.app/)
+在线地址: [https://pomo-easy.vercel.app/](https://pomo-easy.vercel.app/)
 
-![pomodoro.png](https://s2.loli.net/2023/02/18/dRlCoLftjqX7IUZ.png)
+![pomo.png](https://s2.loli.net/2023/02/18/dRlCoLftjqX7IUZ.png)
 
-![pomodoro_todo.png](https://s2.loli.net/2023/10/15/T4VCIw7iotQ2JDq.png)
+![pomo_todo.png](https://s2.loli.net/2023/10/15/T4VCIw7iotQ2JDq.png)
 
-![pomodoro_calendar.png](https://s2.loli.net/2023/10/15/BxbkyRU4fXipC8S.png)
+![pomo_calendar.png](https://s2.loli.net/2023/10/15/BxbkyRU4fXipC8S.png)
 
 ## 特征
 
@@ -66,4 +66,4 @@
 
 ## License
 
-[MIT License](https://github.com/nmsn/pomodoro/blob/main/LICENSE)
+[MIT License](https://github.com/nmsn/pomo/blob/main/LICENSE)

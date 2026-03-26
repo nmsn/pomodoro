@@ -1,19 +1,20 @@
 {
-  "name": "pomodoro-monorepo",
+  "name": "pomo-monorepo",
   "version": "0.3.0",
   "private": true,
   "author": "nmsn",
   "description": "A web pomodoro clock - monorepo structure",
   "keywords": [
     "pomodoro",
+    "pomo",
     "monorepo",
     "pnpm"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/nmsn/promodoro.git"
+    "url": "https://github.com/nmsn/pomo.git"
   },
-  "homepage": "https://github.com/nmsn/promodoro#readme",
+  "homepage": "https://github.com/nmsn/pomo#readme",
   "license": "MIT",
   "scripts": {
     "dev": "pnpm --filter web dev",

@@ -1,11 +1,12 @@
 {
-  "name": "web",
+  "name": "@pomo/web",
   "version": "0.3.0",
   "private": true,
   "author": "nmsn",
   "description": "A web pomodoro clock.",
   "keywords": [
     "pomodoro",
+    "pomo",
     "clock",
     "timer",
     "todo list",
@@ -16,9 +17,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/nmsn/promodoro.git"
+    "url": "https://github.com/nmsn/pomo.git"
   },
-  "homepage": "https://github.com/nmsn/promodoro#readme",
+  "homepage": "https://github.com/nmsn/pomo#readme",
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
