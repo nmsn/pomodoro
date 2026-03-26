@@ -9,7 +9,7 @@ import { TimerRenderer } from "./TimerRenderer";
 import { timerTypeConfig, TimerType } from "@/atoms/timer";
 import { isDarkBackgroundAtom } from "@/atoms/background";
 
-interface PomodoroTimerProps {
+interface PomoTimerProps {
   workDuration?: number;
   breakDuration?: number;
   className?: string;
@@ -45,9 +45,9 @@ export function PomoTimer({
   breakDuration = 5,
   className,
   onTimerUpdate,
-}: PomodoroTimerProps) {
+}: PomoTimerProps) {
   const isDark = useAtomValue(isDarkBackgroundAtom);
-  const { state, toggleTimer, resetTimer, switchMode } = usePomodoroTimer({
+  const { state, toggleTimer, resetTimer, switchMode } = usePomoTimer({
     workDuration,
     breakDuration,
     onStateChange: onTimerUpdate,
