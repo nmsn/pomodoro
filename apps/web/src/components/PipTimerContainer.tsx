@@ -10,6 +10,7 @@ import {
   resetTimerAtom,
 } from "@/atoms/timer";
 import { backgroundThemeAtom, backgroundThemes } from "@/atoms/background";
+import { cn } from "@/lib/utils";
 import { MeshGradient } from "@paper-design/shaders-react";
 
 interface PiPTimerContainerProps {
@@ -101,14 +102,8 @@ export function PiPTimerContainer({ pipWindow }: PiPTimerContainerProps) {
     const config = backgroundThemes[currentTheme];
 
     if (config.type === "solid") {
-      // 纯色背景
-      if (currentTheme === "solid-dark") {
-        pipWindow.document.body.style.backgroundColor = "#0f172a";
-      } else if (currentTheme === "solid-light") {
-        pipWindow.document.body.style.backgroundColor = "#f8fafc";
-      } else {
-        pipWindow.document.body.style.backgroundColor = "hsl(var(--background))";
-      }
+      // solid 类型主题直接使用 CSS class（如 bg-gradient-to-br from-background to-muted）
+      pipWindow.document.body.className = config.solidColor || "";
     } else if (config.colors && config.colors.length > 0) {
       // Shader 背景使用渐变色
       const gradient = `linear-gradient(135deg, ${config.colors.join(", ")})`;
@@ -121,17 +116,9 @@ export function PiPTimerContainer({ pipWindow }: PiPTimerContainerProps) {
   const config = backgroundThemes[currentTheme];
 
   return createPortal(
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className={cn("min-h-screen flex items-center justify-center p-4", config.solidColor || "")}>
       {/* 根据当前主题类型渲染背景 */}
-      {config.type === "solid" ? (
-        <div className="absolute inset-0 w-full h-full" 
-             style={{ 
-               backgroundColor: currentTheme === "solid-dark" ? "#0f172a" : 
-                              currentTheme === "solid-light" ? "#f8fafc" : 
-                              "hsl(var(--background))",
-               zIndex: -1 
-             }} />
-      ) : (
+      {config.type !== "solid" && (
         <MeshGradient
           className="absolute inset-0 w-full h-full"
           style={{ zIndex: -1 }}
