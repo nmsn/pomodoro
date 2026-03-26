@@ -22,7 +22,11 @@
     "dev:all": "pnpm --filter @pomo/server dev & pnpm --filter web dev",
     "build": "pnpm --filter web build",
     "start": "pnpm --filter web start",
-    "lint": "pnpm --filter web lint"
+    "lint": "pnpm --filter web lint",
+    "db:generate": "pnpm --filter @pomo/server db:generate",
+    "db:migrate": "pnpm --filter @pomo/server db:migrate",
+    "db:push": "pnpm --filter @pomo/server db:push",
+    "db:studio": "pnpm --filter @pomo/server db:studio"
   },
   "devDependencies": {
     "husky": "^9.1.7",
