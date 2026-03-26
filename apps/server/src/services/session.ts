@@ -1,5 +1,5 @@
 import { db } from '../db'
-import { pomoSessions } from '../db/schema/sessions'
+import { pomoSession } from '../db/schema/sessions'
 import { dailyStats } from '../db/schema/stats'
 import { eq, and, desc } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
@@ -16,7 +16,7 @@ export interface CreateSessionInput {
 export async function createSession(userId: string, input: CreateSessionInput) {
   const id = nanoid()
 
-  const [session] = await db.insert(pomoSessions).values({
+  const [session] = await db.insert(pomoSession).values({
     id,
     userId,
     timerType: input.timerType,
@@ -61,9 +61,9 @@ export async function createSession(userId: string, input: CreateSessionInput) {
 }
 
 export async function getSessions(userId: string, limit = 50) {
-  const sessions = await db.query.pomoSessions.findMany({
-    where: eq(pomoSessions.userId, userId),
-    orderBy: [desc(pomoSessions.startTime)],
+  const sessions = await db.query.pomoSession.findMany({
+    where: eq(pomoSession.userId, userId),
+    orderBy: [desc(pomoSession.startTime)],
     limit,
   })
   return sessions

@@ -1,9 +1,9 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
-import { users } from './users'
+import { user } from './users'
 
 export const userSettings = sqliteTable('user_settings', {
   id: text('id').primaryKey(),
-  userId: text('user_id').notNull().references(() => users.id),
+  userId: text('user_id').notNull().references(() => user.id),
   theme: text('theme').default('system'),
   background: text('background').default('default'),
   workDuration: integer('work_duration').default(25),

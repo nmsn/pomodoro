@@ -1,6 +1,6 @@
 export * from './users'
 export * from './settings'
+export * from './accounts'
 export * from './sessions'
 export * from './stats'
-export * from './accounts'
 export * from './verification'
