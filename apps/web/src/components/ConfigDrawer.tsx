@@ -8,6 +8,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -69,6 +70,7 @@ export function DrawerScrollableContent() {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="p-0 border-l border-muted-foreground/10">
+          <DrawerTitle className="sr-only">设置</DrawerTitle>
         <div className="flex h-[100vh]">
           {/* 左侧导航栏 */}
           <Sidebar

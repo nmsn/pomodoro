@@ -22,6 +22,7 @@ export const auth = betterAuth({
     updateAge: 60 * 60 * 24, // 1 day
   },
   baseURL: process.env.BETTER_AUTH_URL,
+  trustedOrigins: process.env.CORS_ORIGIN ? [process.env.CORS_ORIGIN] : [],
 })
 
 export type Auth = typeof auth

@@ -1,23 +1,110 @@
 "use client"
 
+import { useSession, signIn, signOut } from "@/atoms/auth"
+import { Button } from "@/components/ui/button"
+import { Github } from "lucide-react"
+
 export function AccountSettings() {
+  const { data: session, isPending } = useSession()
+
+  const handleGitHubSignIn = async () => {
+    await signIn.social({
+      provider: "github",
+      callbackURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+    })
+  }
+
+  const handleSignOut = async () => {
+    await signOut()
+  }
+
+  if (isPending) {
+    return (
+      <div className="space-y-8">
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-lg font-semibold tracking-tight">账户信息</h3>
+            <p className="text-sm text-muted-foreground mt-1">管理您的账户设置</p>
+          </div>
+          <div className="p-5 rounded-2xl bg-muted/50 border border-muted-foreground/5 animate-pulse">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-muted" />
+              <div className="space-y-2">
+                <div className="h-4 w-24 bg-muted rounded" />
+                <div className="h-3 w-32 bg-muted rounded" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!session?.user) {
+    return (
+      <div className="space-y-8">
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-lg font-semibold tracking-tight">账户信息</h3>
+            <p className="text-sm text-muted-foreground mt-1">登录以同步您的数据</p>
+          </div>
+          <div className="p-5 rounded-2xl bg-muted/50 border border-muted-foreground/5">
+            <div className="flex flex-col items-center gap-4 py-4">
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
+                <span className="text-3xl">👤</span>
+              </div>
+              <div className="text-center">
+                <p className="font-medium">未登录</p>
+                <p className="text-sm text-muted-foreground mt-1">登录后可以同步您的计时数据</p>
+              </div>
+              <Button
+                onClick={handleGitHubSignIn}
+                className="w-full mt-2 rounded-xl cursor-pointer"
+              >
+                <Github className="w-4 h-4 mr-2" />
+                使用 GitHub 登录
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const { user } = session
+
   return (
     <div className="space-y-8">
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-semibold tracking-tight">账户信息</h3>
-          <p className="text-sm text-muted-foreground mt-1">管理您的账户设置</p>
+          <p className="text-sm text-muted-foreground mt-1">已登录账户</p>
         </div>
         <div className="p-5 rounded-2xl bg-muted/50 border border-muted-foreground/5">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-primary-foreground font-bold text-xl shadow-lg">
-              U
-            </div>
-            <div>
-              <p className="font-semibold">用户名</p>
-              <p className="text-sm text-muted-foreground">user@example.com</p>
+            {user.image ? (
+              <img
+                src={user.image}
+                alt={user.name || "用户头像"}
+                className="w-14 h-14 rounded-2xl shadow-lg"
+              />
+            ) : (
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-primary-foreground font-bold text-xl shadow-lg">
+                {user.name?.[0]?.toUpperCase() || "U"}
+              </div>
+            )}
+            <div className="flex-1">
+              <p className="font-semibold">{user.name || "用户"}</p>
+              <p className="text-sm text-muted-foreground">{user.email}</p>
             </div>
           </div>
+          <Button
+            variant="outline"
+            onClick={handleSignOut}
+            className="w-full mt-4 rounded-xl cursor-pointer"
+          >
+            退出登录
+          </Button>
         </div>
       </div>
     </div>
