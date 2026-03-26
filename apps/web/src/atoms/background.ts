@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { saveUserSettings } from "@/atoms/settings";
 
 export type BackgroundTheme = 
   | "default"
@@ -159,6 +160,7 @@ export const switchBackgroundThemeAtom = atom(
   null,
   (get, set, theme: BackgroundTheme) => {
     set(backgroundThemeAtom, theme);
+    saveUserSettings({ background: theme });
   }
 );
 

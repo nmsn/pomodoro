@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { saveUserSettings } from "@/atoms/settings";
 
 export type TimerType = "pomodoro" | "countdown" | "stopwatch" | "animedoro" | "52-17";
 export type TimerMode = "work" | "break";
@@ -191,12 +192,14 @@ export const switchTimerTypeAtom = atom(null, (get, set, type: TimerType) => {
   set(elapsedTimeAtom, 0);
   set(workDurationAtom, config.workDuration);
   set(breakDurationAtom, config.breakDuration);
-  
+
   if (config.isStopwatch) {
     set(timeLeftAtom, 0);
   } else {
     set(timeLeftAtom, config.workDuration * 60);
   }
+
+  saveUserSettings({ timerType: type, workDuration: config.workDuration, breakDuration: config.breakDuration });
 });
 
 // 更新时长
@@ -205,14 +208,16 @@ export const updateDurationAtom = atom(
   (get, set, { type, duration }: { type: "work" | "break"; duration: number }) => {
     if (type === "work") {
       set(workDurationAtom, duration);
+      saveUserSettings({ workDuration: duration });
     } else {
       set(breakDurationAtom, duration);
+      saveUserSettings({ breakDuration: duration });
     }
-    
+
     // 如果当前在对应模式且未运行，更新时间
     const currentMode = get(timerModeAtom);
     const isActive = get(isActiveAtom);
-    
+
     if (!isActive && currentMode === type) {
       set(timeLeftAtom, duration * 60);
     }

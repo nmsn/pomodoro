@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { saveUserSettings } from "@/atoms/settings";
 
 export type ThemeMode = "light" | "dark" | "system";
 
@@ -46,6 +47,9 @@ export const setThemeModeAtom = atom(
         }
       }
     }
+
+    // 保存到后端
+    saveUserSettings({ theme: mode });
   }
 );
 
