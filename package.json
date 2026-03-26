@@ -18,6 +18,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "pnpm --filter web dev",
+    "dev:server": "pnpm --filter @pomo/server dev",
+    "dev:all": "pnpm --filter @pomo/server dev & pnpm --filter web dev",
     "build": "pnpm --filter web build",
     "start": "pnpm --filter web start",
     "lint": "pnpm --filter web lint"
