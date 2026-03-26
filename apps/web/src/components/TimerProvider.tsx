@@ -12,12 +12,16 @@ import {
   elapsedTimeAtom,
   timerTypeConfig,
 } from "@/atoms/timer";
+import { useUserSettingsSync } from "@/hooks/useUserSettingsSync";
 
 export function TimerProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // 登录后从后端加载用户设置
+  useUserSettingsSync()
+
   const [isActive, setIsActive] = useAtom(isActiveAtom);
   const [timeLeft, setTimeLeft] = useAtom(timeLeftAtom);
   const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
