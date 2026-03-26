@@ -18,14 +18,17 @@ app.use('/*', cors({
 // Health check
 app.get('/health', (c) => c.json({ status: 'ok' }))
 
-// Mount better-auth at root
-app.mount('/', auth.handler)
+// Mount better-auth at /auth
+app.all('/auth/*', async (c) => {
+  return await auth.handler(c.req.raw)
+})
 
 // Mount API routes
 app.route('/api/settings', settingsRoute)
 app.route('/api/sessions', sessionsRoute)
 app.route('/api/stats', statsRoute)
 app.route('/api/sse', sseRoute)
+
 
 const port = parseInt(process.env.PORT || '3001')
 

@@ -21,6 +21,7 @@ export const auth = betterAuth({
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
   },
+  basePath: '/auth',
   baseURL: process.env.BETTER_AUTH_URL,
   trustedOrigins: process.env.CORS_ORIGIN ? [process.env.CORS_ORIGIN] : [],
 })
