@@ -17,7 +17,7 @@
   "homepage": "https://github.com/nmsn/pomo#readme",
   "license": "MIT",
   "scripts": {
-    "dev": "pnpm --filter web dev",
+    "dev:web": "pnpm --filter web dev",
     "dev:server": "pnpm --filter @pomo/server dev",
     "dev:all": "pnpm --filter @pomo/server dev & pnpm --filter web dev",
     "build": "pnpm --filter web build",
