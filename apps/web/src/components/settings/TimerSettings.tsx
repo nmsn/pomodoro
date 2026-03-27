@@ -1,7 +1,8 @@
 "use client"
 
 import { useAtom, useAtomValue } from "jotai"
-import { cn } from "@/lib/utils"
+import { useCallback } from "react"
+import { debounce } from "es-toolkit"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -33,10 +34,18 @@ export function TimerSettings() {
     switchTimerType(value as TimerType)
   }
 
+  // 创建防抖的更新函数，300ms 延迟
+  const debouncedUpdateDuration = useCallback(
+    debounce((type: "work" | "break", duration: number) => {
+      updateDuration({ type, duration })
+    }, 300),
+    [updateDuration]
+  )
+
   const adjustDuration = (type: "work" | "break", delta: number) => {
     const current = type === "work" ? workDuration : breakDuration
     const newValue = Math.max(1, current + delta)
-    updateDuration({ type, duration: newValue })
+    debouncedUpdateDuration(type, newValue)
   }
 
   return (
