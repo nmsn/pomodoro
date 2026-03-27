@@ -1,10 +1,10 @@
 "use client"
 
-import { useAtom, useAtomValue } from "jotai"
-import { useCallback } from "react"
-import { debounce } from "es-toolkit"
-import { Button } from "@/components/ui/button"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
+import { useCallback, useRef } from "react"
+import { useOptimistic } from "react"
 import { Separator } from "@/components/ui/separator"
+import { Slider } from "@/components/ui/slider"
 import {
   Select,
   SelectContent,
@@ -17,36 +17,58 @@ import {
   workDurationAtom,
   breakDurationAtom,
   switchTimerTypeAtom,
-  updateDurationAtom,
   timerTypeConfig,
   TimerType,
 } from "@/atoms/timer"
+import { saveUserSettings } from "@/atoms/settings"
 
 export function TimerSettings() {
   const timerType = useAtomValue(timerTypeAtom)
   const workDuration = useAtomValue(workDurationAtom)
   const breakDuration = useAtomValue(breakDurationAtom)
   const [, switchTimerType] = useAtom(switchTimerTypeAtom)
-  const [, updateDuration] = useAtom(updateDurationAtom)
+  const setWorkDuration = useSetAtom(workDurationAtom)
+  const setBreakDuration = useSetAtom(breakDurationAtom)
   const config = timerTypeConfig[timerType]
+
+  // useOptimistic：乐观更新（立即响应）
+  const [optimisticWork, addOptimisticWork] = useOptimistic(workDuration, (_state, newValue: number) => newValue)
+  const [optimisticBreak, addOptimisticBreak] = useOptimistic(breakDuration, (_state, newValue: number) => newValue)
+
+  // 防抖保存 refs
+  const workTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const breakTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleTypeChange = (value: string) => {
     switchTimerType(value as TimerType)
   }
 
-  // 创建防抖的更新函数，300ms 延迟
-  const debouncedUpdateDuration = useCallback(
-    debounce((type: "work" | "break", duration: number) => {
-      updateDuration({ type, duration })
-    }, 300),
-    [updateDuration]
-  )
+  // 滑动更新：立即更新 UI，防抖同步到后端
+  const handleDurationChange = useCallback((type: "work" | "break", value: number[]) => {
+    const newValue = value[0]
 
-  const adjustDuration = (type: "work" | "break", delta: number) => {
-    const current = type === "work" ? workDuration : breakDuration
-    const newValue = Math.max(1, current + delta)
-    debouncedUpdateDuration(type, newValue)
-  }
+    // 乐观更新：立即响应
+    if (type === "work") {
+      addOptimisticWork(newValue)
+      setWorkDuration(newValue)
+    } else {
+      addOptimisticBreak(newValue)
+      setBreakDuration(newValue)
+    }
+
+    // 清除之前的定时器，防抖保存
+    if (type === "work") {
+      if (workTimerRef.current) clearTimeout(workTimerRef.current)
+      workTimerRef.current = setTimeout(() => {
+        saveUserSettings({ workDuration: newValue })
+      }, 300)
+    } else {
+      if (breakTimerRef.current) clearTimeout(breakTimerRef.current)
+      breakTimerRef.current = setTimeout(() => {
+        saveUserSettings({ breakDuration: newValue })
+      }, 300)
+    }
+  }, [addOptimisticWork, addOptimisticBreak, setWorkDuration, setBreakDuration])
 
   return (
     <div className="space-y-8">
@@ -111,12 +133,26 @@ export function TimerSettings() {
                 {timerType === "countdown" ? "设置倒计时时间" : "设置每次专注的默认时长"}
               </p>
             </div>
-            <DurationControl
-              value={workDuration}
-              onIncrease={() => adjustDuration("work", 1)}
-              onDecrease={() => adjustDuration("work", -1)}
-              label="分钟"
-            />
+            <div className="flex items-center gap-6 bg-gradient-to-br from-muted/80 to-muted/40 rounded-2xl p-5 border border-muted-foreground/10">
+              <span className="text-3xl font-bold w-16 text-center tabular-nums font-mono">
+                {optimisticWork}
+              </span>
+              <div
+                className="flex-1 touch-none"
+                onPointerDown={(e) => e.stopPropagation()}
+              >
+                <Slider
+                  min={1}
+                  max={60}
+                  step={1}
+                  value={[optimisticWork]}
+                  onValueChange={(value) => handleDurationChange("work", value)}
+                  showTicks
+                  ticksInterval={5}
+                />
+              </div>
+              <span className="text-sm text-muted-foreground w-10">分钟</span>
+            </div>
           </div>
 
           <Separator className="bg-muted-foreground/10" />
@@ -129,12 +165,26 @@ export function TimerSettings() {
                   <h3 className="text-lg font-semibold tracking-tight">休息时长</h3>
                   <p className="text-sm text-muted-foreground mt-1">设置每次休息的默认时长</p>
                 </div>
-                <DurationControl
-                  value={breakDuration}
-                  onIncrease={() => adjustDuration("break", 1)}
-                  onDecrease={() => adjustDuration("break", -1)}
-                  label="分钟"
-                />
+                <div className="flex items-center gap-6 bg-gradient-to-br from-muted/80 to-muted/40 rounded-2xl p-5 border border-muted-foreground/10">
+                  <span className="text-3xl font-bold w-16 text-center tabular-nums font-mono">
+                    {optimisticBreak}
+                  </span>
+                  <div
+                    className="flex-1 touch-none"
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
+                    <Slider
+                      min={1}
+                      max={30}
+                      step={1}
+                      value={[optimisticBreak]}
+                      onValueChange={(value) => handleDurationChange("break", value)}
+                      showTicks
+                      ticksInterval={5}
+                    />
+                  </div>
+                  <span className="text-sm text-muted-foreground w-10">分钟</span>
+                </div>
               </div>
               <Separator className="bg-muted-foreground/10" />
             </>
@@ -147,42 +197,6 @@ export function TimerSettings() {
         <h4 className="font-semibold mb-1">{config.name}</h4>
         <p className="text-sm text-muted-foreground leading-relaxed">{config.description}</p>
       </div>
-    </div>
-  )
-}
-
-interface DurationControlProps {
-  value: number
-  onIncrease: () => void
-  onDecrease: () => void
-  label: string
-}
-
-function DurationControl({ value, onIncrease, onDecrease, label }: DurationControlProps) {
-  return (
-    <div className="flex items-center gap-4 bg-gradient-to-br from-muted/80 to-muted/40 rounded-2xl p-5 w-fit border border-muted-foreground/10">
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={onDecrease}
-        aria-label="减少时长"
-        className="group h-12 w-12 rounded-xl border-2 border-muted-foreground/20 cursor-pointer hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
-      >
-        <span className="text-2xl text-muted-foreground group-hover:text-foreground transition-colors font-light">−</span>
-      </Button>
-      <span className="text-4xl font-bold w-20 text-center tabular-nums font-mono bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
-        {value}
-      </span>
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={onIncrease}
-        aria-label="增加时长"
-        className="group h-12 w-12 rounded-xl border-2 border-muted-foreground/20 cursor-pointer hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
-      >
-        <span className="text-2xl text-muted-foreground group-hover:text-foreground transition-colors font-light">+</span>
-      </Button>
-      <span className="text-sm text-muted-foreground font-medium ml-2">{label}</span>
     </div>
   )
 }
