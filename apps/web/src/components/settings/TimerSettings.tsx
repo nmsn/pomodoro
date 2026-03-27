@@ -71,20 +71,20 @@ export function TimerSettings() {
   }, [addOptimisticWork, addOptimisticBreak, setWorkDuration, setBreakDuration])
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* 计时类型选择 */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div>
-          <h3 className="text-lg font-semibold tracking-tight">计时模式</h3>
-          <p className="text-sm text-muted-foreground mt-1">选择适合您的计时方式</p>
+          <h3 className="text-base font-semibold tracking-tight">计时模式</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">选择适合您的计时方式</p>
         </div>
         <Select value={timerType} onValueChange={handleTypeChange}>
-          <SelectTrigger className="w-full h-12 rounded-2xl border-muted-foreground/20 cursor-pointer">
+          <SelectTrigger className="w-full h-10 rounded-lg border-muted-foreground/20 cursor-pointer">
             <SelectValue placeholder="选择计时模式">
               {timerTypeConfig[timerType]?.name}
             </SelectValue>
           </SelectTrigger>
-          <SelectContent className="rounded-2xl">
+          <SelectContent className="rounded-lg">
             <SelectItem value="pomodoro" className="rounded-lg">
               <div className="flex flex-col items-start py-1">
                 <span className="font-medium">番茄钟</span>
@@ -124,17 +124,17 @@ export function TimerSettings() {
       {/* 专注时长 - 只在需要显示时展示 */}
       {config.showDurations && (
         <>
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div>
-              <h3 className="text-lg font-semibold tracking-tight">
+              <h3 className="text-base font-semibold tracking-tight">
                 {timerType === "countdown" ? "倒计时时长" : "专注时长"}
               </h3>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 {timerType === "countdown" ? "设置倒计时时间" : "设置每次专注的默认时长"}
               </p>
             </div>
-            <div className="flex items-center gap-6 bg-gradient-to-br from-muted/80 to-muted/40 rounded-2xl p-5 border border-muted-foreground/10">
-              <span className="text-3xl font-bold w-16 text-center tabular-nums font-mono">
+            <div className="flex items-center gap-4 bg-gradient-to-br from-muted/80 to-muted/40 rounded-lg p-4 border border-muted-foreground/10">
+              <span className="text-2xl font-bold w-14 text-center tabular-nums font-mono">
                 {optimisticWork}
               </span>
               <div
@@ -151,7 +151,7 @@ export function TimerSettings() {
                   ticksInterval={5}
                 />
               </div>
-              <span className="text-sm text-muted-foreground w-10">分钟</span>
+              <span className="text-xs text-muted-foreground w-8">分钟</span>
             </div>
           </div>
 
@@ -160,13 +160,13 @@ export function TimerSettings() {
           {/* 休息时长 - 只在有休息时间的模式下显示 */}
           {config.breakDuration > 0 && (
             <>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
-                  <h3 className="text-lg font-semibold tracking-tight">休息时长</h3>
-                  <p className="text-sm text-muted-foreground mt-1">设置每次休息的默认时长</p>
+                  <h3 className="text-base font-semibold tracking-tight">休息时长</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">设置每次休息的默认时长</p>
                 </div>
-                <div className="flex items-center gap-6 bg-gradient-to-br from-muted/80 to-muted/40 rounded-2xl p-5 border border-muted-foreground/10">
-                  <span className="text-3xl font-bold w-16 text-center tabular-nums font-mono">
+                <div className="flex items-center gap-4 bg-gradient-to-br from-muted/80 to-muted/40 rounded-lg p-4 border border-muted-foreground/10">
+                  <span className="text-2xl font-bold w-14 text-center tabular-nums font-mono">
                     {optimisticBreak}
                   </span>
                   <div
@@ -183,7 +183,7 @@ export function TimerSettings() {
                       ticksInterval={5}
                     />
                   </div>
-                  <span className="text-sm text-muted-foreground w-10">分钟</span>
+                  <span className="text-xs text-muted-foreground w-8">分钟</span>
                 </div>
               </div>
               <Separator className="bg-muted-foreground/10" />
@@ -193,9 +193,9 @@ export function TimerSettings() {
       )}
 
       {/* 模式说明 */}
-      <div className="bg-gradient-to-br from-muted/80 to-muted/40 rounded-2xl p-5 border border-muted-foreground/5">
-        <h4 className="font-semibold mb-1">{config.name}</h4>
-        <p className="text-sm text-muted-foreground leading-relaxed">{config.description}</p>
+      <div className="bg-gradient-to-br from-muted/80 to-muted/40 rounded-lg p-4 border border-muted-foreground/5">
+        <h4 className="font-medium text-sm mb-0.5">{config.name}</h4>
+        <p className="text-xs text-muted-foreground leading-relaxed">{config.description}</p>
       </div>
     </div>
   )

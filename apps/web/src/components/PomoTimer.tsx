@@ -57,14 +57,14 @@ export function PomoTimer({
   const showModeSwitch = config.breakDuration > 0;
 
   return (
-    <div className={cn("w-full max-w-md mx-auto p-6", className)}>
+    <div className={cn("w-full max-w-md mx-auto p-4", className)}>
       {/* 头部区域 */}
-      <div className="space-y-1 mb-6">
+      <div className="space-y-1 mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {getTimerIcon(state.timerType, isDark)}
             <h2 className={cn(
-              "text-2xl font-semibold tracking-tight",
+              "text-xl font-semibold tracking-tight",
               isDark && "text-white"
             )}>
               {getTimerTitle(state.timerType)}
@@ -76,7 +76,7 @@ export function PomoTimer({
                 variant={state.mode === "work" ? "default" : "outline"}
                 size="sm"
                 onClick={() => switchMode("work")}
-                className="rounded-full"
+                className="rounded-lg"
               >
                 <Brain className="mr-1 h-3 w-3" />
                 专注
@@ -85,7 +85,7 @@ export function PomoTimer({
                 variant={state.mode === "break" ? "secondary" : "outline"}
                 size="sm"
                 onClick={() => switchMode("break")}
-                className="rounded-full"
+                className="rounded-lg"
               >
                 <Coffee className="mr-1 h-3 w-3" />
                 休息

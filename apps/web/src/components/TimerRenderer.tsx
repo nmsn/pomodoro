@@ -53,7 +53,7 @@ export function TimerRenderer({
           size="icon"
           onClick={onClose}
           aria-label="关闭"
-          className="absolute top-2 right-2 h-8 w-8 rounded-2xl cursor-pointer hover:bg-muted"
+          className="absolute top-2 right-2 h-8 w-8 rounded-lg cursor-pointer hover:bg-muted"
         >
           <X className="h-4 w-4" />
         </Button>
@@ -61,9 +61,9 @@ export function TimerRenderer({
 
       {/* 模式切换（仅 default 模式显示） */}
       {showModeSwitch && onSwitchMode && !isMini && (
-        <div className="flex items-center justify-between w-full max-w-md mb-8">
+        <div className="flex items-center justify-between w-full max-w-md mb-6">
           <h2 className={cn(
-            "text-2xl font-semibold tracking-tight",
+            "text-xl font-semibold tracking-tight",
             isDark && "text-white"
           )}>番茄钟</h2>
           <div className="flex gap-2">
@@ -72,20 +72,20 @@ export function TimerRenderer({
               size="icon"
               onClick={() => onSwitchMode("work")}
               aria-label="切换到专注模式"
-              className="h-10 w-10 rounded-2xl cursor-pointer hover:scale-105 transition-transform"
+              className="h-9 w-9 rounded-lg cursor-pointer hover:scale-105 transition-transform"
               title="专注模式"
             >
-              <Brain className="h-5 w-5" />
+              <Brain className="h-4 w-4" />
             </Button>
             <Button
               variant={mode === "break" ? "secondary" : "outline"}
               size="icon"
               onClick={() => onSwitchMode("break")}
               aria-label="切换到休息模式"
-              className="h-10 w-10 rounded-2xl cursor-pointer hover:scale-105 transition-transform"
+              className="h-9 w-9 rounded-lg cursor-pointer hover:scale-105 transition-transform"
               title="休息模式"
             >
-              <Coffee className="h-5 w-5" />
+              <Coffee className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -95,7 +95,7 @@ export function TimerRenderer({
       <div
         className={cn(
           "font-mono font-bold tracking-tighter tabular-nums text-center leading-none",
-          isMini ? "text-6xl" : "text-[8rem] sm:text-[10rem] lg:text-[12rem]",
+          isMini ? "text-5xl" : "text-[7rem] sm:text-[8rem] lg:text-[9rem]",
           isDark ? "text-white" : "text-foreground"
         )}
       >
@@ -105,8 +105,8 @@ export function TimerRenderer({
       {/* 状态文本 */}
       <p
         className={cn(
-          "text-center mt-4",
-          isMini ? "text-xs mt-3" : "text-base mt-6",
+          "text-center mt-3",
+          isMini ? "text-xs mt-2" : "text-sm mt-4",
           isDark ? "text-white/70" : "text-muted-foreground"
         )}
       >
@@ -124,14 +124,14 @@ export function TimerRenderer({
       </p>
 
       {/* 进度条 */}
-      <div className={cn("w-full mt-6", isMini ? "max-w-[200px]" : "max-w-[320px]")}>
+      <div className={cn("w-full mt-4", isMini ? "max-w-[200px]" : "max-w-[280px]")}>
         <div className={cn(
-          "h-2.5 rounded-full overflow-hidden",
+          "h-2 rounded-lg overflow-hidden",
           isDark ? "bg-white/20" : "bg-primary/20"
         )}>
           <div
             className={cn(
-              "h-full transition-all duration-1000 rounded-full",
+              "h-full transition-all duration-1000 rounded-lg",
               mode === "work" ? "bg-red-500" : "bg-green-500"
             )}
             style={{ width: `${progress}%` }}
@@ -142,8 +142,8 @@ export function TimerRenderer({
       {/* 控制按钮 */}
       <div
         className={cn(
-          "flex items-center justify-center gap-4",
-          isMini ? "mt-6" : "mt-10"
+          "flex items-center justify-center gap-3",
+          isMini ? "mt-5" : "mt-7"
         )}
       >
         <Button
@@ -152,13 +152,13 @@ export function TimerRenderer({
           onClick={onReset}
           aria-label="重置计时器"
           className={cn(
-            "rounded-full transition-all duration-200 cursor-pointer",
-            "hover:shadow-lg hover:scale-105 active:scale-95",
-            isMini ? "h-16 w-16" : "h-16 w-16",
+            "rounded-lg transition-all duration-200 cursor-pointer",
+            "hover:shadow-md hover:scale-105 active:scale-95",
+            isMini ? "h-14 w-14" : "h-14 w-14",
             isDark && "bg-white/10 border-white/20 text-white hover:bg-white/20"
           )}
         >
-          <RotateCcw className={cn(isMini ? "h-6 w-6" : "h-6 w-6")} />
+          <RotateCcw className={cn(isMini ? "h-5 w-5" : "h-5 w-5")} />
         </Button>
 
         <Button
@@ -166,18 +166,18 @@ export function TimerRenderer({
           onClick={onToggle}
           aria-label={isActive ? "暂停" : "开始"}
           className={cn(
-            "rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 cursor-pointer",
+            "rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer",
             "hover:scale-105 active:scale-95",
-            isMini ? "h-16 w-16" : "h-16 w-16",
+            isMini ? "h-14 w-14" : "h-14 w-14",
             isActive && "bg-destructive hover:bg-destructive/90"
           )}
         >
           {isActive ? (
-            <Pause className={cn(isMini ? "h-7 w-7" : "h-7 w-7")} />
+            <Pause className={cn(isMini ? "h-6 w-6" : "h-6 w-6")} />
           ) : (
             <Play
               className={cn(
-                isMini ? "h-7 w-7 ml-0.5" : "h-7 w-7 ml-0.5"
+                isMini ? "h-6 w-6 ml-0.5" : "h-6 w-6 ml-0.5"
               )}
             />
           )}

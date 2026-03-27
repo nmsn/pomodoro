@@ -62,14 +62,14 @@ export default function Home() {
         )}
 
         {/* 设置按钮 - 右下角横向排列 */}
-        <div className="fixed bottom-6 right-6 flex flex-row gap-2">
+        <div className="fixed bottom-4 right-4 flex flex-row gap-2">
           {/* PiP 模式按钮 - 延迟渲染避免 hydration mismatch */}
           {isPipMounted && isSupported && (
             <Button
               variant="outline"
               size="icon"
               onClick={handlePiPButtonClick}
-              className="h-10 w-10 rounded-full shadow-lg bg-background/80 backdrop-blur-sm"
+              className="h-9 w-9 rounded-lg shadow-md bg-background/80 backdrop-blur-sm"
               title={isOpen ? "关闭画中画" : "画中画模式"}
             >
               <PictureInPicture2
@@ -83,7 +83,7 @@ export default function Home() {
             variant="outline"
             size="icon"
             onClick={handleFullscreenClick}
-            className="h-10 w-10 rounded-full shadow-lg bg-background/80 backdrop-blur-sm"
+            className="h-9 w-9 rounded-lg shadow-md bg-background/80 backdrop-blur-sm"
             title={isFullscreen ? "退出全屏" : "全屏模式"}
           >
             {isFullscreen ? (
