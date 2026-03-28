@@ -2,17 +2,14 @@
 
 import { useAtomValue } from "jotai";
 import { useState } from "react";
-import { Coffee, Brain, Timer, Hourglass, Watch, Tv, Calendar } from "lucide-react";
+import { Timer, Hourglass, Watch, Tv, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { usePomoTimer, TimerMode, TimerState } from "@/hooks/usePomoTimer";
 import { TimerRenderer } from "./TimerRenderer";
-import { timerTypeConfig, TimerType, isActiveAtom } from "@/atoms/timer";
-import { isDarkBackgroundAtom } from "@/atoms/background";
+import { timerTypeConfig, TimerType } from "@/atoms/timer";
 import { useSession } from "@/atoms/auth";
 import { LoginToast } from "./LoginToast";
 import { savePomodoroSession } from "@/lib/session";
-import { useConfirmAction } from "@/hooks/useConfirmAction";
 
 interface PomoTimerProps {
   workDuration?: number;
@@ -22,8 +19,8 @@ interface PomoTimerProps {
 }
 
 // 获取计时模式对应的图标
-const getTimerIcon = (timerType: TimerType, isDark: boolean) => {
-  const iconClass = cn("h-5 w-5", isDark && "text-white");
+const getTimerIcon = (timerType: TimerType) => {
+  const iconClass = "h-5 w-5 text-muted-foreground";
   switch (timerType) {
     case "pomodoro":
       return <Timer className={iconClass} />;
@@ -51,81 +48,36 @@ export function PomoTimer({
   className,
   onTimerUpdate,
 }: PomoTimerProps) {
-  const isDark = useAtomValue(isDarkBackgroundAtom);
-  const isActiveState = useAtomValue(isActiveAtom);
   const { data: session } = useSession();
   const [showLoginToast, setShowLoginToast] = useState(false);
 
-  const { state, toggleTimer, resetTimer, switchMode } = usePomoTimer({
+  const { state, toggleTimer, resetTimer } = usePomoTimer({
     workDuration,
     breakDuration,
     onStateChange: onTimerUpdate,
     onSessionComplete: (sessionData, completed) => {
       if (session?.user) {
-        // Logged in - save session
         savePomodoroSession(sessionData, completed);
       } else if (completed) {
-        // Not logged in and completed - show login toast
         setShowLoginToast(true);
       }
     },
   });
 
-  const { confirm: confirmSwitch, Dialog: SwitchDialog } = useConfirmAction({
-    title: "切换模式",
-    message:
-      state.mode === "work"
-        ? "专注计时进行中，切换将中断当前计时，确认吗？"
-        : "休息时间进行中，切换将中断当前计时，确认吗？",
-    confirmText: "切换",
-  });
-
   const config = timerTypeConfig[state.timerType];
-  const showModeSwitch = config.breakDuration > 0;
 
   return (
     <div className={cn("w-full max-w-md mx-auto p-4", className)}>
-      {/* 头部区域 */}
-      <div className="space-y-1 mb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {getTimerIcon(state.timerType, isDark)}
-            <h2 className={cn(
-              "text-xl font-semibold tracking-tight",
-              isDark && "text-white"
-            )}>
-              {getTimerTitle(state.timerType)}
-            </h2>
-          </div>
-          {showModeSwitch && (
-            <div className="flex gap-2">
-              <Button
-                variant={state.mode === "work" ? "default" : "outline"}
-                size="sm"
-                onClick={() => confirmSwitch(() => switchMode("work"), isActiveState)}
-                className="rounded-lg"
-              >
-                <Brain className="mr-1 h-3 w-3" />
-                专注
-              </Button>
-              <Button
-                variant={state.mode === "break" ? "default" : "outline"}
-                size="sm"
-                onClick={() => confirmSwitch(() => switchMode("break"), isActiveState)}
-                className="rounded-lg"
-              >
-                <Coffee className="mr-1 h-3 w-3" />
-                休息
-              </Button>
-            </div>
-          )}
-        </div>
-        <p className={cn(
-          "text-sm",
-          isDark ? "text-white/70" : "text-muted-foreground"
-        )}>
+      {/* 头部：计时器类型标识 */}
+      <div className="flex items-center gap-2 mb-2">
+        {getTimerIcon(state.timerType)}
+        <span className="text-sm font-medium text-foreground">
+          {getTimerTitle(state.timerType)}
+        </span>
+        <span className="text-muted-foreground/40">·</span>
+        <span className="text-sm text-muted-foreground">
           {config.description}
-        </p>
+        </span>
       </div>
 
       {/* 计时器区域 */}
@@ -134,14 +86,12 @@ export function PomoTimer({
         onToggle={toggleTimer}
         onReset={resetTimer}
         variant="default"
-        showModeSwitch={false}
+        showModeSwitch={true}
       />
 
       {showLoginToast && (
         <LoginToast onClose={() => setShowLoginToast(false)} />
       )}
-
-      <SwitchDialog />
     </div>
   );
 }

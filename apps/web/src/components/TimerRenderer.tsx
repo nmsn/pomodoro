@@ -5,7 +5,6 @@ import { Play, Pause, RotateCcw, X, Brain, Coffee } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { TimerState, TimerMode } from "@/hooks/usePomoTimer";
-import { isDarkBackgroundAtom } from "@/atoms/background";
 import { isActiveAtom } from "@/atoms/timer";
 import { useConfirmAction } from "@/hooks/useConfirmAction";
 
@@ -34,7 +33,6 @@ export function TimerRenderer({
   showCloseButton = false,
   className,
 }: TimerRendererProps) {
-  const isDark = useAtomValue(isDarkBackgroundAtom);
   const isActiveState = useAtomValue(isActiveAtom);
   const isMini = variant === "mini";
   const { mode, timeString, progress, isActive, statusText } = state;
@@ -80,31 +78,37 @@ export function TimerRenderer({
       {/* 模式切换（仅 default 模式显示） */}
       {showModeSwitch && onSwitchMode && !isMini && (
         <div className="flex items-center justify-between w-full max-w-md mb-6">
-          <h2 className={cn(
-            "text-xl font-semibold tracking-tight",
-            isDark && "text-white"
-          )}>番茄钟</h2>
-          <div className="flex gap-2">
-            <Button
-              variant={mode === "work" ? "default" : "outline"}
-              size="icon"
+          <h2 className="text-lg font-medium tracking-tight text-foreground">
+            {state.timerType === "pomodoro" ? "番茄钟" :
+             state.timerType === "countdown" ? "倒计时" :
+             state.timerType === "stopwatch" ? "码表" :
+             state.timerType === "animedoro" ? "Animedoro" : "52/17"}
+          </h2>
+          <div className="flex gap-1.5 p-1 rounded-xl bg-muted/60 backdrop-blur-sm">
+            <button
               onClick={() => confirmSwitch(() => onSwitchMode?.("work"), isActiveState)}
-              aria-label="切换到专注模式"
-              className="h-9 w-9 rounded-lg cursor-pointer hover:scale-105 transition-transform"
-              title="专注模式"
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer",
+                mode === "work"
+                  ? "bg-background shadow-sm text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
             >
-              <Brain className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={mode === "break" ? "default" : "outline"}
-              size="icon"
+              <Brain className="h-3.5 w-3.5" />
+              专注
+            </button>
+            <button
               onClick={() => confirmSwitch(() => onSwitchMode?.("break"), isActiveState)}
-              aria-label="切换到休息模式"
-              className="h-9 w-9 rounded-lg cursor-pointer hover:scale-105 transition-transform"
-              title="休息模式"
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer",
+                mode === "break"
+                  ? "bg-background shadow-sm text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
             >
-              <Coffee className="h-4 w-4" />
-            </Button>
+              <Coffee className="h-3.5 w-3.5" />
+              休息
+            </button>
           </div>
         </div>
       )}
@@ -112,9 +116,8 @@ export function TimerRenderer({
       {/* 时间显示 */}
       <div
         className={cn(
-          "font-mono font-bold tracking-tighter tabular-nums text-center leading-none",
-          isMini ? "text-5xl" : "text-[7rem] sm:text-[8rem] lg:text-[9rem]",
-          isDark ? "text-white" : "text-foreground"
+          "font-medium tracking-wide tabular-nums text-center leading-none text-foreground",
+          isMini ? "text-5xl" : "text-[6rem] sm:text-[7rem] lg:text-[8rem]"
         )}
       >
         {timeString}
@@ -123,9 +126,8 @@ export function TimerRenderer({
       {/* 状态文本 */}
       <p
         className={cn(
-          "text-center mt-3",
-          isMini ? "text-xs mt-2" : "text-sm mt-4",
-          isDark ? "text-white/70" : "text-muted-foreground"
+          "text-center text-muted-foreground mt-3",
+          isMini ? "text-xs mt-2" : "text-sm mt-4"
         )}
       >
         {isActive ? (
@@ -144,13 +146,14 @@ export function TimerRenderer({
       {/* 进度条 */}
       <div className={cn("w-full mt-4", isMini ? "max-w-[200px]" : "max-w-[280px]")}>
         <div className={cn(
-          "h-2 rounded-lg overflow-hidden",
-          isDark ? "bg-white/20" : "bg-primary/20"
+          "h-1.5 rounded-full overflow-hidden bg-muted/40"
         )}>
           <div
             className={cn(
-              "h-full transition-all duration-1000 rounded-lg",
-              mode === "work" ? "bg-red-500" : "bg-green-500"
+              "h-full rounded-full transition-all duration-1000",
+              mode === "work"
+                ? "bg-gradient-to-r from-rose-500 to-orange-400"
+                : "bg-gradient-to-r from-emerald-500 to-teal-400"
             )}
             style={{ width: `${progress}%` }}
           />
@@ -160,23 +163,21 @@ export function TimerRenderer({
       {/* 控制按钮 */}
       <div
         className={cn(
-          "flex items-center justify-center gap-3",
-          isMini ? "mt-5" : "mt-7"
+          "flex items-center justify-center gap-4",
+          isMini ? "mt-5" : "mt-8"
         )}
       >
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           onClick={() => confirmReset(onReset, isActiveState)}
           aria-label="重置计时器"
           className={cn(
-            "rounded-lg transition-all duration-200 cursor-pointer",
-            "hover:shadow-md hover:scale-105 active:scale-95",
-            isMini ? "h-14 w-14" : "h-14 w-14",
-            isDark && "bg-white/10 border-white/20 text-white hover:bg-white/20"
+            "h-10 w-10 rounded-full transition-all duration-200 cursor-pointer text-muted-foreground hover:text-foreground hover:bg-muted",
+            isMini ? "h-10 w-10" : "h-12 w-12"
           )}
         >
-          <RotateCcw className={cn(isMini ? "h-5 w-5" : "h-5 w-5")} />
+          <RotateCcw className="h-4 w-4" />
         </Button>
 
         <Button
@@ -184,20 +185,18 @@ export function TimerRenderer({
           onClick={onToggle}
           aria-label={isActive ? "暂停" : "开始"}
           className={cn(
-            "rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer",
+            "rounded-full shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer",
             "hover:scale-105 active:scale-95",
-            isMini ? "h-14 w-14" : "h-14 w-14",
-            isActive && "bg-destructive hover:bg-destructive/90"
+            isMini ? "h-14 w-14" : "h-16 w-16",
+            isActive
+              ? "bg-gradient-to-br from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 shadow-rose-500/30"
+              : "bg-gradient-to-br from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-primary/30"
           )}
         >
           {isActive ? (
-            <Pause className={cn(isMini ? "h-6 w-6" : "h-6 w-6")} />
+            <Pause className={cn(isMini ? "h-6 w-6" : "h-7 w-7")} />
           ) : (
-            <Play
-              className={cn(
-                isMini ? "h-6 w-6 ml-0.5" : "h-6 w-6 ml-0.5"
-              )}
-            />
+            <Play className={cn(isMini ? "h-6 w-6" : "h-7 w-7", "ml-0.5")} />
           )}
         </Button>
       </div>
