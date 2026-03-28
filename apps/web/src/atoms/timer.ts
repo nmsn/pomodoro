@@ -82,6 +82,18 @@ export const workDurationAtom = atom<number>(25);
 export const breakDurationAtom = atom<number>(5);
 export const elapsedTimeAtom = atom<number>(0); // 正计时已用时间
 
+// Current session info for recording
+export interface CurrentSession {
+  timerType: TimerType;
+  mode: TimerMode;
+  startTime: number; // timestamp ms
+}
+
+export const currentSessionAtom = atom<CurrentSession | null>(null);
+
+// Mark if mode is being switched (to avoid recording during mode switch)
+export const isModeSwitchingAtom = atom(false);
+
 // 格式化时间
 const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60);
