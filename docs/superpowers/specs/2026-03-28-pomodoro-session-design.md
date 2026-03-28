@@ -62,16 +62,22 @@ export async function savePomodoroSession(
 
 文件：`apps/web/src/atoms/timer.ts`
 
-在 `switchModeAtom` 中，切换前设置 `isModeSwitchingAtom(true)`：
+在 `switchModeAtom` 中，切换前设置 `isModeSwitchingAtom(true)`，切换完成后重置为 `false`：
 
 ```typescript
 export const switchModeAtom = atom(null, (get, set, mode: TimerMode) => {
   // ... existing code ...
   set(isModeSwitchingAtom, true) // 新增：标记即将切换 mode
   set(timerModeAtom, mode)
+  set(isActiveAtom, false)
+  set(elapsedTimeAtom, 0)
+  set(timeLeftAtom, (mode === "work" ? workDuration : breakDuration) * 60)
+  set(isModeSwitchingAtom, false) // 重置：mode 切换完成
   // ... rest of code ...
 })
 ```
+
+**注意**：切换 mode 时也会停止计时器并触发 useEffect，但因为 `isModeSwitchingAtom` 此时已是 `false`，useEffect 会认为这是"真正停止"并记录 session。这是正确的行为——切换 mode 时应该记录前一个 session。
 
 #### 3.2 修改 toggleTimerAtom
 
@@ -188,9 +194,9 @@ if (session?.user) {
 ## 状态管理
 
 - `currentSessionAtom`：记录当前进行中的番茄钟信息
-- `isModeSwitchingAtom`：mode 切换时为 true，切换完成后 useEffect 重置为 false
-- mode 切换时：自动开始新的 session（toggleTimerAtom 会覆盖 currentSessionAtom）
-- 停止时不重置，下一次开始时会覆盖
+- `isModeSwitchingAtom`：mode 切换时为 true，切换完成后 atom 内部重置为 false
+- mode 切换时：先记录前一个 session（因为切换会停止计时器），再开始新的 session
+- 手动停止时：直接记录当前 session
 
 ## 错误处理
 
@@ -202,4 +208,5 @@ if (session?.user) {
 1. 登录用户完成番茄钟 → 后端有记录，dailyStats 正确更新
 2. 登录用户手动停止 → 后端有记录，completed=false
 3. 未登录用户完成 → 显示 Toast，不调用 API
-4. 切换 mode（work→break→work）→ 每个 mode 单独记录
+4. 切换 mode（work→break）：work session 被记录（completed=false），break session 开始
+5. 重新切换回 work：break session 被记录，work session 开始
