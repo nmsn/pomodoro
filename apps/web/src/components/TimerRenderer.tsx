@@ -78,7 +78,7 @@ export function TimerRenderer({
               <Brain className="h-4 w-4" />
             </Button>
             <Button
-              variant={mode === "break" ? "secondary" : "outline"}
+              variant={mode === "break" ? "default" : "outline"}
               size="icon"
               onClick={() => onSwitchMode("break")}
               aria-label="切换到休息模式"

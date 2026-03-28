@@ -16,6 +16,8 @@ import {
   timerTypeAtom,
   workDurationAtom,
   breakDurationAtom,
+  timeLeftAtom,
+  timerModeAtom,
   switchTimerTypeAtom,
   timerTypeConfig,
   TimerType,
@@ -26,9 +28,11 @@ export function TimerSettings() {
   const timerType = useAtomValue(timerTypeAtom)
   const workDuration = useAtomValue(workDurationAtom)
   const breakDuration = useAtomValue(breakDurationAtom)
+  const mode = useAtomValue(timerModeAtom)
   const [, switchTimerType] = useAtom(switchTimerTypeAtom)
   const setWorkDuration = useSetAtom(workDurationAtom)
   const setBreakDuration = useSetAtom(breakDurationAtom)
+  const setTimeLeft = useSetAtom(timeLeftAtom)
   const config = timerTypeConfig[timerType]
 
   // useOptimistic：乐观更新（立即响应）
@@ -51,9 +55,17 @@ export function TimerSettings() {
     if (type === "work") {
       addOptimisticWork(newValue)
       setWorkDuration(newValue)
+      // 如果当前是专注模式且未运行，同步更新 timeLeft
+      if (mode === "work") {
+        setTimeLeft(newValue * 60)
+      }
     } else {
       addOptimisticBreak(newValue)
       setBreakDuration(newValue)
+      // 如果当前是休息模式且未运行，同步更新 timeLeft
+      if (mode === "break") {
+        setTimeLeft(newValue * 60)
+      }
     }
 
     // 清除之前的定时器，防抖保存
@@ -68,7 +80,7 @@ export function TimerSettings() {
         saveUserSettings({ breakDuration: newValue })
       }, 300)
     }
-  }, [addOptimisticWork, addOptimisticBreak, setWorkDuration, setBreakDuration])
+  }, [addOptimisticWork, addOptimisticBreak, setWorkDuration, setBreakDuration, setTimeLeft, mode])
 
   return (
     <div className="space-y-6">
