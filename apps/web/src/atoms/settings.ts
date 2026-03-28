@@ -13,7 +13,7 @@ export interface UserSettings {
 
 // 加载用户设置
 export async function loadUserSettings(): Promise<UserSettings | null> {
-  const res = await apiFetch<UserSettings>("/api/settings/")
+  const res = await apiFetch<UserSettings>("/api/settings")
   if (res.success && res.data) {
     const s = res.data
     return {

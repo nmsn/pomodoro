@@ -3,31 +3,62 @@
 import { useSession, signIn, signOut } from "@/atoms/auth"
 import { Button } from "@/components/ui/button"
 import { Github } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useSetAtom } from "jotai"
 import { loadUserSettings } from "@/atoms/settings"
 import { setThemeModeAtom } from "@/atoms/theme"
 import { backgroundThemeAtom } from "@/atoms/background"
-import { switchTimerTypeAtom } from "@/atoms/timer"
+import {
+  workDurationAtom,
+  breakDurationAtom,
+  timerTypeAtom,
+  timerModeAtom,
+  timeLeftAtom,
+  isActiveAtom,
+  elapsedTimeAtom,
+} from "@/atoms/timer"
 import type { UserSettings } from "@/atoms/settings"
 
 export function AccountSettings() {
   const { data: session, isPending } = useSession()
   const setThemeMode = useSetAtom(setThemeModeAtom)
   const setBackground = useSetAtom(backgroundThemeAtom)
-  const switchTimerType = useSetAtom(switchTimerTypeAtom)
+  const setWorkDuration = useSetAtom(workDurationAtom)
+  const setBreakDuration = useSetAtom(breakDurationAtom)
+  const setTimerType = useSetAtom(timerTypeAtom)
+  const setTimerMode = useSetAtom(timerModeAtom)
+  const setTimeLeft = useSetAtom(timeLeftAtom)
+  const setIsActive = useSetAtom(isActiveAtom)
+  const setElapsedTime = useSetAtom(elapsedTimeAtom)
+
+  // 防止重复加载
+  const loadedRef = useRef(false)
 
   // 登录后加载用户设置
   useEffect(() => {
-    if (session?.user) {
-      loadUserSettings().then((settings: UserSettings | null) => {
-        if (!settings) return
-        if (settings.theme) setThemeMode(settings.theme)
-        if (settings.background) setBackground(settings.background)
-        if (settings.timerType) switchTimerType(settings.timerType)
-      })
-    }
-  }, [session, setThemeMode, setBackground, switchTimerType])
+    if (!session?.user) return
+    if (loadedRef.current) return
+    loadedRef.current = true
+
+    loadUserSettings().then((settings: UserSettings | null) => {
+      if (!settings) return
+      if (settings.theme) setThemeMode(settings.theme)
+      if (settings.background) setBackground(settings.background)
+
+      // 直接设置计时器相关 atoms，不走 switchTimerType（避免覆盖用户保存的值）
+      if (settings.timerType) setTimerType(settings.timerType)
+      if (settings.workDuration) setWorkDuration(settings.workDuration)
+      if (settings.breakDuration) setBreakDuration(settings.breakDuration)
+
+      // 重置计时器状态
+      setTimerMode("work")
+      setIsActive(false)
+      setElapsedTime(0)
+      if (settings.workDuration) {
+        setTimeLeft(settings.workDuration * 60)
+      }
+    })
+  }, [session, setThemeMode, setBackground, setTimerType, setWorkDuration, setBreakDuration, setTimerMode, setIsActive, setElapsedTime, setTimeLeft])
 
   const handleGitHubSignIn = async () => {
     await signIn.social({
