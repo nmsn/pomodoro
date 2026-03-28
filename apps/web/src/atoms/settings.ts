@@ -1,8 +1,7 @@
-import { atom } from "jotai"
 import { apiFetch } from "@/lib/api"
 import { type ThemeMode } from "@/atoms/theme"
-import { type BackgroundTheme, backgroundThemes } from "@/atoms/background"
-import { type TimerType, timerTypeConfig } from "@/atoms/timer"
+import { type BackgroundTheme } from "@/atoms/background"
+import { type TimerType } from "@/atoms/timer"
 
 export interface UserSettings {
   theme: ThemeMode
@@ -10,8 +9,6 @@ export interface UserSettings {
   workDuration: number
   breakDuration: number
   timerType: TimerType
-  soundEnabled: boolean
-  notificationsEnabled: boolean
 }
 
 // 加载用户设置
@@ -25,8 +22,6 @@ export async function loadUserSettings(): Promise<UserSettings | null> {
       workDuration: s.workDuration,
       breakDuration: s.breakDuration,
       timerType: s.timerType as TimerType,
-      soundEnabled: s.soundEnabled,
-      notificationsEnabled: s.notificationsEnabled,
     }
   }
   return null

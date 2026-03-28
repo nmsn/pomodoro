@@ -3,9 +3,31 @@
 import { useSession, signIn, signOut } from "@/atoms/auth"
 import { Button } from "@/components/ui/button"
 import { Github } from "lucide-react"
+import { useEffect } from "react"
+import { useSetAtom } from "jotai"
+import { loadUserSettings } from "@/atoms/settings"
+import { setThemeModeAtom } from "@/atoms/theme"
+import { backgroundThemeAtom } from "@/atoms/background"
+import { switchTimerTypeAtom } from "@/atoms/timer"
+import type { UserSettings } from "@/atoms/settings"
 
 export function AccountSettings() {
   const { data: session, isPending } = useSession()
+  const setThemeMode = useSetAtom(setThemeModeAtom)
+  const setBackground = useSetAtom(backgroundThemeAtom)
+  const switchTimerType = useSetAtom(switchTimerTypeAtom)
+
+  // 登录后加载用户设置
+  useEffect(() => {
+    if (session?.user) {
+      loadUserSettings().then((settings: UserSettings | null) => {
+        if (!settings) return
+        if (settings.theme) setThemeMode(settings.theme)
+        if (settings.background) setBackground(settings.background)
+        if (settings.timerType) switchTimerType(settings.timerType)
+      })
+    }
+  }, [session, setThemeMode, setBackground, switchTimerType])
 
   const handleGitHubSignIn = async () => {
     await signIn.social({

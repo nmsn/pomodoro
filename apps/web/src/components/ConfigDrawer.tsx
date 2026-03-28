@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Settings, Clock, Palette, Bell, User, X } from "lucide-react"
+import { Settings, Clock, Palette, User, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,7 +15,6 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   TimerSettings,
   AppearanceSettings,
-  NotificationSettings,
   AccountSettings,
 } from "@/components/settings"
 
@@ -37,11 +36,6 @@ const navItems: NavItem[] = [
     icon: <Palette className="h-5 w-5" />,
   },
   {
-    id: "notifications",
-    label: "通知",
-    icon: <Bell className="h-5 w-5" />,
-  },
-  {
     id: "account",
     label: "账户",
     icon: <User className="h-5 w-5" />,
@@ -51,7 +45,6 @@ const navItems: NavItem[] = [
 const contentMap: Record<string, React.ReactNode> = {
   timer: <TimerSettings />,
   appearance: <AppearanceSettings />,
-  notifications: <NotificationSettings />,
   account: <AccountSettings />,
 }
 
