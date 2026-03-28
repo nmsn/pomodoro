@@ -57,22 +57,20 @@ export function TimerSettings() {
     confirmTypeChange(() => switchTimerType(value as TimerType), isActiveState)
   }
 
-  // 滑动更新：立即更新 UI，防抖同步到后端
+  // 滑动更新：立即更新 UI，同步 timeLeft 并防抖保存到后端
   const handleDurationChange = useCallback((type: "work" | "break", value: number[]) => {
     const newValue = value[0]
 
-    // 乐观更新：立即响应
     if (type === "work") {
       addOptimisticWork(newValue)
       setWorkDuration(newValue)
-      // 如果当前是专注模式且未运行，同步更新 timeLeft
+      // 无论计时是否运行，同步更新 timeLeft（计时器 effect 会用新的 workDuration 重新计算 currentDuration）
       if (mode === "work") {
         setTimeLeft(newValue * 60)
       }
     } else {
       addOptimisticBreak(newValue)
       setBreakDuration(newValue)
-      // 如果当前是休息模式且未运行，同步更新 timeLeft
       if (mode === "break") {
         setTimeLeft(newValue * 60)
       }

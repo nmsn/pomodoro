@@ -26,7 +26,7 @@ export function TimerProvider({
 
   const [isActive, setIsActive] = useAtom(isActiveAtom);
   const [timeLeft, setTimeLeft] = useAtom(timeLeftAtom);
-  const [elapsedTime, setElapsedTime] = useAtom(elapsedTimeAtom);
+  const setElapsedTime = useSetAtom(elapsedTimeAtom);
   const mode = useAtomValue(timerModeAtom);
   const workDuration = useAtomValue(workDurationAtom);
   const breakDuration = useAtomValue(breakDurationAtom);
@@ -48,29 +48,28 @@ export function TimerProvider({
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
-    if (isActive) {
-      if (config.isStopwatch) {
-        // 正计时模式
-        interval = setInterval(() => {
-          setElapsedTime((prev) => prev + 1);
-        }, 1000);
-      } else if (timeLeft > 0) {
-        // 倒计时模式
-        interval = setInterval(() => {
-          setTimeLeft((prev) => prev - 1);
-        }, 1000);
-      } else if (timeLeft === 0) {
-        // 时间到：停止计时，切换到下一个模式
-        setIsActive(false);
-        const nextMode: TimerMode = mode === "work" ? "break" : "work";
-        setSwitchMode(nextMode);
-      }
+    if (!isActive) return;
+
+    if (config.isStopwatch) {
+      // 正计时模式
+      interval = setInterval(() => {
+        setElapsedTime((prev) => prev + 1);
+      }, 1000);
+    } else if (timeLeft > 0) {
+      // 倒计时模式
+      interval = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      // 时间到：切换到下一个模式（switchModeAtom 内部会停止计时）
+      const nextMode: TimerMode = mode === "work" ? "break" : "work";
+      setSwitchMode(nextMode);
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isActive, timeLeft, elapsedTime, config.isStopwatch, setTimeLeft, setElapsedTime, setIsActive, mode, setSwitchMode]);
+  }, [isActive, timeLeft, config.isStopwatch, setTimeLeft, setElapsedTime, mode, setSwitchMode]);
 
   return <>{children}</>;
 }

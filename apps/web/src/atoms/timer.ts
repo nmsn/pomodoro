@@ -128,7 +128,12 @@ export const timerStateAtom = atom<TimerState>((get) => {
     // 倒计时模式
     currentDuration = mode === "work" ? workDuration : breakDuration;
     displayTime = timeLeft;
-    progress = currentDuration > 0 ? (timeLeft / (currentDuration * 60)) * 100 : 0;
+    // 计时停止时显示 100%（准备开始），计时运行时显示实际进度
+    if (!isActive) {
+      progress = 100;
+    } else {
+      progress = currentDuration > 0 ? (timeLeft / (currentDuration * 60)) * 100 : 0;
+    }
   }
   
   const timeString = formatTime(displayTime);
