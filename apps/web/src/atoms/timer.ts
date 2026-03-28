@@ -166,7 +166,18 @@ export const timerStateAtom = atom<TimerState>((get) => {
 
 // 切换计时器状态
 export const toggleTimerAtom = atom(null, (get, set) => {
-  set(isActiveAtom, !get(isActiveAtom));
+  const currentActive = get(isActiveAtom);
+  if (!currentActive) {
+    // 启动时：创建 session
+    const timerType = get(timerTypeAtom);
+    const mode = get(timerModeAtom);
+    set(currentSessionAtom, {
+      timerType,
+      mode,
+      startTime: Date.now(),
+    });
+  }
+  set(isActiveAtom, !currentActive);
 });
 
 // 重置计时器
