@@ -11,6 +11,8 @@ import {
   timerTypeAtom,
   elapsedTimeAtom,
   timerTypeConfig,
+  switchModeAtom,
+  TimerMode,
 } from "@/atoms/timer";
 import { useUserSettingsSync } from "@/hooks/useUserSettingsSync";
 
@@ -29,6 +31,7 @@ export function TimerProvider({
   const workDuration = useAtomValue(workDurationAtom);
   const breakDuration = useAtomValue(breakDurationAtom);
   const timerType = useAtomValue(timerTypeAtom);
+  const setSwitchMode = useSetAtom(switchModeAtom);
 
   const config = timerTypeConfig[timerType];
 
@@ -57,14 +60,17 @@ export function TimerProvider({
           setTimeLeft((prev) => prev - 1);
         }, 1000);
       } else if (timeLeft === 0) {
+        // 时间到：停止计时，切换到下一个模式
         setIsActive(false);
+        const nextMode: TimerMode = mode === "work" ? "break" : "work";
+        setSwitchMode(nextMode);
       }
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isActive, timeLeft, elapsedTime, config.isStopwatch, setTimeLeft, setElapsedTime, setIsActive]);
+  }, [isActive, timeLeft, elapsedTime, config.isStopwatch, setTimeLeft, setElapsedTime, setIsActive, mode, setSwitchMode]);
 
   return <>{children}</>;
 }

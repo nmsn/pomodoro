@@ -98,7 +98,7 @@ export function PomoTimer({
                 专注
               </Button>
               <Button
-                variant={state.mode === "break" ? "secondary" : "outline"}
+                variant={state.mode === "break" ? "default" : "outline"}
                 size="sm"
                 onClick={() => switchMode("break")}
                 className="rounded-lg"
