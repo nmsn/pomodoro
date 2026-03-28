@@ -12,7 +12,7 @@
 
 ## 前端改动
 
-### 1. 新增 atom
+### 1. 新增 atoms
 
 文件：`apps/web/src/atoms/timer.ts`
 
@@ -24,9 +24,45 @@ export interface CurrentSession {
 }
 
 export const currentSessionAtom = atom<CurrentSession | null>(null)
+
+// 标记是否正在切换 mode，切换时不记录 session
+export const isModeSwitchingAtom = atom(false)
 ```
 
 ### 2. API 调用封装
+
+文件：`apps/web/src/lib/session.ts`
+
+```typescript
+import { apiFetch } from "@/lib/api"
+import type { CurrentSession } from "@/atoms/timer"
+
+export async function savePomodoroSession(
+  session: CurrentSession,
+  completed: boolean
+): Promise<void> {
+  const duration = Math.floor((Date.now() - session.startTime) / 1000)
+  await apiFetch("/api/sessions", {
+    method: "POST",
+    body: JSON.stringify({
+      timerType: session.timerType,
+      mode: session.mode,
+      startTime: session.startTime,
+      endTime: Date.now(),
+      duration,
+      completed,
+    }),
+  })
+}
+```
+
+### 2b. Auth 检查
+
+文件：`apps/web/src/components/settings/AccountSettings.tsx` 中的 `useSession`
+
+在 `savePomodoroSession` 调用前检查 `session?.user` 是否存在：
+- 已登录：调用 API
+- 未登录：`completed=true` 时显示 Toast
 
 文件：`apps/web/src/lib/api.ts` (或新建 `apps/web/src/lib/session.ts`)
 
@@ -55,23 +91,41 @@ export async function savePomodoroSession(
 文件：`apps/web/src/hooks/usePomoTimer.ts`
 
 - 新增 `useEffect`，监听 `isActiveAtom` 从 `true` → `false`
-- 检测 mode 变化（work/break 切换时不记录，只在真正停止时记录）
+- 检查 `isModeSwitchingAtom`：如果正在切换 mode，不记录
 - 调用 `savePomodoroSession`
 
 ```typescript
 export function usePomoTimer(options: UsePomoTimerOptions = {}) {
   // ... existing code ...
+  const [prevActive, setPrevActive] = useState(false)
 
   // 新增：监听停止，记录 session
   useEffect(() => {
-    if (prevIsActiveRef.current && !isActive) {
-      // 计时器从运行变为停止，记录 session
-      // 需要判断是 mode 切换还是真正停止
+    if (prevActive && !isActive) {
+      // 停止时检查是否在切换 mode
+      const isModeSwitching = get(isModeSwitchingAtom)
+      if (isModeSwitching) {
+        // mode 切换，不记录
+        set(isModeSwitchingAtom, false)
+        return
+      }
+      // 真正停止，记录 session
+      const session = get(currentSessionAtom)
+      if (session) {
+        // completed 由计时器是否自然结束决定（timeLeft === 0）
+        const completed = get(timeLeftAtom) === 0
+        savePomodoroSession(session, completed)
+      }
     }
-    prevIsActiveRef.current = isActive
-  }, [isActive])
+    setPrevActive(isActive)
+  }, [isActive, prevActive, isActive])
 }
 ```
+
+**关键修改：**
+
+1. `switchModeAtom`：切换前设置 `isModeSwitchingAtom(true)`，切换完成后在 useEffect 中重置为 false
+2. 自然结束时 `timeLeftAtom` 为 0，手动停止时 `timeLeftAtom > 0`
 
 ### 4. Toast 提示
 
@@ -81,6 +135,8 @@ export function usePomoTimer(options: UsePomoTimerOptions = {}) {
 - 显示内容："登录后可保存您的番茄钟记录"
 - 时长：3 秒后自动消失
 - 样式：底部居中，背景模糊，渐入渐出
+
+**Auth 检查位置**：在调用 `savePomodoroSession` 前检查 `session?.user` 是否存在
 
 ## 后端
 
