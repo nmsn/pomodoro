@@ -200,10 +200,12 @@ export const resetTimerAtom = atom(null, (get, set) => {
 export const switchModeAtom = atom(null, (get, set, mode: TimerMode) => {
   const workDuration = get(workDurationAtom);
   const breakDuration = get(breakDurationAtom);
+  set(isModeSwitchingAtom, true); // Mark mode switching
   set(timerModeAtom, mode);
   set(isActiveAtom, false);
   set(elapsedTimeAtom, 0);
   set(timeLeftAtom, (mode === "work" ? workDuration : breakDuration) * 60);
+  set(isModeSwitchingAtom, false); // Reset after switch
 });
 
 // 切换计时类型
