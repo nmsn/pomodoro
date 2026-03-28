@@ -21,19 +21,28 @@ import {
   switchTimerTypeAtom,
   timerTypeConfig,
   TimerType,
+  isActiveAtom,
 } from "@/atoms/timer"
 import { saveUserSettings } from "@/atoms/settings"
+import { useConfirmAction } from "@/hooks/useConfirmAction"
 
 export function TimerSettings() {
   const timerType = useAtomValue(timerTypeAtom)
   const workDuration = useAtomValue(workDurationAtom)
   const breakDuration = useAtomValue(breakDurationAtom)
   const mode = useAtomValue(timerModeAtom)
+  const isActiveState = useAtomValue(isActiveAtom)
   const [, switchTimerType] = useAtom(switchTimerTypeAtom)
   const setWorkDuration = useSetAtom(workDurationAtom)
   const setBreakDuration = useSetAtom(breakDurationAtom)
   const setTimeLeft = useSetAtom(timeLeftAtom)
   const config = timerTypeConfig[timerType]
+
+  const { confirm: confirmTypeChange, Dialog: TypeChangeDialog } = useConfirmAction({
+    title: "切换计时模式",
+    message: "切换计时模式将中断当前计时，确认吗？",
+    confirmText: "切换",
+  })
 
   // useOptimistic：乐观更新（立即响应）
   const [optimisticWork, addOptimisticWork] = useOptimistic(workDuration, (_state, newValue: number) => newValue)
@@ -44,7 +53,7 @@ export function TimerSettings() {
   const breakTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleTypeChange = (value: string) => {
-    switchTimerType(value as TimerType)
+    confirmTypeChange(() => switchTimerType(value as TimerType), isActiveState)
   }
 
   // 滑动更新：立即更新 UI，防抖同步到后端
@@ -209,6 +218,8 @@ export function TimerSettings() {
         <h4 className="font-medium text-sm mb-0.5">{config.name}</h4>
         <p className="text-xs text-muted-foreground leading-relaxed">{config.description}</p>
       </div>
+
+      <TypeChangeDialog />
     </div>
   )
 }

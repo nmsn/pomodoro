@@ -7,11 +7,12 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { usePomoTimer, TimerMode, TimerState } from "@/hooks/usePomoTimer";
 import { TimerRenderer } from "./TimerRenderer";
-import { timerTypeConfig, TimerType } from "@/atoms/timer";
+import { timerTypeConfig, TimerType, isActiveAtom } from "@/atoms/timer";
 import { isDarkBackgroundAtom } from "@/atoms/background";
 import { useSession } from "@/atoms/auth";
 import { LoginToast } from "./LoginToast";
 import { savePomodoroSession } from "@/lib/session";
+import { useConfirmAction } from "@/hooks/useConfirmAction";
 
 interface PomoTimerProps {
   workDuration?: number;
@@ -51,6 +52,7 @@ export function PomoTimer({
   onTimerUpdate,
 }: PomoTimerProps) {
   const isDark = useAtomValue(isDarkBackgroundAtom);
+  const isActiveState = useAtomValue(isActiveAtom);
   const { data: session } = useSession();
   const [showLoginToast, setShowLoginToast] = useState(false);
 
@@ -67,6 +69,15 @@ export function PomoTimer({
         setShowLoginToast(true);
       }
     },
+  });
+
+  const { confirm: confirmSwitch, Dialog: SwitchDialog } = useConfirmAction({
+    title: "切换模式",
+    message:
+      state.mode === "work"
+        ? "专注计时进行中，切换将中断当前计时，确认吗？"
+        : "休息时间进行中，切换将中断当前计时，确认吗？",
+    confirmText: "切换",
   });
 
   const config = timerTypeConfig[state.timerType];
@@ -91,7 +102,7 @@ export function PomoTimer({
               <Button
                 variant={state.mode === "work" ? "default" : "outline"}
                 size="sm"
-                onClick={() => switchMode("work")}
+                onClick={() => confirmSwitch(() => switchMode("work"), isActiveState)}
                 className="rounded-lg"
               >
                 <Brain className="mr-1 h-3 w-3" />
@@ -100,7 +111,7 @@ export function PomoTimer({
               <Button
                 variant={state.mode === "break" ? "default" : "outline"}
                 size="sm"
-                onClick={() => switchMode("break")}
+                onClick={() => confirmSwitch(() => switchMode("break"), isActiveState)}
                 className="rounded-lg"
               >
                 <Coffee className="mr-1 h-3 w-3" />
@@ -129,6 +140,8 @@ export function PomoTimer({
       {showLoginToast && (
         <LoginToast onClose={() => setShowLoginToast(false)} />
       )}
+
+      <SwitchDialog />
     </div>
   );
 }

@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { TimerState, TimerMode } from "@/hooks/usePomoTimer";
 import { isDarkBackgroundAtom } from "@/atoms/background";
+import { isActiveAtom } from "@/atoms/timer";
+import { useConfirmAction } from "@/hooks/useConfirmAction";
 
 export type TimerVariant = "default" | "mini";
 
@@ -33,8 +35,24 @@ export function TimerRenderer({
   className,
 }: TimerRendererProps) {
   const isDark = useAtomValue(isDarkBackgroundAtom);
+  const isActiveState = useAtomValue(isActiveAtom);
   const isMini = variant === "mini";
   const { mode, timeString, progress, isActive, statusText } = state;
+
+  const { confirm: confirmReset, Dialog: ResetDialog } = useConfirmAction({
+    title: "重置计时器",
+    message: "当前计时进度将丢失，确认要重置吗？",
+    confirmText: "重置",
+  });
+
+  const { confirm: confirmSwitch, Dialog: SwitchDialog } = useConfirmAction({
+    title: "切换模式",
+    message:
+      mode === "work"
+        ? "专注计时进行中，切换将中断当前计时，确认吗？"
+        : "休息时间进行中，切换将中断当前计时，确认吗？",
+    confirmText: "切换",
+  });
 
   return (
     <div
@@ -70,7 +88,7 @@ export function TimerRenderer({
             <Button
               variant={mode === "work" ? "default" : "outline"}
               size="icon"
-              onClick={() => onSwitchMode("work")}
+              onClick={() => confirmSwitch(() => onSwitchMode?.("work"), isActiveState)}
               aria-label="切换到专注模式"
               className="h-9 w-9 rounded-lg cursor-pointer hover:scale-105 transition-transform"
               title="专注模式"
@@ -80,7 +98,7 @@ export function TimerRenderer({
             <Button
               variant={mode === "break" ? "default" : "outline"}
               size="icon"
-              onClick={() => onSwitchMode("break")}
+              onClick={() => confirmSwitch(() => onSwitchMode?.("break"), isActiveState)}
               aria-label="切换到休息模式"
               className="h-9 w-9 rounded-lg cursor-pointer hover:scale-105 transition-transform"
               title="休息模式"
@@ -149,7 +167,7 @@ export function TimerRenderer({
         <Button
           variant="outline"
           size="icon"
-          onClick={onReset}
+          onClick={() => confirmReset(onReset, isActiveState)}
           aria-label="重置计时器"
           className={cn(
             "rounded-lg transition-all duration-200 cursor-pointer",
@@ -183,6 +201,9 @@ export function TimerRenderer({
           )}
         </Button>
       </div>
+
+      <ResetDialog />
+      <SwitchDialog />
     </div>
   );
 }
