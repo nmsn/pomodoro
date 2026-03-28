@@ -172,12 +172,9 @@ export function TimerRenderer({
           size="icon"
           onClick={() => confirmReset(onReset, isActiveState)}
           aria-label="重置计时器"
-          className={cn(
-            "h-10 w-10 rounded-full transition-all duration-200 cursor-pointer text-muted-foreground hover:text-foreground hover:bg-muted",
-            isMini ? "h-10 w-10" : "h-12 w-12"
-          )}
+          className="h-14 w-14 rounded-full transition-all duration-200 cursor-pointer text-muted-foreground hover:text-foreground hover:bg-muted"
         >
-          <RotateCcw className="h-4 w-4" />
+          <RotateCcw className="h-5 w-5" />
         </Button>
 
         <Button
@@ -185,18 +182,17 @@ export function TimerRenderer({
           onClick={onToggle}
           aria-label={isActive ? "暂停" : "开始"}
           className={cn(
-            "rounded-full shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer",
+            "h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer",
             "hover:scale-105 active:scale-95",
-            isMini ? "h-14 w-14" : "h-16 w-16",
             isActive
               ? "bg-gradient-to-br from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 shadow-rose-500/30"
               : "bg-gradient-to-br from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-primary/30"
           )}
         >
           {isActive ? (
-            <Pause className={cn(isMini ? "h-6 w-6" : "h-7 w-7")} />
+            <Pause className="h-6 w-6" />
           ) : (
-            <Play className={cn(isMini ? "h-6 w-6" : "h-7 w-7", "ml-0.5")} />
+            <Play className="h-6 w-6 ml-0.5" />
           )}
         </Button>
       </div>
