@@ -1,6 +1,7 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import { logger } from 'hono/logger'
 import { auth } from './lib/auth'
 import settingsRoute from './routes/settings'
 import sessionsRoute from './routes/sessions'
@@ -8,6 +9,9 @@ import statsRoute from './routes/stats'
 import sseRoute from './routes/sse'
 
 const app = new Hono()
+
+// Logger middleware
+app.use('*', logger())
 
 // CORS for web app
 app.use('/*', cors({
