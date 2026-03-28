@@ -3,6 +3,7 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useCallback, useRef } from "react"
 import { useOptimistic } from "react"
+import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
 import {
@@ -150,16 +151,28 @@ export function TimerSettings() {
               <h3 className="text-base font-semibold tracking-tight">
                 {timerType === "countdown" ? "倒计时时长" : "专注时长"}
               </h3>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                {timerType === "countdown" ? "设置倒计时时间" : "设置每次专注的默认时长"}
-              </p>
+              {isActiveState && mode === "work" ? (
+                <p className="text-xs text-amber-600 dark:text-amber-500 mt-0.5">
+                  当前计时进行中，暂停后可调整
+                </p>
+              ) : (
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {timerType === "countdown" ? "设置倒计时时间" : "设置每次专注的默认时长"}
+                </p>
+              )}
             </div>
             <div className="flex items-center gap-4 bg-gradient-to-br from-muted/80 to-muted/40 rounded-lg p-4 border border-muted-foreground/10">
-              <span className="text-2xl font-bold w-14 text-center tabular-nums font-mono">
+              <span className={cn(
+                "text-2xl font-bold w-14 text-center tabular-nums font-mono",
+                isActiveState && mode === "work" && "opacity-50"
+              )}>
                 {optimisticWork}
               </span>
               <div
-                className="flex-1 touch-none"
+                className={cn(
+                  "flex-1 touch-none",
+                  isActiveState && mode === "work" && "pointer-events-none opacity-50"
+                )}
                 onPointerDown={(e) => e.stopPropagation()}
               >
                 <Slider
@@ -167,6 +180,7 @@ export function TimerSettings() {
                   max={60}
                   step={1}
                   value={[optimisticWork]}
+                  disabled={isActiveState && mode === "work"}
                   onValueChange={(value) => handleDurationChange("work", value)}
                   showTicks
                   ticksInterval={5}
@@ -184,14 +198,26 @@ export function TimerSettings() {
               <div className="space-y-3">
                 <div>
                   <h3 className="text-base font-semibold tracking-tight">休息时长</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">设置每次休息的默认时长</p>
+                  {isActiveState && mode === "break" ? (
+                    <p className="text-xs text-amber-600 dark:text-amber-500 mt-0.5">
+                      当前计时进行中，暂停后可调整
+                    </p>
+                  ) : (
+                    <p className="text-xs text-muted-foreground mt-0.5">设置每次休息的默认时长</p>
+                  )}
                 </div>
                 <div className="flex items-center gap-4 bg-gradient-to-br from-muted/80 to-muted/40 rounded-lg p-4 border border-muted-foreground/10">
-                  <span className="text-2xl font-bold w-14 text-center tabular-nums font-mono">
+                  <span className={cn(
+                    "text-2xl font-bold w-14 text-center tabular-nums font-mono",
+                    isActiveState && mode === "break" && "opacity-50"
+                  )}>
                     {optimisticBreak}
                   </span>
                   <div
-                    className="flex-1 touch-none"
+                    className={cn(
+                      "flex-1 touch-none",
+                      isActiveState && mode === "break" && "pointer-events-none opacity-50"
+                    )}
                     onPointerDown={(e) => e.stopPropagation()}
                   >
                     <Slider
@@ -199,6 +225,7 @@ export function TimerSettings() {
                       max={30}
                       step={1}
                       value={[optimisticBreak]}
+                      disabled={isActiveState && mode === "break"}
                       onValueChange={(value) => handleDurationChange("break", value)}
                       showTicks
                       ticksInterval={5}
