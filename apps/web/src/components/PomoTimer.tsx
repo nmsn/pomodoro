@@ -1,6 +1,7 @@
 "use client";
 
 import { useAtomValue } from "jotai";
+import { useState } from "react";
 import { Coffee, Brain, Timer, Hourglass, Watch, Tv, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,9 @@ import { usePomoTimer, TimerMode, TimerState } from "@/hooks/usePomoTimer";
 import { TimerRenderer } from "./TimerRenderer";
 import { timerTypeConfig, TimerType } from "@/atoms/timer";
 import { isDarkBackgroundAtom } from "@/atoms/background";
+import { useSession } from "@/atoms/auth";
+import { LoginToast } from "./LoginToast";
+import { savePomodoroSession } from "@/lib/session";
 
 interface PomoTimerProps {
   workDuration?: number;
@@ -47,10 +51,22 @@ export function PomoTimer({
   onTimerUpdate,
 }: PomoTimerProps) {
   const isDark = useAtomValue(isDarkBackgroundAtom);
+  const { data: session } = useSession();
+  const [showLoginToast, setShowLoginToast] = useState(false);
+
   const { state, toggleTimer, resetTimer, switchMode } = usePomoTimer({
     workDuration,
     breakDuration,
     onStateChange: onTimerUpdate,
+    onSessionComplete: (sessionData, completed) => {
+      if (session?.user) {
+        // Logged in - save session
+        savePomodoroSession(sessionData, completed);
+      } else if (completed) {
+        // Not logged in and completed - show login toast
+        setShowLoginToast(true);
+      }
+    },
   });
 
   const config = timerTypeConfig[state.timerType];
@@ -109,6 +125,10 @@ export function PomoTimer({
         variant="default"
         showModeSwitch={false}
       />
+
+      {showLoginToast && (
+        <LoginToast onClose={() => setShowLoginToast(false)} />
+      )}
     </div>
   );
 }
